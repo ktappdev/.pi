@@ -1,0 +1,25 @@
+full:
+  - scout
+  - planner
+  - designer
+  - builder
+  - reviewer
+  - documenter
+  - tavily
+  - sparky
+  - tester
+
+plan-build:
+  - planner
+  - builder
+  - reviewer
+  - tavily
+
+info:
+  - scout
+  - documenter
+  - reviewer
+  - tavily
+
+brainstorm:
+  - sparky

@@ -1,0 +1,8 @@
+{
+  "name": "pi-extensions",
+  "private": true,
+  "dependencies": {
+    "@mariozechner/pi-tui": "^0.56.0",
+    "@mariozechner/pi-ai": "^0.56.0"
+  }
+}

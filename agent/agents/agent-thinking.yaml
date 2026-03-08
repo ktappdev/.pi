@@ -1,0 +1,9 @@
+builder: minimal
+designer: medium
+oracle: off
+planner: high
+reviewer: medium
+scout: medium
+sparky: medium
+tavily: off
+tester: low

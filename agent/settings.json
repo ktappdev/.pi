@@ -1,0 +1,13 @@
+{
+  "lastChangelogVersion": "0.57.1",
+  "defaultProvider": "QwenCodingPlan",
+  "defaultModel": "qwen3.5-plus",
+  "defaultThinkingLevel": "low",
+  "theme": "cyberpunk",
+  "quietStartup": true,
+  "transport": "auto",
+  "hideThinkingBlock": true,
+  "packages": [],
+  "steeringMode": "one-at-a-time",
+  "doubleEscapeAction": "none"
+}

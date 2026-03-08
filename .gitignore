@@ -1,0 +1,6 @@
+agent/sessions/
+/agent-sessions
+auth.json
+agent-dispatch.log
+archived-agents/
+agent/auth.json
