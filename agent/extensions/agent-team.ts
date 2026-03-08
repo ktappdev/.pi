@@ -64,9 +64,20 @@ interface DispatchResult {
 const MAX_AGENT_LOG_LINES = 500;
 
 function getProjectBaseDir(cwd: string): string {
-	return cwd.endsWith("/.pi") || cwd.endsWith("/.pi/")
-		? cwd.replace(/\/.pi\/?$/, "")
-		: cwd;
+	let current = resolve(cwd);
+
+	while (true) {
+		if (existsSync(join(current, ".git")) || existsSync(join(current, ".pi"))) {
+			return current;
+		}
+
+		const parent = dirname(current);
+		if (parent === current) break;
+		current = parent;
+	}
+
+	const piPathMatch = resolve(cwd).match(/^(.*)\/\.pi(?:\/.*)?$/);
+	return piPathMatch ? piPathMatch[1] : resolve(cwd);
 }
 
 function getProjectPiDir(cwd: string): string {
