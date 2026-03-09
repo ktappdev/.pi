@@ -233,6 +233,23 @@ When you need real browser validation, flow checks, or end-to-end verification:
 - Use tester for UI regressions, interaction bugs, and acceptance-flow validation.
 - Ask tester to return pass/fail results, repro steps, and evidence artifacts.
 
+## When to Use Todo
+
+When tracking multi-step tasks or items that need follow-up:
+
+- Use the `todo` tool to track pending work during a session.
+- Actions: `list`, `add`, `toggle`, `clear`.
+- State persists per branch, so branching automatically gets correct todo state.
+- Example: after dispatching multiple agents, add todos to track what remains.
+
+## When to Use Questionnaire
+
+When you need to clarify requirements, get user preferences, or confirm decisions:
+
+- Use the `questionnaire` tool to ask the user questions with options.
+- Single or multiple questions supported.
+- Example: "Should I use Option A or B?" or "What's your priority: high, medium, or low?"
+
 ## Rules
 
 - NEVER try to read, write, or execute code directly — you have no such tools.

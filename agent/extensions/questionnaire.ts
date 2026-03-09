@@ -38,6 +38,7 @@ interface QuestionnaireResult {
 	questions: Question[];
 	answers: Answer[];
 	cancelled: boolean;
+	timedOut?: boolean;
 }
 
 // Schema
@@ -61,6 +62,7 @@ const QuestionSchema = Type.Object({
 
 const QuestionnaireParams = Type.Object({
 	questions: Type.Array(QuestionSchema, { description: "Questions to ask the user" }),
+	timeoutSeconds: Type.Optional(Type.Number({ description: "Timeout in seconds (default: 60)" })),
 });
 
 function errorResult(
@@ -78,7 +80,7 @@ export default function questionnaire(pi: ExtensionAPI) {
 		name: "questionnaire",
 		label: "Questionnaire",
 		description:
-			"Ask the user one or more questions. Use for clarifying requirements, getting preferences, or confirming decisions. For single questions, shows a simple option list. For multiple questions, shows a tab-based interface.",
+			"Ask the user one or more questions. Use for clarifying requirements, getting preferences, or confirming decisions. For single questions, shows a simple option list. For multiple questions, shows a tab-based interface. Times out after 60 seconds (configurable) and returns to allow Kyrie to proceed with sensible defaults.",
 		parameters: QuestionnaireParams,
 
 		async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
@@ -98,6 +100,7 @@ export default function questionnaire(pi: ExtensionAPI) {
 
 			const isMulti = questions.length > 1;
 			const totalTabs = questions.length + 1; // questions + Submit
+			const timeoutSeconds = Math.max(1, params.timeoutSeconds ?? 60);
 
 			const result = await ctx.ui.custom<QuestionnaireResult>((tui, theme, _kb, done) => {
 				// State
@@ -107,6 +110,7 @@ export default function questionnaire(pi: ExtensionAPI) {
 				let inputQuestionId: string | null = null;
 				let cachedLines: string[] | undefined;
 				const answers = new Map<string, Answer>();
+				let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
 				// Editor for "Type something" option
 				const editorTheme: EditorTheme = {
@@ -127,8 +131,11 @@ export default function questionnaire(pi: ExtensionAPI) {
 					tui.requestRender();
 				}
 
-				function submit(cancelled: boolean) {
-					done({ questions, answers: Array.from(answers.values()), cancelled });
+				function submit(cancelled: boolean, timedOut = false) {
+					if (timeoutId) {
+						clearTimeout(timeoutId);
+					}
+					done({ questions, answers: Array.from(answers.values()), cancelled, timedOut });
 				}
 
 				function currentQuestion(): Question | undefined {
@@ -166,6 +173,11 @@ export default function questionnaire(pi: ExtensionAPI) {
 				function saveAnswer(questionId: string, value: string, label: string, wasCustom: boolean, index?: number) {
 					answers.set(questionId, { id: questionId, value, label, wasCustom, index });
 				}
+
+				// Timeout
+				timeoutId = setTimeout(() => {
+					submit(true, true);
+				}, timeoutSeconds * 1000);
 
 				// Editor submit callback
 				editor.onSubmit = (value) => {
@@ -371,6 +383,13 @@ export default function questionnaire(pi: ExtensionAPI) {
 					handleInput,
 				};
 			});
+
+			if (result.timedOut) {
+				return {
+					content: [{ type: "text", text: "Questionnaire timed out - user did not respond" }],
+					details: { ...result, timedOut: true },
+				};
+			}
 
 			if (result.cancelled) {
 				return {

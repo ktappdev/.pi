@@ -1,215 +1,317 @@
-import { complete, getModel } from "@mariozechner/pi-ai";
-import type {
-  ExtensionAPI,
-  ExtensionCommandContext,
-} from "@mariozechner/pi-coding-agent";
-import { DynamicBorder, getMarkdownTheme } from "@mariozechner/pi-coding-agent";
-import { Container, Markdown, matchesKey, Text } from "@mariozechner/pi-tui";
+/**
+ * Todo Extension - Demonstrates state management via session entries
+ *
+ * This extension:
+ * - Registers a `todo` tool for the LLM to manage todos
+ * - Registers a `/todos` command for users to view the list
+ *
+ * State is stored in tool result details (not external files), which allows
+ * proper branching - when you branch, the todo state is automatically
+ * correct for that point in history.
+ */
 
-type ContentBlock = {
-  type?: string;
-  text?: string;
-  name?: string;
-  arguments?: Record<string, unknown>;
-};
+import { StringEnum } from "@mariozechner/pi-ai";
+import type { ExtensionAPI, ExtensionContext, Theme } from "@mariozechner/pi-coding-agent";
+import { matchesKey, Text, truncateToWidth } from "@mariozechner/pi-tui";
+import { Type } from "@sinclair/typebox";
 
-type SessionEntry = {
-  type: string;
-  message?: {
-    role?: string;
-    content?: unknown;
-  };
-};
+interface Todo {
+	id: number;
+	text: string;
+	done: boolean;
+}
 
-const extractTextParts = (content: unknown): string[] => {
-  if (typeof content === "string") {
-    return [content];
-  }
+interface TodoDetails {
+	action: "list" | "add" | "toggle" | "clear";
+	todos: Todo[];
+	nextId: number;
+	error?: string;
+}
 
-  if (!Array.isArray(content)) {
-    return [];
-  }
+const TodoParams = Type.Object({
+	action: StringEnum(["list", "add", "toggle", "clear"] as const),
+	text: Type.Optional(Type.String({ description: "Todo text (for add)" })),
+	id: Type.Optional(Type.Number({ description: "Todo ID (for toggle)" })),
+});
 
-  const textParts: string[] = [];
-  for (const part of content) {
-    if (!part || typeof part !== "object") {
-      continue;
-    }
+/**
+ * UI component for the /todos command
+ */
+class TodoListComponent {
+	private todos: Todo[];
+	private theme: Theme;
+	private onClose: () => void;
+	private cachedWidth?: number;
+	private cachedLines?: string[];
 
-    const block = part as ContentBlock;
-    if (block.type === "text" && typeof block.text === "string") {
-      textParts.push(block.text);
-    }
-  }
+	constructor(todos: Todo[], theme: Theme, onClose: () => void) {
+		this.todos = todos;
+		this.theme = theme;
+		this.onClose = onClose;
+	}
 
-  return textParts;
-};
+	handleInput(data: string): void {
+		if (matchesKey(data, "escape") || matchesKey(data, "ctrl+c")) {
+			this.onClose();
+		}
+	}
 
-const extractToolCallLines = (content: unknown): string[] => {
-  if (!Array.isArray(content)) {
-    return [];
-  }
+	render(width: number): string[] {
+		if (this.cachedLines && this.cachedWidth === width) {
+			return this.cachedLines;
+		}
 
-  const toolCalls: string[] = [];
-  for (const part of content) {
-    if (!part || typeof part !== "object") {
-      continue;
-    }
+		const lines: string[] = [];
+		const th = this.theme;
 
-    const block = part as ContentBlock;
-    if (block.type !== "toolCall" || typeof block.name !== "string") {
-      continue;
-    }
+		lines.push("");
+		const title = th.fg("accent", " Todos ");
+		const headerLine =
+			th.fg("borderMuted", "─".repeat(3)) + title + th.fg("borderMuted", "─".repeat(Math.max(0, width - 10)));
+		lines.push(truncateToWidth(headerLine, width));
+		lines.push("");
 
-    const args = block.arguments ?? {};
-    toolCalls.push(
-      `Tool ${block.name} was called with args ${JSON.stringify(args)}`,
-    );
-  }
+		if (this.todos.length === 0) {
+			lines.push(truncateToWidth(`  ${th.fg("dim", "No todos yet. Ask the agent to add some!")}`, width));
+		} else {
+			const done = this.todos.filter((t) => t.done).length;
+			const total = this.todos.length;
+			lines.push(truncateToWidth(`  ${th.fg("muted", `${done}/${total} completed`)}`, width));
+			lines.push("");
 
-  return toolCalls;
-};
+			for (const todo of this.todos) {
+				const check = todo.done ? th.fg("success", "✓") : th.fg("dim", "○");
+				const id = th.fg("accent", `#${todo.id}`);
+				const text = todo.done ? th.fg("dim", todo.text) : th.fg("text", todo.text);
+				lines.push(truncateToWidth(`  ${check} ${id} ${text}`, width));
+			}
+		}
 
-const buildConversationText = (entries: SessionEntry[]): string => {
-  const sections: string[] = [];
+		lines.push("");
+		lines.push(truncateToWidth(`  ${th.fg("dim", "Press Escape to close")}`, width));
+		lines.push("");
 
-  for (const entry of entries) {
-    if (entry.type !== "message" || !entry.message?.role) {
-      continue;
-    }
+		this.cachedWidth = width;
+		this.cachedLines = lines;
+		return lines;
+	}
 
-    const role = entry.message.role;
-    const isUser = role === "user";
-    const isAssistant = role === "assistant";
-
-    if (!isUser && !isAssistant) {
-      continue;
-    }
-
-    const entryLines: string[] = [];
-    const textParts = extractTextParts(entry.message.content);
-    if (textParts.length > 0) {
-      const roleLabel = isUser ? "User" : "Assistant";
-      const messageText = textParts.join("\n").trim();
-      if (messageText.length > 0) {
-        entryLines.push(`${roleLabel}: ${messageText}`);
-      }
-    }
-
-    if (isAssistant) {
-      entryLines.push(...extractToolCallLines(entry.message.content));
-    }
-
-    if (entryLines.length > 0) {
-      sections.push(entryLines.join("\n"));
-    }
-  }
-
-  return sections.join("\n\n");
-};
-
-const buildSummaryPrompt = (conversationText: string): string =>
-  [
-    "Summarize this conversation so I can resume it later.",
-    "Include goals, key decisions, progress, open questions, and next steps.",
-    "Keep it concise and structured with headings.",
-    "",
-    "<conversation>",
-    conversationText,
-    "</conversation>",
-  ].join("\n");
-
-const showSummaryUi = async (summary: string, ctx: ExtensionCommandContext) => {
-  if (!ctx.hasUI) {
-    return;
-  }
-
-  await ctx.ui.custom((_tui, theme, _kb, done) => {
-    const container = new Container();
-    const border = new DynamicBorder((s: string) => theme.fg("accent", s));
-    const mdTheme = getMarkdownTheme();
-
-    container.addChild(border);
-    container.addChild(
-      new Text(theme.fg("accent", theme.bold("Conversation Summary")), 1, 0),
-    );
-    container.addChild(new Markdown(summary, 1, 1, mdTheme));
-    container.addChild(
-      new Text(theme.fg("dim", "Press Enter or Esc to close"), 1, 0),
-    );
-    container.addChild(border);
-
-    return {
-      render: (width: number) => container.render(width),
-      invalidate: () => container.invalidate(),
-      handleInput: (data: string) => {
-        if (matchesKey(data, "enter") || matchesKey(data, "escape")) {
-          done(undefined);
-        }
-      },
-    };
-  });
-};
+	invalidate(): void {
+		this.cachedWidth = undefined;
+		this.cachedLines = undefined;
+	}
+}
 
 export default function (pi: ExtensionAPI) {
-  pi.registerCommand("summarize", {
-    description: "Summarize the current conversation in a custom UI",
-    handler: async (_args, ctx) => {
-      const branch = ctx.sessionManager.getBranch();
-      const conversationText = buildConversationText(branch);
+	// In-memory state (reconstructed from session on load)
+	let todos: Todo[] = [];
+	let nextId = 1;
 
-      if (!conversationText.trim()) {
-        if (ctx.hasUI) {
-          ctx.ui.notify("No conversation text found", "warning");
-        }
-        return;
-      }
+	/**
+	 * Reconstruct state from session entries.
+	 * Scans tool results for this tool and applies them in order.
+	 */
+	const reconstructState = (ctx: ExtensionContext) => {
+		todos = [];
+		nextId = 1;
 
-      if (ctx.hasUI) {
-        ctx.ui.notify("Preparing summary...", "info");
-      }
+		for (const entry of ctx.sessionManager.getBranch()) {
+			if (entry.type !== "message") continue;
+			const msg = entry.message;
+			if (msg.role !== "toolResult" || msg.toolName !== "todo") continue;
 
-      const model = getModel("openai", "gpt-5.2");
-      if (!model && ctx.hasUI) {
-        ctx.ui.notify("Model openai/gpt-5.2 not found", "warning");
-      }
+			const details = msg.details as TodoDetails | undefined;
+			if (details) {
+				todos = details.todos;
+				nextId = details.nextId;
+			}
+		}
+	};
 
-      const apiKey = model
-        ? await ctx.modelRegistry.getApiKey(model)
-        : undefined;
-      if (!apiKey && ctx.hasUI) {
-        ctx.ui.notify("No API key for openai/gpt-5.2", "warning");
-      }
+	// Reconstruct state on session events
+	pi.on("session_start", async (_event, ctx) => reconstructState(ctx));
+	pi.on("session_switch", async (_event, ctx) => reconstructState(ctx));
+	pi.on("session_fork", async (_event, ctx) => reconstructState(ctx));
+	pi.on("session_tree", async (_event, ctx) => reconstructState(ctx));
 
-      if (!model || !apiKey) {
-        return;
-      }
+	// Register the todo tool for the LLM
+	pi.registerTool({
+		name: "todo",
+		label: "Todo",
+		description: "Manage a todo list. Actions: list, add (text), toggle (id), clear",
+		parameters: TodoParams,
 
-      const summaryMessages = [
-        {
-          role: "user" as const,
-          content: [
-            {
-              type: "text" as const,
-              text: buildSummaryPrompt(conversationText),
-            },
-          ],
-          timestamp: Date.now(),
-        },
-      ];
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			switch (params.action) {
+				case "list":
+					return {
+						content: [
+							{
+								type: "text",
+								text: todos.length
+									? todos.map((t) => `[${t.done ? "x" : " "}] #${t.id}: ${t.text}`).join("\n")
+									: "No todos",
+							},
+						],
+						details: { action: "list", todos: [...todos], nextId } as TodoDetails,
+					};
 
-      const response = await complete(
-        model,
-        { messages: summaryMessages },
-        { apiKey, reasoningEffort: "high" },
-      );
+				case "add": {
+					if (!params.text) {
+						return {
+							content: [{ type: "text", text: "Error: text required for add" }],
+							details: { action: "add", todos: [...todos], nextId, error: "text required" } as TodoDetails,
+						};
+					}
+					const newTodo: Todo = { id: nextId++, text: params.text, done: false };
+					todos.push(newTodo);
+					return {
+						content: [{ type: "text", text: `Added todo #${newTodo.id}: ${newTodo.text}` }],
+						details: { action: "add", todos: [...todos], nextId } as TodoDetails,
+					};
+				}
 
-      const summary = response.content
-        .filter((c): c is { type: "text"; text: string } => c.type === "text")
-        .map((c) => c.text)
-        .join("\n");
+				case "toggle": {
+					if (params.id === undefined) {
+						return {
+							content: [{ type: "text", text: "Error: id required for toggle" }],
+							details: { action: "toggle", todos: [...todos], nextId, error: "id required" } as TodoDetails,
+						};
+					}
+					const todo = todos.find((t) => t.id === params.id);
+					if (!todo) {
+						return {
+							content: [{ type: "text", text: `Todo #${params.id} not found` }],
+							details: {
+								action: "toggle",
+								todos: [...todos],
+								nextId,
+								error: `#${params.id} not found`,
+							} as TodoDetails,
+						};
+					}
+					todo.done = !todo.done;
+					return {
+						content: [{ type: "text", text: `Todo #${todo.id} ${todo.done ? "completed" : "uncompleted"}` }],
+						details: { action: "toggle", todos: [...todos], nextId } as TodoDetails,
+					};
+				}
 
-      await showSummaryUi(summary, ctx);
-    },
-  });
+				case "clear": {
+					const count = todos.length;
+					todos = [];
+					nextId = 1;
+					return {
+						content: [{ type: "text", text: `Cleared ${count} todos` }],
+						details: { action: "clear", todos: [], nextId: 1 } as TodoDetails,
+					};
+				}
+
+				default:
+					return {
+						content: [{ type: "text", text: `Unknown action: ${params.action}` }],
+						details: {
+							action: "list",
+							todos: [...todos],
+							nextId,
+							error: `unknown action: ${params.action}`,
+						} as TodoDetails,
+					};
+			}
+		},
+
+		renderCall(args, theme) {
+			let text = theme.fg("toolTitle", theme.bold("todo ")) + theme.fg("muted", args.action);
+			if (args.text) text += ` ${theme.fg("dim", `"${args.text}"`)}`;
+			if (args.id !== undefined) text += ` ${theme.fg("accent", `#${args.id}`)}`;
+			return new Text(text, 0, 0);
+		},
+
+		renderResult(result, { expanded }, theme) {
+			const details = result.details as TodoDetails | undefined;
+			if (!details) {
+				const text = result.content[0];
+				return new Text(text?.type === "text" ? text.text : "", 0, 0);
+			}
+
+			if (details.error) {
+				return new Text(theme.fg("error", `Error: ${details.error}`), 0, 0);
+			}
+
+			const todoList = details.todos;
+
+			switch (details.action) {
+				case "list": {
+					if (todoList.length === 0) {
+						return new Text(theme.fg("dim", "No todos"), 0, 0);
+					}
+					let listText = theme.fg("muted", `${todoList.length} todo(s):`);
+					const display = expanded ? todoList : todoList.slice(0, 5);
+					for (const t of display) {
+						const check = t.done ? theme.fg("success", "✓") : theme.fg("dim", "○");
+						const itemText = t.done ? theme.fg("dim", t.text) : theme.fg("muted", t.text);
+						listText += `\n${check} ${theme.fg("accent", `#${t.id}`)} ${itemText}`;
+					}
+					if (!expanded && todoList.length > 5) {
+						listText += `\n${theme.fg("dim", `... ${todoList.length - 5} more`)}`;
+					}
+					return new Text(listText, 0, 0);
+				}
+
+				case "add": {
+					const added = todoList[todoList.length - 1];
+					return new Text(
+						theme.fg("success", "✓ Added ") +
+							theme.fg("accent", `#${added.id}`) +
+							" " +
+							theme.fg("muted", added.text),
+						0,
+						0,
+					);
+				}
+
+				case "toggle": {
+					const text = result.content[0];
+					const msg = text?.type === "text" ? text.text : "";
+					return new Text(theme.fg("success", "✓ ") + theme.fg("muted", msg), 0, 0);
+				}
+
+				case "clear":
+					return new Text(theme.fg("success", "✓ ") + theme.fg("muted", "Cleared all todos"), 0, 0);
+			}
+		},
+	});
+
+	// Register the /todos command for users
+	pi.registerCommand("todos", {
+		description: "Show all todos on the current branch",
+		handler: async (_args, ctx) => {
+			if (!ctx.hasUI) {
+				ctx.ui.notify("/todos requires interactive mode", "error");
+				return;
+			}
+
+			await ctx.ui.custom<void>((_tui, theme, _kb, done) => {
+				return new TodoListComponent(todos, theme, () => done());
+			});
+		},
+	});
+
+	// Register the /todo command for users to add todos
+	pi.registerCommand("todo", {
+		description: "Add a todo item",
+		parameters: Type.Object({
+			text: Type.String({ description: "Todo text" }),
+		}),
+		handler: async (args, ctx) => {
+			if (!args.text) {
+				ctx.ui.notify("Usage: /todo add <text>", "warning");
+				return;
+			}
+
+			const newTodo: Todo = { id: nextId++, text: args.text, done: false };
+			todos.push(newTodo);
+			ctx.ui.notify(`Added: ${args.text}`, "success");
+		},
+	});
 }
