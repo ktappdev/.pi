@@ -36,14 +36,73 @@ function getThinkingLevelFromSettings(cwd: string): string {
 }
 
 export default function (pi: ExtensionAPI) {
+	let footerTui: any | null = null;
+	let assistantMsgStartMs: number | null = null;
+	let assistantFirstDeltaMs: number | null = null;
+	let assistantStreaming = false;
+	let assistantStreamingChars = 0;
+	let liveApproxTokensPerSec: number | null = null;
+	let lastOutputTokensPerSec: number | null = null;
+
+	// Track assistant throughput (tokens/sec). Usage is only final at message_end.
+	pi.on("message_start", async (event: any) => {
+		try {
+			if (event?.message?.role !== "assistant") return;
+			assistantMsgStartMs = typeof event.message.timestamp === "number" ? event.message.timestamp : Date.now();
+			assistantFirstDeltaMs = null;
+			assistantStreaming = false;
+			assistantStreamingChars = 0;
+			liveApproxTokensPerSec = null;
+		} catch {}
+	});
+
+	pi.on("message_update", async (event: any) => {
+		try {
+			if (event?.message?.role !== "assistant") return;
+			const delta = event?.assistantMessageEvent;
+			if (delta?.type !== "text_delta") return;
+			const now = Date.now();
+			if (assistantFirstDeltaMs == null) assistantFirstDeltaMs = now;
+			assistantStreaming = true;
+			assistantStreamingChars += String(delta.delta ?? "").length;
+			const startMs = assistantFirstDeltaMs ?? now;
+			const seconds = Math.max(0.05, (now - startMs) / 1000);
+			liveApproxTokensPerSec = (assistantStreamingChars / 4) / seconds;
+			footerTui?.requestRender?.();
+		} catch {}
+	});
+
+	pi.on("message_end", async (event: any) => {
+		try {
+			if (event?.message?.role !== "assistant") return;
+
+			assistantStreaming = false;
+			assistantStreamingChars = 0;
+			liveApproxTokensPerSec = null;
+
+			const outputTokens = Number(event?.message?.usage?.output ?? 0);
+			if (!Number.isFinite(outputTokens) || outputTokens <= 0) return;
+			// Use wall-clock timings we captured from streaming deltas.
+			const endMs = Date.now();
+			const startMs = assistantFirstDeltaMs ?? assistantMsgStartMs ?? endMs;
+			const seconds = Math.max(0.05, (endMs - startMs) / 1000);
+			lastOutputTokensPerSec = outputTokens / seconds;
+			footerTui?.requestRender?.();
+		} catch {}
+	});
+
 	pi.on("session_start", async (_event, ctx) => {
 		if (!ctx.hasUI) return;
 
 		ctx.ui.setFooter((tui, theme, footerData) => {
+			footerTui = tui;
 			const unsub = footerData.onBranchChange(() => tui.requestRender());
 
 			return {
-				dispose: unsub,
+				dispose: () => {
+					unsub();
+					if (footerTui === tui) footerTui = null;
+				},
 				invalidate() {},
 				render(width: number): string[] {
 					// LINE 1: Context usage progress bar and model info
@@ -70,7 +129,24 @@ export default function (pi: ExtensionAPI) {
 					const pad1 = " ".repeat(Math.max(1, width - visibleWidth(modelLeft) - visibleWidth(contextRight)));
 					const line1 = truncateToWidth(modelLeft + pad1 + contextRight, width);
 
-					// LINE 2: Current working directory and git branch
+					// LINE 2: Output throughput (avg tok/s for last assistant message)
+					let tpsText = "↓-- tok/s";
+					const displayTps =
+						assistantStreaming && liveApproxTokensPerSec != null && Number.isFinite(liveApproxTokensPerSec)
+							? { prefix: "~", value: liveApproxTokensPerSec }
+							: lastOutputTokensPerSec != null && Number.isFinite(lastOutputTokensPerSec)
+								? { prefix: "", value: lastOutputTokensPerSec }
+								: null;
+					if (displayTps) {
+						const n = displayTps.value;
+						const formatted = n >= 100 ? n.toFixed(0) : n >= 10 ? n.toFixed(1) : n.toFixed(2);
+						tpsText = `↓${displayTps.prefix}${formatted} tok/s`;
+					}
+					const tpsRight = theme.fg("dim", ` ${tpsText} `);
+					const padTps = " ".repeat(Math.max(0, width - visibleWidth(tpsRight)));
+					const lineTps = truncateToWidth(padTps + tpsRight, width);
+
+					// LINE 3: Current working directory and git branch
 					const cwd = ctx.cwd;
 					const branch = footerData.getGitBranch();
 					
@@ -100,7 +176,7 @@ export default function (pi: ExtensionAPI) {
 					
 					line2 = truncateToWidth(line2, width, "");
 
-					return [line1, line2];
+					return [line1, lineTps, line2];
 				},
 			};
 		});

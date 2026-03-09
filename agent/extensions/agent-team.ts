@@ -122,10 +122,31 @@ function readJsonObject(path: string): Record<string, any> {
 	}
 }
 
+function writeJsonObject(path: string, value: Record<string, any>) {
+	try {
+		ensureDir(dirname(path));
+		writeFileSync(path, JSON.stringify(value, null, 2) + "\n", "utf-8");
+	} catch {
+		// ignore
+	}
+}
+
 function getMergedSettings(cwd: string): Record<string, any> {
 	const globalSettings = readJsonObject(join(homedir(), ".pi", "agent", "settings.json"));
 	const projectSettings = readJsonObject(join(getProjectPiDir(cwd), "settings.json"));
 	return { ...globalSettings, ...projectSettings };
+}
+
+function getAgentTeamViewMode(cwd: string): "grid" | "table" {
+	const raw = getMergedSettings(cwd)?.agentTeamViewMode;
+	return raw === "table" ? "table" : "grid";
+}
+
+function persistAgentTeamViewMode(cwd: string, mode: "grid" | "table") {
+	// Persist globally by default; project settings (if present) can still override.
+	const globalPath = join(homedir(), ".pi", "agent", "settings.json");
+	const globalSettings = readJsonObject(globalPath);
+	writeJsonObject(globalPath, { ...globalSettings, agentTeamViewMode: mode });
 }
 
 function getSessionThinkingLevelFallback(cwd: string): string {
@@ -359,10 +380,12 @@ async function fetchAvailableModels(): Promise<string[]> {
 
 // ── Extension ────────────────────────────────────
 
+
 export default function (pi: ExtensionAPI) {
 	const agentStates: Map<string, AgentState> = new Map();
 	const agentLogs: Map<string, string[]> = new Map();
 	const runningProcs: Map<string, ReturnType<typeof spawn>> = new Map();
+	let footerTui: any | null = null;
 	let allAgentDefs: AgentDef[] = [];
 	let globalTeams: Record<string, string[]> = {};
 	let projectTeams: Record<string, string[]> = {};
@@ -375,10 +398,21 @@ export default function (pi: ExtensionAPI) {
 	let agentThinking: Record<string, string> = {};
 	let activeTeamName = "";
 	let gridCols = 2;
+	type ViewMode = "grid" | "table";
+	let viewMode: ViewMode = "grid";
 	let watchAgentKey: string | null = null;
 	let widgetCtx: any;
 	let sessionDir = "";
 	let contextWindow = 0;
+
+	// Footer stats: tokens/sec for last assistant output
+	let assistantMsgStartMs: number | null = null;
+	let assistantFirstDeltaMs: number | null = null;
+	let assistantStreaming = false;
+	let assistantStreamingChars = 0;
+	let liveApproxTokensPerSec: number | null = null;
+	let lastOutputTokensPerSec: number | null = null;
+	let lastOutputTokensPerSecAtMs: number | null = null;
 
 	const THINKING_LEVELS = ["off", "minimal", "low", "medium", "high", "xhigh"];
 
@@ -432,6 +466,57 @@ export default function (pi: ExtensionAPI) {
 
 		// No agent running - let default SIGINT behavior occur
 		// This allows normal Pi exit when nothing is running
+	});
+
+	// Track assistant throughput (tokens/sec). Usage tokens only arrive at message_end.
+	pi.on("message_start", async (event: any, _ctx: any) => {
+		try {
+			if (event?.message?.role !== "assistant") return;
+			assistantMsgStartMs = typeof event.message.timestamp === "number" ? event.message.timestamp : Date.now();
+			assistantFirstDeltaMs = null;
+			assistantStreaming = false;
+			assistantStreamingChars = 0;
+			liveApproxTokensPerSec = null;
+		} catch {}
+	});
+
+	pi.on("message_update", async (event: any, _ctx: any) => {
+		try {
+			if (event?.message?.role !== "assistant") return;
+			const delta = event?.assistantMessageEvent;
+			if (delta?.type !== "text_delta") return;
+			const now = Date.now();
+			if (assistantFirstDeltaMs == null) assistantFirstDeltaMs = now;
+			assistantStreaming = true;
+			assistantStreamingChars += String(delta.delta ?? "").length;
+			const startMs = assistantFirstDeltaMs ?? now;
+			const seconds = Math.max(0.05, (now - startMs) / 1000);
+			liveApproxTokensPerSec = (assistantStreamingChars / 4) / seconds;
+			footerTui?.requestRender?.();
+		} catch {}
+	});
+
+	pi.on("message_end", async (event: any, _ctx: any) => {
+		try {
+			if (event?.message?.role !== "assistant") return;
+
+			// End of assistant message; stop any live estimate even if usage is missing.
+			assistantStreaming = false;
+			assistantStreamingChars = 0;
+			liveApproxTokensPerSec = null;
+
+			const usage = event.message.usage;
+			const outputTokens = Number(usage?.output ?? 0);
+			if (!Number.isFinite(outputTokens) || outputTokens <= 0) return;
+			// Use wall-clock timings we captured from streaming deltas.
+			// `message.timestamp` is not guaranteed to represent the end time.
+			const endMs = Date.now();
+			const startMs = assistantFirstDeltaMs ?? assistantMsgStartMs ?? endMs;
+			const seconds = Math.max(0.05, (endMs - startMs) / 1000);
+			lastOutputTokensPerSec = outputTokens / seconds;
+			lastOutputTokensPerSecAtMs = Date.now();
+			footerTui?.requestRender?.();
+		} catch {}
 	});
 
 	function appendAgentLog(agentKey: string, line: string) {
@@ -612,6 +697,83 @@ export default function (pi: ExtensionAPI) {
 		];
 	}
 
+	function renderTable(statesRaw: AgentState[], width: number, theme: any): string {
+		const gap = "  ";
+		const gapLen = gap.length;
+		const statusRank = (s: AgentState["status"]) => s === "running" ? 0 : s === "error" ? 1 : s === "done" ? 2 : 3;
+		const states = [...statesRaw].sort((a, b) => {
+			const r = statusRank(a.status) - statusRank(b.status);
+			if (r !== 0) return r;
+			return displayName(a.def.name).localeCompare(displayName(b.def.name));
+		});
+
+		// Column widths are best-effort and adapt to terminal width.
+		// Slightly narrower agent column to free space for LAST.
+		let agentW = Math.min(18, Math.max(8, Math.floor(width * 0.144)));
+		const statusW = 8;
+		const timeW = 6;
+		const ctxW = 5;
+		let modelW = Math.min(36, Math.max(16, Math.floor(width * 0.30)));
+		const minLastW = 12;
+		const baseUsed = agentW + statusW + timeW + ctxW + modelW + gapLen * 5;
+		let lastW = Math.max(1, width - baseUsed);
+		if (lastW < minLastW) {
+			const deficit = minLastW - lastW;
+			modelW = Math.max(10, modelW - deficit);
+			lastW = Math.max(1, width - (agentW + statusW + timeW + ctxW + modelW + gapLen * 5));
+		}
+		if (lastW < minLastW) {
+			const deficit = minLastW - lastW;
+			agentW = Math.max(8, agentW - deficit);
+			lastW = Math.max(1, width - (agentW + statusW + timeW + ctxW + modelW + gapLen * 5));
+		}
+
+		const padRight = (s: string, w: number) => s + " ".repeat(Math.max(0, w - visibleWidth(s)));
+		const cell = (s: string, w: number) => padRight(truncateToWidth(s, w), w);
+
+		const header = [
+			cell(theme.bold("AGENT"), agentW),
+			cell(theme.bold("ST"), statusW),
+			cell(theme.bold("TIME"), timeW),
+			cell(theme.bold("CTX"), ctxW),
+			cell(theme.bold("MODEL/THINK"), modelW),
+			cell(theme.bold("LAST"), lastW),
+		].join(gap);
+
+		const sep = theme.fg("dim", "-".repeat(Math.max(0, Math.min(width, 300))));
+
+		const row = (st: AgentState): string => {
+			const statusColor = st.status === "idle" ? "dim"
+				: st.status === "running" ? "accent"
+				: st.status === "done" ? "success" : "error";
+			const statusIcon = st.status === "idle" ? "○"
+				: st.status === "running" ? "●"
+				: st.status === "done" ? "✓" : "✗";
+			const statusText = st.status === "running" ? "run" : st.status;
+			const statusStr = theme.fg(statusColor, `${statusIcon} ${statusText}`);
+
+			const timeStr = st.status === "idle" ? "-" : `${Math.round(st.elapsed / 1000)}s`;
+			const ctxStr = st.contextPct > 0 ? `${Math.ceil(st.contextPct)}%` : "-";
+			const modelLabel = st.model || "default";
+			const thinkingLabel = st.thinking || st.def.thinking || "off";
+			const modelThink = theme.fg("dim", `${modelLabel}·${thinkingLabel}`);
+			const last = st.task ? (st.lastWork || st.task) : st.def.description;
+			const lastStr = theme.fg("muted", last);
+
+			return [
+				cell(theme.fg("accent", displayName(st.def.name)), agentW),
+				cell(statusStr, statusW),
+				cell(theme.fg("dim", timeStr), timeW),
+				cell(theme.fg("dim", ctxStr), ctxW),
+				cell(modelThink, modelW),
+				cell(lastStr, lastW),
+			].join(gap);
+		};
+
+		const lines = [header, sep, ...states.map(row)];
+		return lines.join("\n");
+	}
+
 	function updateWidget() {
 		if (!widgetCtx) return;
 
@@ -641,7 +803,7 @@ export default function (pi: ExtensionAPI) {
 							const meta = theme.fg("dim", "  status: ") +
 								theme.fg(statusColor, watchState.status) +
 								theme.fg("dim", ` · ${Math.round(watchState.elapsed / 1000)}s · tools ${watchState.toolCount}`);
-							const hint = theme.fg("muted", "/agents-watch-off to return to grid");
+							const hint = theme.fg("muted", "/agents-watch-off to return to team view");
 
 							const lines = agentLogs.get(watchState.def.name.toLowerCase()) ?? [];
 							const bodyHeight = Math.max(4, 50);
@@ -655,10 +817,15 @@ export default function (pi: ExtensionAPI) {
 						}
 					}
 
+					const agents = Array.from(agentStates.values());
+					if (viewMode === "table") {
+						text.setText(renderTable(agents, width, theme));
+						return text.render(width);
+					}
+
 					const cols = Math.min(gridCols, agentStates.size);
 					const gap = 1;
 					const colWidth = Math.floor((width - gap * (cols - 1)) / cols);
-					const agents = Array.from(agentStates.values());
 					const rows: string[][] = [];
 
 					for (let i = 0; i < agents.length; i += cols) {
@@ -1051,17 +1218,17 @@ export default function (pi: ExtensionAPI) {
 
 			watchAgentKey = target.def.name.toLowerCase();
 			updateWidget();
-			ctx.ui.notify(`Watching ${displayName(target.def.name)}. Use /agents-watch-off to return to grid.`, "info");
+			ctx.ui.notify(`Watching ${displayName(target.def.name)}. Use /agents-watch-off to return to team view.`, "info");
 		},
 	});
 
 	pi.registerCommand("agents-watch-off", {
-		description: "Return widget to grid mode",
+		description: "Return widget to team view",
 		handler: async (_args, ctx) => {
 			widgetCtx = ctx;
 			watchAgentKey = null;
 			updateWidget();
-			ctx.ui.notify("Returned to agent grid.", "info");
+			ctx.ui.notify("Returned to team view.", "info");
 		},
 	});
 
@@ -1093,7 +1260,7 @@ export default function (pi: ExtensionAPI) {
 			const name = teamNames[idx];
 			activateTeam(name);
 			updateWidget();
-			ctx.ui.setStatus("agent-team", `Team: ${name} (${agentStates.size})`);
+			ctx.ui.setStatus("agent-team", `Team: ${name} (${agentStates.size}) [${viewMode}]`);
 			ctx.ui.notify(`Team: ${name} — ${Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ")}`, "info");
 		},
 	});
@@ -1122,6 +1289,33 @@ export default function (pi: ExtensionAPI) {
 			}
 			const lines = Array.from(agentStates.values()).map(state => `${displayName(state.def.name)}: ${state.def.tools}`);
 			ctx.ui.notify(lines.join("\n"), "info");
+		},
+	});
+
+	pi.registerCommand("agents-view", {
+		description: "Switch team widget view: /agents-view <grid|table>",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const items: AutocompleteItem[] = [
+				{ value: "grid", label: "Grid view (cards)" },
+				{ value: "table", label: "Table view (dense)" },
+			];
+			const p = prefix.trim().toLowerCase();
+			if (!p) return items;
+			const filtered = items.filter(i => i.value.toLowerCase().startsWith(p) || i.label.toLowerCase().includes(p));
+			return filtered.length > 0 ? filtered : items;
+		},
+		handler: async (args, ctx) => {
+			widgetCtx = ctx;
+			const raw = (args || "").trim().toLowerCase();
+			if (raw !== "grid" && raw !== "table") {
+				ctx.ui.notify("Usage: /agents-view <grid|table>", "error");
+				return;
+			}
+			viewMode = raw;
+			persistAgentTeamViewMode(ctx.cwd, viewMode);
+			ctx.ui.setStatus("agent-team", `Team: ${activeTeamName} (${agentStates.size}) [${viewMode}]`);
+			ctx.ui.notify(`View set to ${viewMode}`, "info");
+			updateWidget();
 		},
 	});
 
@@ -1552,6 +1746,7 @@ ${agentCatalog}`;
 		}
 		widgetCtx = _ctx;
 		contextWindow = _ctx.model?.contextWindow || 0;
+		viewMode = getAgentTeamViewMode(_ctx.cwd);
 
 		loadAgents(_ctx.cwd);
 
@@ -1564,7 +1759,7 @@ ${agentCatalog}`;
 		// Lock down to dispatcher-only (tool already registered at top level)
 		pi.setActiveTools(["dispatch_agent", "todo", "questionnaire", "read"]);
 
-		_ctx.ui.setStatus("agent-team", `Team: ${activeTeamName} (${agentStates.size})`);
+		_ctx.ui.setStatus("agent-team", `Team: ${activeTeamName} (${agentStates.size}) [${viewMode}]`);
 		const members = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
 		const teamSources = getTeamsSources(_ctx.cwd).loadedFrom;
 		const sourceText = teamSources.length > 0
@@ -1579,15 +1774,20 @@ ${agentCatalog}`;
 			`/agents-reset         Reset agent context\n` +
 			`/agents-cancel        Cancel a running agent\n` +
 			`/agents-grid <1-6>    Set grid column count\n` +
+			`/agents-view <mode>   Switch grid/table view\n` +
 			`/agents-watch [agent] Focus on one agent's live output\n` +
-			`/agents-watch-off     Return to grid view`,
+			`/agents-watch-off     Return to team view`,
 			"info",
 		);
 		updateWidget();
 
-		// Footer: model | team | context bar
-		_ctx.ui.setFooter((_tui, theme, _footerData) => ({
-			dispose: () => {},
+		// Footer: model | team | context bar (+ last output tok/s)
+		_ctx.ui.setFooter((tui, theme, _footerData) => {
+			footerTui = tui;
+			return {
+			dispose: () => {
+				if (footerTui === tui) footerTui = null;
+			},
 			invalidate() {},
 			render(width: number): string[] {
 				const model = _ctx.model?.id || "no-model";
@@ -1603,9 +1803,29 @@ ${agentCatalog}`;
 					theme.fg("accent", activeTeamName);
 				const right = theme.fg("dim", `[${bar}] ${Math.round(pct)}% `);
 				const pad = " ".repeat(Math.max(1, width - visibleWidth(left) - visibleWidth(right)));
+				const line1 = truncateToWidth(left + pad + right, width);
 
-				return [truncateToWidth(left + pad + right, width)];
+				let tpsText = "↓-- tok/s";
+				const displayTps =
+					assistantStreaming && liveApproxTokensPerSec != null && Number.isFinite(liveApproxTokensPerSec)
+						? { prefix: "~", value: liveApproxTokensPerSec }
+						: lastOutputTokensPerSec != null && Number.isFinite(lastOutputTokensPerSec)
+							? { prefix: "", value: lastOutputTokensPerSec }
+							: null;
+				if (displayTps) {
+					const n = displayTps.value;
+					const formatted = n >= 100 ? n.toFixed(0) : n >= 10 ? n.toFixed(1) : n.toFixed(2);
+					tpsText = `↓${displayTps.prefix}${formatted} tok/s`;
+				}
+
+				// Right-align tokens/sec under context bar
+				const right2 = theme.fg("dim", ` ${tpsText} `);
+				const pad2 = " ".repeat(Math.max(0, width - visibleWidth(right2)));
+				const line2 = truncateToWidth(pad2 + right2, width);
+
+				return [line1, line2];
 			},
-		}));
+		};
+		});
 	});
 }
