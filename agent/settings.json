@@ -3,7 +3,7 @@
   "defaultProvider": "QwenCodingPlan",
   "defaultModel": "qwen3.5-plus",
   "defaultThinkingLevel": "medium",
-  "theme": "synthwave",
+  "theme": "cyberpunk",
   "quietStartup": true,
   "transport": "auto",
   "hideThinkingBlock": false,
