@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.57.1",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.4",
+  "defaultProvider": "QwenCodingPlan",
+  "defaultModel": "qwen3.5-plus",
   "defaultThinkingLevel": "medium",
   "theme": "cyberpunk",
   "quietStartup": true,

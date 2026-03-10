@@ -22,11 +22,97 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 import { Text, type AutocompleteItem, truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
-import { spawn } from "child_process";
-import { readdirSync, readFileSync, existsSync, mkdirSync, unlinkSync, writeFileSync, appendFileSync } from "fs";
+import { spawn, execSync } from "child_process";
+import { readdirSync, readFileSync, existsSync, mkdirSync, unlinkSync, writeFileSync, appendFileSync, readdir } from "fs";
 import { dirname, join, resolve } from "path";
 import { homedir } from "os";
 import { applyExtensionDefaults } from "./themeMap.ts";
+
+// ── Helper: Find Pi Executable ───────────────────
+
+let cachedPiPath: string | null = null;
+
+function findPiExecutable(): string {
+	if (cachedPiPath) return cachedPiPath;
+
+	// 1. Check environment variable override
+	const envPath = process.env.PI_PATH;
+	if (envPath && existsSync(envPath)) {
+		cachedPiPath = envPath;
+		return cachedPiPath;
+	}
+
+	// 2. Try 'which pi' command
+	try {
+		const whichOutput = execSync("which pi", { encoding: "utf-8" }).trim();
+		if (whichOutput && existsSync(whichOutput)) {
+			cachedPiPath = whichOutput;
+			return cachedPiPath;
+		}
+	} catch {
+		// which command failed or pi not in PATH
+	}
+
+	// 3. Check common installation paths
+	const home = homedir();
+	const commonPaths: string[] = [
+		// macOS Homebrew
+		"/opt/homebrew/bin/pi",
+		"/usr/local/bin/pi",
+		// Linux mise
+		join(home, ".local", "share", "mise", "installs", "node", "25.2.1", "bin", "pi"),
+		// nvm (common versions)
+		join(home, ".nvm", "versions", "node", "v20.11.0", "bin", "pi"),
+		join(home, ".nvm", "versions", "node", "v18.19.0", "bin", "pi"),
+		// Global npm
+		"/usr/bin/pi",
+	];
+
+	for (const path of commonPaths) {
+		if (existsSync(path)) {
+			cachedPiPath = path;
+			return cachedPiPath;
+		}
+	}
+
+	// 4. Try to find mise-installed pi dynamically
+	try {
+		const miseInstallsDir = join(home, ".local", "share", "mise", "installs");
+		if (existsSync(miseInstallsDir)) {
+			const nodeVersions = readdirSync(miseInstallsDir);
+			for (const version of nodeVersions) {
+				const piPath = join(miseInstallsDir, version, "bin", "pi");
+				if (existsSync(piPath)) {
+					cachedPiPath = piPath;
+					return cachedPiPath;
+				}
+			}
+		}
+	} catch {
+		// mise directory not accessible
+	}
+
+	// 5. Last resort: try nvm directories dynamically
+	try {
+		const nvmDir = join(home, ".nvm", "versions", "node");
+		if (existsSync(nvmDir)) {
+			const versions = readdirSync(nvmDir);
+			for (const version of versions) {
+				const piPath = join(nvmDir, version, "bin", "pi");
+				if (existsSync(piPath)) {
+					cachedPiPath = piPath;
+					return cachedPiPath;
+				}
+			}
+		}
+	} catch {
+		// nvm directory not accessible
+	}
+
+	// If nothing found, return the Homebrew path as default (will fail with clear error)
+	cachedPiPath = "/opt/homebrew/bin/pi";
+	return cachedPiPath;
+}
 
 // ── Types ────────────────────────────────────────
 
@@ -335,7 +421,7 @@ function mergeTeams(globalTeams: Record<string, string[]>, projectTeams: Record<
 
 async function fetchAvailableModels(): Promise<string[]> {
 	return new Promise((resolve) => {
-		const proc = spawn("/opt/homebrew/bin/pi", ["--list-models"], {
+		const proc = spawn(findPiExecutable(), ["--list-models"], {
 			stdio: ["ignore", "pipe", "pipe"],
 		});
 
@@ -934,7 +1020,7 @@ export default function (pi: ExtensionAPI) {
 		const textChunks: string[] = [];
 
 		return new Promise((resolve) => {
-			const proc = spawn("/opt/homebrew/bin/pi", args, {
+			const proc = spawn(findPiExecutable(), args, {
 				stdio: ["ignore", "pipe", "pipe"],
 				env: { ...process.env },
 				shell: false,
