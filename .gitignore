@@ -5,3 +5,7 @@ agent-dispatch.log
 archived-agents/
 agent/auth.json
 .pi/agent-sessions/
+
+# Dependencies
+node_modules/
+agent/extensions/node_modules/
