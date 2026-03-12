@@ -1777,9 +1777,9 @@ export default function (pi: ExtensionAPI) {
 		if (existsSync(kyriePromptPath)) {
 			try {
 				const raw = readFileSync(kyriePromptPath, "utf-8");
-				const match = raw.match(/^---\n[\s\S]*?\n---\n([\s\S]*)$/);
+				const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
 				if (match) {
-					kyriePrompt = match[1].trim();
+					kyriePrompt = match[2].trim();
 				}
 			} catch {}
 		}
@@ -1825,7 +1825,7 @@ ${agentCatalog}`;
 
 	pi.on("session_start", async (_event, _ctx) => {
 		applyExtensionDefaults(import.meta.url, _ctx);
-		
+
 		// Clear widgets from previous session
 		if (widgetCtx) {
 			widgetCtx.ui.setWidget("agent-team", undefined);
@@ -1843,7 +1843,7 @@ ${agentCatalog}`;
 		}
 
 		// Lock down to dispatcher-only (tool already registered at top level)
-		pi.setActiveTools(["dispatch_agent", "todo", "questionnaire", "read"]);
+		pi.setActiveTools(["dispatch_agent", "questionnaire", "read", "bash"]);
 
 		_ctx.ui.setStatus("agent-team", `Team: ${activeTeamName} (${agentStates.size}) [${viewMode}]`);
 		const members = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");

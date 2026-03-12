@@ -201,6 +201,95 @@
           }
         }
       ]
+    },
+    "Lugetech": {
+      "baseUrl": "http://192.168.1.19:8080/v1",
+      "api": "openai-completions",
+      "apiKey": "none",
+      "models": [
+        {
+          "id": "deepseek-r1-8b",
+          "name": "DeepSeek R1 8B",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 65536,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "options": {
+            "temperature": 0.1,
+            "top_p": 0.9
+          }
+        },
+        {
+          "id": "qwen3.5-9b",
+          "name": "Qwen 3.5 9B",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 65536,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "options": {
+            "temperature": 0.1,
+            "top_p": 0.9
+          }
+        },
+        {
+          "id": "qwen3.5-9b-ab",
+          "name": "Qwen 3.5 9B Abliterated",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 65536,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "options": {
+            "temperature": 0.1,
+            "top_p": 0.9
+          }
+        },
+        {
+          "id": "qwen3.5-4b",
+          "name": "Qwen 3.5 4B",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 65536,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "options": {
+            "temperature": 0.1,
+            "top_p": 0.9
+          }
+        }
+      ]
     }
   }
 }
