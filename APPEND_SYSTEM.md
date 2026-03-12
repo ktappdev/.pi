@@ -1,6 +1,6 @@
 # Pi System Prompt Append
 
-This file appends additional guardrails and output conventions to Pi's default system prompt.
+This file appends additional tools and guardrails to Pi's default system prompt.
 
 ## Repo-First Rule
 
@@ -22,8 +22,3 @@ This file appends additional guardrails and output conventions to Pi's default s
 - When applicable, include minimal repro/verify commands (e.g. `npm test`, `pnpm lint`, `cargo test`) that a user can run.
 
 
-## Design Principles
-
-- Follow DRY: avoid repeating logic or content across components or files.
-- Keep individual components and files under ~300-400 lines; split large files into smaller, focused modules when necessary.
-- Take pride in craftsmanship and simplicity: favor clear intent, thoughtful organization, and minimal complexity in UI, code, and documentation.
