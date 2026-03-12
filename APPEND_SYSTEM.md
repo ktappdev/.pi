@@ -21,4 +21,36 @@ This file appends additional tools and guardrails to Pi's default system prompt.
 - Summarize what you changed and point to the relevant file paths.
 - When applicable, include minimal repro/verify commands (e.g. `npm test`, `pnpm lint`, `cargo test`) that a user can run.
 
+## Engram - Presistant memory
+
+```markdown
+## Memory (engram CLI)
+
+Use `engram` to save/search persistent notes. Data stays local (`~/.engram/engram.db`).
+
+### Commands
+```bash
+!engram save "<short title>" "<technical details>"   # Save after fixes/decisions
+!engram search "<keywords>"                           # Search before starting work
+!engram context                                       # Get recent session context
+```
+
+### When to use
+- **Save**: After fixing bugs, learning patterns, or making decisions
+- **Search**: Before debugging or implementing something new
+- **Context**: When resuming work or switching tasks
+
+### Examples
+```bash
+!engram save "Fixed: login 500" "Added null check in auth.go:127 before JWT decode"
+!engram search "JWT authentication"
+!engram context
+```
+
+### Tips
+- Titles: `"Fixed: ..."` / `"Added: ..."` / `"Decision: ..."`
+- Include file paths & line numbers in details
+- Search before acting to avoid duplicate work
+- No sensitive data (keys, tokens, etc.)
+```
 
