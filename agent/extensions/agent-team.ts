@@ -178,6 +178,25 @@ function getGlobalAgentsDir(): string {
 	return join(homedir(), ".pi", "agent", "agents");
 }
 
+function getSharedEngramPrompt(): string {
+	const promptPath = resolve(homedir(), ".pi", "agent", "extensions", "ENGRAM.md");
+	if (!existsSync(promptPath)) return "";
+
+	try {
+		return readFileSync(promptPath, "utf-8").trim();
+	} catch {
+		return "";
+	}
+}
+
+function mergeSystemPrompt(basePrompt: string): string {
+	const prompt = basePrompt.trim();
+	const sharedPrompt = getSharedEngramPrompt();
+	if (!sharedPrompt) return prompt;
+	if (!prompt) return sharedPrompt;
+	return `${prompt}\n\n---\n\n${sharedPrompt}`;
+}
+
 function ensureDir(dir: string) {
 	if (!existsSync(dir)) {
 		try { mkdirSync(dir, { recursive: true }); } catch {}
@@ -1005,7 +1024,7 @@ export default function (pi: ExtensionAPI) {
 			"--model", model,
 			"--thinking", state.thinking || state.def.thinking || "off",
 			"--tools", state.def.tools,
-			"--append-system-prompt", state.def.systemPrompt,
+				"--append-system-prompt", mergeSystemPrompt(state.def.systemPrompt),
 			"--session", agentSessionFile,
 		];
 
@@ -1811,10 +1830,10 @@ ${agentCatalog}`;
 		}
 
 		// Inject dynamic content into the Kyrie prompt
-		const finalPrompt = kyriePrompt
+		const finalPrompt = mergeSystemPrompt(kyriePrompt
 			.replace(/\${agentCatalog}/g, agentCatalog)
 			.replace(/\${teamMembers}/g, teamMembers)
-			.replace(/\${activeTeamName}/g, activeTeamName);
+			.replace(/\${activeTeamName}/g, activeTeamName));
 
 		return {
 			systemPrompt: finalPrompt,
