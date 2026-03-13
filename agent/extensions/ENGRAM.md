@@ -3,13 +3,14 @@
 This shared prompt is injected into all agent system prompts by `agent/extensions/agent-team.ts`.
 
 Use `engram` for persistent local memory. Data stays on-device in `~/.engram/engram.db`.
+Run it as a normal shell command through the `bash` tool. Do NOT prefix it with `!`.
 
 ### Commands
 
 ```bash
-!engram search "<keywords>"                           # Search before starting related work
-!engram context                                       # Recent memory when resuming/switching tasks
-!engram save "<short title>" "<technical details>"   # Save after fixes/decisions/discoveries
+engram search "<keywords>"                           # Search before starting related work
+engram context                                       # Recent memory when resuming/switching tasks
+engram save "<short title>" "<technical details>"   # Save after fixes/decisions/discoveries
 ```
 
 ### Required Usage
@@ -32,10 +33,10 @@ Use `engram` for persistent local memory. Data stays on-device in `~/.engram/eng
 ### Examples
 
 ```bash
-!engram search "JWT authentication middleware"
-!engram context
-!engram save "Fixed: login 500" "Added null check in auth.go:127 before JWT decode; preserves existing token flow"
-!engram save "Decision: use service-level retry" "Chose retry in packages/api/client.ts:88 instead of UI retry to keep failure handling centralized"
+engram search "JWT authentication middleware"
+engram context
+engram save "Fixed: login 500" "Added null check in auth.go:127 before JWT decode; preserves existing token flow"
+engram save "Decision: use service-level retry" "Chose retry in packages/api/client.ts:88 instead of UI retry to keep failure handling centralized"
 ```
 
 ### Behavioral Intent
