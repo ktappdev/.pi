@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.57.1",
   "defaultProvider": "Lugetech",
-  "defaultModel": "qwen3.5-27b",
+  "defaultModel": "qwen3.5-9b",
   "defaultThinkingLevel": "medium",
   "theme": "cyberpunk",
   "quietStartup": false,

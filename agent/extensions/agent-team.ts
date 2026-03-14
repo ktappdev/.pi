@@ -24,9 +24,42 @@ import { Type } from "@sinclair/typebox";
 import { Text, type AutocompleteItem, truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
 import { spawn, execSync } from "child_process";
 import { readdirSync, readFileSync, existsSync, mkdirSync, unlinkSync, writeFileSync, appendFileSync, readdir } from "fs";
-import { dirname, join, resolve } from "path";
+import { join, resolve } from "path";
 import { homedir } from "os";
 import { applyExtensionDefaults } from "./themeMap.ts";
+import {
+	createFooterMetricsState,
+	formatFooterMetrics,
+	recordFooterDelta,
+	resetFooterMetrics,
+	completeFooterMetrics,
+} from "./lib/agent-team-footer-metrics.ts";
+import {
+	type AgentDef,
+	getProjectBaseDir,
+	getProjectAgentsDir,
+	getProjectPiDir,
+	mergeSystemPrompt,
+	ensureDir,
+	ensureGitignoreEntry,
+	getAgentTeamViewMode,
+	persistAgentTeamViewMode,
+	getSessionThinkingLevelFallback,
+	getGlobalTeamsPath,
+	getProjectTeamsPath,
+	getGlobalAgentModelsPath,
+	getProjectAgentModelsPath,
+	getGlobalAgentThinkingPath,
+	getProjectAgentThinkingPath,
+	writeYamlMap,
+	displayName,
+	readTeamsFile,
+	readAgentYamlMap,
+	scanAgentDirs,
+	getTeamsSources,
+	mergeStringMaps,
+	mergeTeams,
+} from "./lib/agent-team-config.ts";
 
 // ── Helper: Find Pi Executable ───────────────────
 
@@ -116,16 +149,6 @@ function findPiExecutable(): string {
 
 // ── Types ────────────────────────────────────────
 
-interface AgentDef {
-	name: string;
-	description: string;
-	tools: string;
-	systemPrompt: string;
-	file: string;
-	model?: string;
-	thinking?: string;
-}
-
 interface AgentState {
 	def: AgentDef;
 	status: "idle" | "running" | "done" | "error";
@@ -148,293 +171,6 @@ interface DispatchResult {
 }
 
 const MAX_AGENT_LOG_LINES = 500;
-
-function getProjectBaseDir(cwd: string): string {
-	let current = resolve(cwd);
-
-	while (true) {
-		if (existsSync(join(current, ".git")) || existsSync(join(current, ".pi"))) {
-			return current;
-		}
-
-		const parent = dirname(current);
-		if (parent === current) break;
-		current = parent;
-	}
-
-	const piPathMatch = resolve(cwd).match(/^(.*)\/\.pi(?:\/.*)?$/);
-	return piPathMatch ? piPathMatch[1] : resolve(cwd);
-}
-
-function getProjectPiDir(cwd: string): string {
-	return join(getProjectBaseDir(cwd), ".pi");
-}
-
-function getProjectAgentsDir(cwd: string): string {
-	return join(getProjectPiDir(cwd), "agents");
-}
-
-function getGlobalAgentsDir(): string {
-	return join(homedir(), ".pi", "agent", "agents");
-}
-
-function getSharedEngramPrompt(): string {
-	const promptPath = resolve(homedir(), ".pi", "agent", "extensions", "ENGRAM.md");
-	if (!existsSync(promptPath)) return "";
-
-	try {
-		return readFileSync(promptPath, "utf-8").trim();
-	} catch {
-		return "";
-	}
-}
-
-function mergeSystemPrompt(basePrompt: string): string {
-	const prompt = basePrompt.trim();
-	const sharedPrompt = getSharedEngramPrompt();
-	if (!sharedPrompt) return prompt;
-	if (!prompt) return sharedPrompt;
-	return `${prompt}\n\n---\n\n${sharedPrompt}`;
-}
-
-function ensureDir(dir: string) {
-	if (!existsSync(dir)) {
-		try { mkdirSync(dir, { recursive: true }); } catch {}
-	}
-}
-
-function ensureGitignoreEntry(projectRoot: string, entry: string) {
-	const gitignorePath = join(projectRoot, ".gitignore");
-	let content = "";
-	try {
-		content = existsSync(gitignorePath) ? readFileSync(gitignorePath, "utf-8") : "";
-	} catch {
-		return;
-	}
-
-	const lines = content.split(/\r?\n/).map(line => line.trim());
-	if (lines.includes(entry)) return;
-
-	const base = content.length > 0 && !content.endsWith("\n") ? `${content}\n` : content;
-	writeFileSync(gitignorePath, `${base}${entry}\n`, "utf-8");
-}
-
-function readJsonObject(path: string): Record<string, any> {
-	try {
-		return JSON.parse(readFileSync(path, "utf-8"));
-	} catch {
-		return {};
-	}
-}
-
-function writeJsonObject(path: string, value: Record<string, any>) {
-	try {
-		ensureDir(dirname(path));
-		writeFileSync(path, JSON.stringify(value, null, 2) + "\n", "utf-8");
-	} catch {
-		// ignore
-	}
-}
-
-function getMergedSettings(cwd: string): Record<string, any> {
-	const globalSettings = readJsonObject(join(homedir(), ".pi", "agent", "settings.json"));
-	const projectSettings = readJsonObject(join(getProjectPiDir(cwd), "settings.json"));
-	return { ...globalSettings, ...projectSettings };
-}
-
-function getAgentTeamViewMode(cwd: string): "grid" | "table" {
-	const raw = getMergedSettings(cwd)?.agentTeamViewMode;
-	return raw === "table" ? "table" : "grid";
-}
-
-function persistAgentTeamViewMode(cwd: string, mode: "grid" | "table") {
-	// Persist globally by default; project settings (if present) can still override.
-	const globalPath = join(homedir(), ".pi", "agent", "settings.json");
-	const globalSettings = readJsonObject(globalPath);
-	writeJsonObject(globalPath, { ...globalSettings, agentTeamViewMode: mode });
-}
-
-function getSessionThinkingLevelFallback(cwd: string): string {
-	// Pi's Extension ctx doesn't consistently expose thinking level, so fall back
-	// to merged project/global settings.
-	const lvl = getMergedSettings(cwd)?.defaultThinkingLevel;
-	return typeof lvl === "string" && lvl.trim() ? lvl.trim() : "off";
-}
-
-function getGlobalTeamsPath(): string {
-	return join(getGlobalAgentsDir(), "teams.yaml");
-}
-
-function getProjectTeamsPath(cwd: string): string {
-	ensureDir(getProjectAgentsDir(cwd));
-	return join(getProjectAgentsDir(cwd), "teams.yaml");
-}
-
-function getGlobalAgentModelsPath(): string {
-	return join(getGlobalAgentsDir(), "agent-models.yaml");
-}
-
-function getProjectAgentModelsPath(cwd: string): string {
-	ensureDir(getProjectAgentsDir(cwd));
-	return join(getProjectAgentsDir(cwd), "agent-models.yaml");
-}
-
-function getGlobalAgentThinkingPath(): string {
-	return join(getGlobalAgentsDir(), "agent-thinking.yaml");
-}
-
-function getProjectAgentThinkingPath(cwd: string): string {
-	ensureDir(getProjectAgentsDir(cwd));
-	return join(getProjectAgentsDir(cwd), "agent-thinking.yaml");
-}
-
-function writeYamlMap(path: string, values: Record<string, string>) {
-	ensureDir(dirname(path));
-	const lines = Object.entries(values)
-		.sort(([a], [b]) => a.localeCompare(b))
-		.map(([key, value]) => `${key}: ${value}`);
-	writeFileSync(path, lines.join("\n") + "\n", "utf-8");
-}
-
-// ── Display Name Helper ──────────────────────────
-
-function displayName(name: string): string {
-	return name.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-}
-
-// ── Agent Models YAML Parser ─────────────────────
-
-function parseAgentModelsYaml(raw: string): Record<string, string> {
-	const models: Record<string, string> = {};
-	for (const line of raw.split("\n")) {
-		const match = line.match(/^([^:]+):\s*(.+)$/);
-		if (match) {
-			const agentName = match[1].trim();
-			let model = match[2].trim();
-			if ((model.startsWith('"') && model.endsWith('"')) ||
-				(model.startsWith("'") && model.endsWith("'"))) {
-				model = model.slice(1, -1);
-			}
-			models[agentName.toLowerCase()] = model;
-		}
-	}
-	return models;
-}
-
-// ── Teams YAML Parser ────────────────────────────
-
-function parseTeamsYaml(raw: string): Record<string, string[]> {
-	const teams: Record<string, string[]> = {};
-	let current: string | null = null;
-	for (const line of raw.split("\n")) {
-		const teamMatch = line.match(/^(\S[^:]*):$/);
-		if (teamMatch) {
-			current = teamMatch[1].trim();
-			teams[current] = [];
-			continue;
-		}
-		const itemMatch = line.match(/^\s+-\s+(.+)$/);
-		if (itemMatch && current) {
-			teams[current].push(itemMatch[1].trim());
-		}
-	}
-	return teams;
-}
-
-function readTeamsFile(path: string): Record<string, string[]> {
-	try {
-		return parseTeamsYaml(readFileSync(path, "utf-8"));
-	} catch {
-		return {};
-	}
-}
-
-function readAgentYamlMap(path: string): Record<string, string> {
-	try {
-		return parseAgentModelsYaml(readFileSync(path, "utf-8"));
-	} catch {
-		return {};
-	}
-}
-
-// ── Frontmatter Parser ───────────────────────────
-
-function parseAgentFile(filePath: string): AgentDef | null {
-	try {
-		const raw = readFileSync(filePath, "utf-8");
-		const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-		if (!match) return null;
-
-		const frontmatter: Record<string, string> = {};
-		for (const line of match[1].split("\n")) {
-			const idx = line.indexOf(":");
-			if (idx > 0) {
-				frontmatter[line.slice(0, idx).trim()] = line.slice(idx + 1).trim();
-			}
-		}
-
-		if (!frontmatter.name) return null;
-
-		return {
-			name: frontmatter.name,
-			description: frontmatter.description || "",
-			tools: frontmatter.tools || "read,grep,find,ls",
-			systemPrompt: match[2].trim(),
-			file: filePath,
-			model: frontmatter.model,
-			thinking: frontmatter.thinking,
-		};
-	} catch {
-		return null;
-	}
-}
-
-function scanAgentDirs(cwd: string): AgentDef[] {
-	const dirs = [
-		join(cwd, "agents"),
-		join(cwd, ".pi", "agents"),
-		join(homedir(), ".pi", "agent", "agents"), // Global fallback
-	];
-
-	const agents: AgentDef[] = [];
-	const seen = new Set<string>();
-
-	for (const dir of dirs) {
-		if (!existsSync(dir)) continue;
-		try {
-			for (const file of readdirSync(dir)) {
-				if (!file.endsWith(".md")) continue;
-				const fullPath = resolve(dir, file);
-				const def = parseAgentFile(fullPath);
-				if (!def) continue;
-				if (def.name.toLowerCase() === "kyrie") continue;
-				if (!seen.has(def.name.toLowerCase())) {
-					seen.add(def.name.toLowerCase());
-					agents.push(def);
-				}
-			}
-		} catch {}
-	}
-
-	return agents;
-}
-
-function getTeamsSources(cwd: string): { globalPath: string; projectPath: string; loadedFrom: string[] } {
-	const globalPath = getGlobalTeamsPath();
-	const projectPath = getProjectTeamsPath(cwd);
-	const loadedFrom: string[] = [];
-	if (existsSync(globalPath)) loadedFrom.push(globalPath);
-	if (existsSync(projectPath)) loadedFrom.push(projectPath);
-	return { globalPath, projectPath, loadedFrom };
-}
-
-function mergeStringMaps(globalValues: Record<string, string>, projectValues: Record<string, string>): Record<string, string> {
-	return { ...globalValues, ...projectValues };
-}
-
-function mergeTeams(globalTeams: Record<string, string[]>, projectTeams: Record<string, string[]>): Record<string, string[]> {
-	return { ...globalTeams, ...projectTeams };
-}
 
 // ── Fetch Available Models ───────────────────────
 
@@ -509,15 +245,7 @@ export default function (pi: ExtensionAPI) {
 	let widgetCtx: any;
 	let sessionDir = "";
 	let contextWindow = 0;
-
-	// Footer stats: tokens/sec for last assistant output
-	let assistantMsgStartMs: number | null = null;
-	let assistantFirstDeltaMs: number | null = null;
-	let assistantStreaming = false;
-	let assistantStreamingChars = 0;
-	let liveApproxTokensPerSec: number | null = null;
-	let lastOutputTokensPerSec: number | null = null;
-	let lastOutputTokensPerSecAtMs: number | null = null;
+	let footerMetrics = createFooterMetricsState();
 
 	const THINKING_LEVELS = ["off", "minimal", "low", "medium", "high", "xhigh"];
 
@@ -573,15 +301,11 @@ export default function (pi: ExtensionAPI) {
 		// This allows normal Pi exit when nothing is running
 	});
 
-	// Track assistant throughput (tokens/sec). Usage tokens only arrive at message_end.
 	pi.on("message_start", async (event: any, _ctx: any) => {
 		try {
 			if (event?.message?.role !== "assistant") return;
-			assistantMsgStartMs = typeof event.message.timestamp === "number" ? event.message.timestamp : Date.now();
-			assistantFirstDeltaMs = null;
-			assistantStreaming = false;
-			assistantStreamingChars = 0;
-			liveApproxTokensPerSec = null;
+			const startMs = typeof event.message.timestamp === "number" ? event.message.timestamp : Date.now();
+			footerMetrics = resetFooterMetrics(startMs);
 		} catch {}
 	});
 
@@ -589,14 +313,7 @@ export default function (pi: ExtensionAPI) {
 		try {
 			if (event?.message?.role !== "assistant") return;
 			const delta = event?.assistantMessageEvent;
-			if (delta?.type !== "text_delta") return;
-			const now = Date.now();
-			if (assistantFirstDeltaMs == null) assistantFirstDeltaMs = now;
-			assistantStreaming = true;
-			assistantStreamingChars += String(delta.delta ?? "").length;
-			const startMs = assistantFirstDeltaMs ?? now;
-			const seconds = Math.max(0.05, (now - startMs) / 1000);
-			liveApproxTokensPerSec = (assistantStreamingChars / 4) / seconds;
+			footerMetrics = recordFooterDelta(footerMetrics, delta, Date.now());
 			footerTui?.requestRender?.();
 		} catch {}
 	});
@@ -604,22 +321,7 @@ export default function (pi: ExtensionAPI) {
 	pi.on("message_end", async (event: any, _ctx: any) => {
 		try {
 			if (event?.message?.role !== "assistant") return;
-
-			// End of assistant message; stop any live estimate even if usage is missing.
-			assistantStreaming = false;
-			assistantStreamingChars = 0;
-			liveApproxTokensPerSec = null;
-
-			const usage = event.message.usage;
-			const outputTokens = Number(usage?.output ?? 0);
-			if (!Number.isFinite(outputTokens) || outputTokens <= 0) return;
-			// Use wall-clock timings we captured from streaming deltas.
-			// `message.timestamp` is not guaranteed to represent the end time.
-			const endMs = Date.now();
-			const startMs = assistantFirstDeltaMs ?? assistantMsgStartMs ?? endMs;
-			const seconds = Math.max(0.05, (endMs - startMs) / 1000);
-			lastOutputTokensPerSec = outputTokens / seconds;
-			lastOutputTokensPerSecAtMs = Date.now();
+			footerMetrics = completeFooterMetrics(footerMetrics, event.message.usage, Date.now());
 			footerTui?.requestRender?.();
 		} catch {}
 	});
@@ -1886,7 +1588,7 @@ ${agentCatalog}`;
 		);
 		updateWidget();
 
-		// Footer: model | team | context bar (+ last output tok/s)
+		// Footer: model | team | context bar (+ local response speed metrics)
 		_ctx.ui.setFooter((tui, theme, _footerData) => {
 			footerTui = tui;
 			return {
@@ -1910,21 +1612,8 @@ ${agentCatalog}`;
 				const pad = " ".repeat(Math.max(1, width - visibleWidth(left) - visibleWidth(right)));
 				const line1 = truncateToWidth(left + pad + right, width);
 
-				let tpsText = "↓-- tok/s";
-				const displayTps =
-					assistantStreaming && liveApproxTokensPerSec != null && Number.isFinite(liveApproxTokensPerSec)
-						? { prefix: "~", value: liveApproxTokensPerSec }
-						: lastOutputTokensPerSec != null && Number.isFinite(lastOutputTokensPerSec)
-							? { prefix: "", value: lastOutputTokensPerSec }
-							: null;
-				if (displayTps) {
-					const n = displayTps.value;
-					const formatted = n >= 100 ? n.toFixed(0) : n >= 10 ? n.toFixed(1) : n.toFixed(2);
-					tpsText = `↓${displayTps.prefix}${formatted} tok/s`;
-				}
-
-				// Right-align tokens/sec under context bar
-				const right2 = theme.fg("dim", ` ${tpsText} `);
+				const metricsText = formatFooterMetrics(footerMetrics, Date.now());
+				const right2 = theme.fg("dim", ` ${metricsText} `);
 				const pad2 = " ".repeat(Math.max(0, width - visibleWidth(right2)));
 				const line2 = truncateToWidth(pad2 + right2, width);
 
