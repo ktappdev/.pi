@@ -1590,7 +1590,7 @@ ${agentCatalog}`;
 		}
 
 		// Lock down to dispatcher-only (tool already registered at top level)
-		pi.setActiveTools(["dispatch_agent", "questionnaire", "read", "bash"]);
+		pi.setActiveTools(["dispatch_agent", "questionnaire", "read", "bash", "signal_loop_success"]);
 
 		_ctx.ui.setStatus("agent-team", `Team: ${activeTeamName} (${agentStates.size}) [${viewMode}]`);
 		const members = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
