@@ -94,12 +94,12 @@ export function getMergedSettings(cwd: string): Record<string, any> {
 	return { ...globalSettings, ...projectSettings };
 }
 
-export function getAgentTeamViewMode(cwd: string): "grid" | "table" {
+export function getAgentTeamViewMode(cwd: string): "grid" | "table" | "tactical" {
 	const raw = getMergedSettings(cwd)?.agentTeamViewMode;
-	return raw === "table" ? "table" : "grid";
+	return raw === "grid" || raw === "table" || raw === "tactical" ? raw : "tactical";
 }
 
-export function persistAgentTeamViewMode(cwd: string, mode: "grid" | "table") {
+export function persistAgentTeamViewMode(cwd: string, mode: "grid" | "table" | "tactical") {
 	const globalPath = join(homedir(), ".pi", "agent", "settings.json");
 	const globalSettings = readJsonObject(globalPath);
 	writeJsonObject(globalPath, { ...globalSettings, agentTeamViewMode: mode });

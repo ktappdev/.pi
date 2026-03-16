@@ -10,5 +10,5 @@
   "packages": [],
   "steeringMode": "one-at-a-time",
   "doubleEscapeAction": "none",
-  "agentTeamViewMode": "table"
+  "agentTeamViewMode": "tactical"
 }
