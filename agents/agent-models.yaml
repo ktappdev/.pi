@@ -1,0 +1,4 @@
+builder: Lugetech/qwen3.5-9b
+designer: Lugetech/qwen3.5-9b
+planner: openai-codex/gpt-5.4
+scout: Lugetech/qwen3.5-9b

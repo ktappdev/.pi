@@ -26,6 +26,7 @@ import { spawn, execSync } from "child_process";
 import { readdirSync, readFileSync, existsSync, mkdirSync, unlinkSync, writeFileSync, appendFileSync, readdir } from "fs";
 import { join, resolve } from "path";
 import { homedir } from "os";
+import { fileURLToPath } from "url";
 import { applyExtensionDefaults } from "./themeMap.ts";
 import {
 	createFooterMetricsState,
@@ -171,6 +172,31 @@ interface DispatchResult {
 }
 
 const MAX_AGENT_LOG_LINES = 500;
+const SUBAGENT_EXTENSION_ALLOWLIST = ["multi-edit.ts", "fresh-read.ts"];
+const EXTENSIONS_DIR = fileURLToPath(new URL(".", import.meta.url));
+
+function hasEditCapabilities(tools: string): boolean {
+	return tools
+		.split(",")
+		.map((tool) => tool.trim())
+		.some((tool) => tool === "edit" || tool === "write");
+}
+
+function getSubagentExtensionArgs(tools: string): string[] {
+	if (!hasEditCapabilities(tools)) {
+		return ["--no-extensions"];
+	}
+
+	const args: string[] = [];
+	for (const extensionName of SUBAGENT_EXTENSION_ALLOWLIST) {
+		const extensionPath = join(EXTENSIONS_DIR, extensionName);
+		if (existsSync(extensionPath)) {
+			args.push("-e", extensionPath);
+		}
+	}
+
+	return args.length > 0 ? args : ["--no-extensions"];
+}
 
 // ── Fetch Available Models ───────────────────────
 
@@ -722,7 +748,7 @@ export default function (pi: ExtensionAPI) {
 		const args = [
 			"--mode", "json",
 			"-p",
-			"--no-extensions",
+			...getSubagentExtensionArgs(state.def.tools),
 			"--model", model,
 			"--thinking", state.thinking || state.def.thinking || "off",
 			"--tools", state.def.tools,
