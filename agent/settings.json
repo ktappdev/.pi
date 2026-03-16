@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.58.3",
-  "defaultProvider": "qwen-cli",
-  "defaultModel": "coder-model",
+  "defaultProvider": "Lugetech",
+  "defaultModel": "qwen3.5-9b-omni",
   "defaultThinkingLevel": "high",
   "theme": "cyberpunk",
   "quietStartup": true,
