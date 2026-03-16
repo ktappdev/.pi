@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.58.3",
-  "defaultProvider": "ByteDanceCodingPlan",
-  "defaultModel": "kimi-k2.5",
+  "defaultProvider": "qwen-cli",
+  "defaultModel": "coder-model",
   "defaultThinkingLevel": "high",
   "theme": "cyberpunk",
   "quietStartup": true,
