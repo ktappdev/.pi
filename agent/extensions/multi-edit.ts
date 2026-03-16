@@ -647,10 +647,16 @@ export default function (pi: ExtensionAPI) {
 					.join("\n\n");
 				const firstChangedLine = applied.find((r) => r.firstChangedLine !== undefined)?.firstChangedLine;
 				return {
-					content: [{ type: "text" as const, text: `Applied patch with ${applied.length} operation(s).\n${summary}` }],
+					content: [
+						{
+							type: "text" as const,
+							text: `[multi-edit: patch] Applied patch with ${applied.length} operation(s).\n${summary}`,
+						},
+					],
 					details: {
 						diff: combinedDiff,
 						firstChangedLine,
+						mode: "patch",
 					},
 				};
 			}
@@ -678,6 +684,8 @@ export default function (pi: ExtensionAPI) {
 			if (edits.length === 0) {
 				throw new Error("No edits provided. Supply path/oldText/newText, a multi array, or a patch.");
 			}
+
+			const classicMode = multi !== undefined ? "multi" : "single";
 
 			// Preflight pass before mutating files.
 			const preflightTool = createEditTool(ctx.cwd, { operations: createVirtualEditOperations() });
@@ -727,10 +735,11 @@ export default function (pi: ExtensionAPI) {
 			if (results.length === 1) {
 				const r = results[0];
 				return {
-					content: [{ type: "text" as const, text: r.message }],
+					content: [{ type: "text" as const, text: `[multi-edit: ${classicMode}] ${r.message}` }],
 					details: {
 						diff: r.diff ?? "",
 						firstChangedLine: r.firstChangedLine,
+						mode: classicMode,
 					},
 				};
 			}
@@ -744,10 +753,16 @@ export default function (pi: ExtensionAPI) {
 			const summary = results.map((r, i) => `${i + 1}. ${r.message}`).join("\n");
 
 			return {
-				content: [{ type: "text" as const, text: `Applied ${results.length} edit(s) successfully.\n${summary}` }],
+				content: [
+					{
+						type: "text" as const,
+						text: `[multi-edit: ${classicMode}] Applied ${results.length} edit(s) successfully.\n${summary}`,
+					},
+				],
 				details: {
 					diff: combinedDiff,
 					firstChangedLine: firstChanged,
+					mode: classicMode,
 				},
 			};
 		},
