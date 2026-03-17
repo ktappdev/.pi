@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "0.58.4",
-  "defaultProvider": "ByteDanceCodingPlan",
-  "defaultModel": "bytedance-seed-code",
-  "defaultThinkingLevel": "off",
+  "defaultProvider": "QwenCodingPlan",
+  "defaultModel": "qwen3.5-plus",
+  "defaultThinkingLevel": "medium",
   "theme": "cyberpunk",
   "quietStartup": false,
   "transport": "auto",
