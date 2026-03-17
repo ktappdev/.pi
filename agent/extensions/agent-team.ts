@@ -179,7 +179,7 @@ interface DispatchResult {
 }
 
 const MAX_AGENT_LOG_LINES = 500;
-const SUBAGENT_EXTENSION_ALLOWLIST = ["multi-edit.ts", "fresh-read.ts"];
+const BUILDER_ONLY_EXTENSIONS = ["multi-edit.ts", "fresh-read.ts"];
 const EXTENSIONS_DIR = fileURLToPath(new URL(".", import.meta.url));
 
 function hasEditCapabilities(tools: string): boolean {
@@ -189,13 +189,14 @@ function hasEditCapabilities(tools: string): boolean {
 		.some((tool) => tool === "edit" || tool === "write");
 }
 
-function getSubagentExtensionArgs(tools: string): string[] {
+function getSubagentExtensionArgs(agentName: string, tools: string): string[] {
 	if (!hasEditCapabilities(tools)) {
 		return ["--no-extensions"];
 	}
 
+	const extensionNames = agentName.toLowerCase() === "builder" ? BUILDER_ONLY_EXTENSIONS : [];
 	const args: string[] = [];
-	for (const extensionName of SUBAGENT_EXTENSION_ALLOWLIST) {
+	for (const extensionName of extensionNames) {
 		const extensionPath = join(EXTENSIONS_DIR, extensionName);
 		if (existsSync(extensionPath)) {
 			args.push("-e", extensionPath);
@@ -607,7 +608,7 @@ export default function (pi: ExtensionAPI) {
 		const args = [
 			"--mode", "json",
 			"-p",
-			...getSubagentExtensionArgs(state.def.tools),
+			...getSubagentExtensionArgs(state.def.name, state.def.tools),
 			"--model", model,
 			"--thinking", state.thinking || state.def.thinking || "off",
 			"--tools", state.def.tools,

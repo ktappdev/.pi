@@ -78,7 +78,7 @@
             "text"
           ],
           "contextWindow": 200000,
-          "maxTokens": 128000,
+          "maxTokens": 32000,
           "cost": {
             "input": 0,
             "output": 0,
@@ -94,7 +94,7 @@
             "text"
           ],
           "contextWindow": 200000,
-          "maxTokens": 128000,
+          "maxTokens": 32000,
           "cost": {
             "input": 0,
             "output": 0,
@@ -203,7 +203,7 @@
       ]
     },
     "Lugetech": {
-      "baseUrl": "http://192.168.1.19:8080/v1",
+      "baseUrl": "http://omarchy:8080/v1",
       "api": "openai-completions",
       "apiKey": "none",
       "models": [

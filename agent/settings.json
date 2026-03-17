@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "0.58.4",
-  "defaultProvider": "Lugetech",
-  "defaultModel": "qwen3.5-9b-omni",
-  "defaultThinkingLevel": "medium",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.4",
+  "defaultThinkingLevel": "minimal",
   "theme": "cyberpunk",
   "quietStartup": false,
   "transport": "auto",
@@ -10,5 +10,5 @@
   "packages": [],
   "steeringMode": "one-at-a-time",
   "doubleEscapeAction": "none",
-  "agentTeamViewMode": "tactical"
+  "agentTeamViewMode": "table"
 }
