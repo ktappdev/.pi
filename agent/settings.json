@@ -1,10 +1,10 @@
 {
-  "lastChangelogVersion": "0.58.3",
+  "lastChangelogVersion": "0.58.4",
   "defaultProvider": "Lugetech",
   "defaultModel": "qwen3.5-9b-omni",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "medium",
   "theme": "cyberpunk",
-  "quietStartup": true,
+  "quietStartup": false,
   "transport": "auto",
   "hideThinkingBlock": false,
   "packages": [],

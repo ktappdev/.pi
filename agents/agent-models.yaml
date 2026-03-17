@@ -1,4 +1,4 @@
-builder: Lugetech/qwen3.5-9b
+builder: openai-codex/gpt-5.4
 designer: Lugetech/qwen3.5-9b
 planner: openai-codex/gpt-5.4
 scout: Lugetech/qwen3.5-9b
