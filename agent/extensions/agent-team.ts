@@ -279,11 +279,31 @@ export default function (pi: ExtensionAPI) {
 	let sessionDir = "";
 	let contextWindow = 0;
 	let footerMetrics = createFooterMetricsState();
+	let backgroundSubagents = {
+		reset: (_ctx?: any) => {},
+		toolNames: [] as string[],
+		promptGuidance: "",
+	};
+	const backgroundSubagentsLoader = import("./lib/agent-team-background-subagents.ts")
+		.then(({ registerBackgroundSubagentTools }) => {
+			backgroundSubagents = registerBackgroundSubagentTools(pi, {
+				getPiExecutable: findPiExecutable,
+				getModelOverride: () => agentModels["subagents"],
+			});
+		})
+		.catch(() => {
+			backgroundSubagents = {
+				reset: (_ctx?: any) => {},
+				toolNames: [],
+				promptGuidance: "",
+			};
+		});
 
 	const THINKING_LEVELS = ["off", "minimal", "low", "medium", "high", "xhigh"];
 
 	// Ensure sub-agents are terminated when Pi exits
 	pi.on("before_exit", async (_event, _ctx) => {
+		backgroundSubagents.reset();
 		for (const [key, proc] of runningProcs.entries()) {
 			try {
 				proc.kill("SIGKILL");
@@ -1143,6 +1163,20 @@ export default function (pi: ExtensionAPI) {
 
 			// Ask user if they want to configure all or select specific agent
 			const agents = Array.from(agentStates.values());
+			const configTargets = [
+				...agents.map((state) => ({
+					kind: "agent" as const,
+					key: state.def.name.toLowerCase(),
+					label: displayName(state.def.name),
+					state,
+				})),
+				{
+					kind: "subagents" as const,
+					key: "subagents",
+					label: "Subagents",
+					state: null,
+				},
+			];
 			const modeChoice = await ctx.ui.select(
 				"Configure models for agents",
 				[
@@ -1156,25 +1190,25 @@ export default function (pi: ExtensionAPI) {
 			}
 
 			// If selecting specific agent, let them choose which one
-			let agentsToConfig = agents;
+			let targetsToConfig = configTargets;
 			if (modeChoice === "Select specific agent") {
-				const agentNames = agents.map(s => {
-					const model = s.model || "default";
-					return `${displayName(s.def.name)} (${model})`;
+				const targetNames = configTargets.map((target) => {
+					const model = agentModels[target.key] || (target.kind === "agent" ? (target.state?.model || "default") : "default");
+					return `${target.label} (${model})`;
 				});
 				
 				const agentChoice = await ctx.ui.select(
 					"Select agent to configure",
-					agentNames
+					targetNames
 				);
 
 				if (agentChoice === undefined) {
 					return; // User cancelled
 				}
 
-				// Find the selected agent
-				const selectedIndex = agentNames.indexOf(agentChoice);
-				agentsToConfig = [agents[selectedIndex]];
+				// Find the selected target
+				const selectedIndex = targetNames.indexOf(agentChoice);
+				targetsToConfig = [configTargets[selectedIndex]];
 			}
 
 			// Fetch available models from Pi
@@ -1192,9 +1226,11 @@ export default function (pi: ExtensionAPI) {
 			const newProjectModels: Record<string, string> = { ...projectAgentModels };
 			const newProjectThinking: Record<string, string> = { ...projectAgentThinking };
 
-			for (const state of agentsToConfig) {
-				const agentKey = state.def.name.toLowerCase();
-				const currentModel = state.model || "(use session default)";
+			for (const target of targetsToConfig) {
+				const agentKey = target.key;
+				const currentModel = agentModels[agentKey]
+					|| (target.kind === "agent" ? target.state?.model : undefined)
+					|| "(use session default)";
 
 				let selectedModel: string | undefined;
 				let searchTerm = currentModel !== "(use session default)" ? currentModel : "";
@@ -1203,7 +1239,7 @@ export default function (pi: ExtensionAPI) {
 				while (!selectedModel) {
 					// Ask for a search filter
 					const inputResult = await ctx.ui.input(
-						`Filter models for ${displayName(state.def.name)} (or press Enter for all)`,
+						`Filter models for ${target.label} (or press Enter for all)`,
 						searchTerm
 					);
 
@@ -1270,7 +1306,7 @@ export default function (pi: ExtensionAPI) {
 						: ` (${matchCount} matches)`;
 
 					const choice = await ctx.ui.select(
-						`Model for ${displayName(state.def.name)}${promptSuffix}`,
+						`Model for ${target.label}${promptSuffix}`,
 						options
 					);
 
@@ -1289,7 +1325,7 @@ export default function (pi: ExtensionAPI) {
 					// Handle custom model input
 					if (choiceClean === "--- Enter custom model ---") {
 						const customModel = await ctx.ui.input(
-							`Enter model for ${displayName(state.def.name)}`,
+							`Enter model for ${target.label}`,
 							"e.g., google/gemini-3-flash-preview"
 						);
 						if (!customModel) {
@@ -1318,10 +1354,15 @@ export default function (pi: ExtensionAPI) {
 					break;
 				}
 
+				if (target.kind === "subagents") {
+					delete newProjectThinking[agentKey];
+					continue;
+				}
+
 				// Now ask for thinking level
-				const currentThinking = state.thinking || state.def.thinking || "(use default)";
+				const currentThinking = target.state!.thinking || target.state!.def.thinking || "(use default)";
 				const thinkingChoice = await ctx.ui.select(
-					`Thinking level for ${displayName(state.def.name)}`,
+					`Thinking level for ${target.label}`,
 					["(use default)", ...THINKING_LEVELS]
 				);
 
@@ -1330,7 +1371,7 @@ export default function (pi: ExtensionAPI) {
 				}
 
 				// Store thinking selection
-				const thinkingKey = state.def.name.toLowerCase();
+				const thinkingKey = target.state!.def.name.toLowerCase();
 				if (thinkingChoice === "(use default)") {
 					delete newProjectThinking[thinkingKey];
 				} else {
@@ -1361,6 +1402,7 @@ export default function (pi: ExtensionAPI) {
 					const thinking = agentThinking[key] || "(default)";
 					return `${displayName(s.def.name)}: ${model} · thinking:${thinking}`;
 				})
+				concat([`Subagents: ${agentModels["subagents"] || "(default)"} · thinking:off`])
 				.join("\n");
 
 			ctx.ui.notify(
@@ -1373,6 +1415,7 @@ export default function (pi: ExtensionAPI) {
 	// ── System Prompt Override ───────────────────
 
 	pi.on("before_agent_start", async (_event, _ctx) => {
+		await backgroundSubagentsLoader;
 		const agentCatalog = Array.from(agentStates.values())
 			.map(s => `### ${displayName(s.def.name)}\n**Dispatch as:** \`${s.def.name}\`\n${s.def.description}\n**Tools:** ${s.def.tools}`)
 			.join("\n\n");
@@ -1425,14 +1468,16 @@ ${agentCatalog}`;
 			.replace(/\${activeTeamName}/g, activeTeamName));
 
 		return {
-			systemPrompt: finalPrompt,
+			systemPrompt: `${finalPrompt}\n\n---\n\n${backgroundSubagents.promptGuidance}`,
 		};
 	});
 
 	// ── Session Start ────────────────────────────
 
 	pi.on("session_start", async (_event, _ctx) => {
+		await backgroundSubagentsLoader;
 		applyExtensionDefaults(import.meta.url, _ctx);
+		backgroundSubagents.reset(_ctx);
 
 		// Clear widgets from previous session
 		if (widgetCtx) {
@@ -1451,7 +1496,14 @@ ${agentCatalog}`;
 		}
 
 		// Lock down to dispatcher-only (tool already registered at top level)
-		pi.setActiveTools(["dispatch_agent", "questionnaire", "read", "bash", "signal_loop_success"]);
+		pi.setActiveTools([
+			"dispatch_agent",
+			"questionnaire",
+			"read",
+			"bash",
+			...backgroundSubagents.toolNames,
+			"signal_loop_success",
+		]);
 
 		_ctx.ui.setStatus("agent-team", `Team: ${activeTeamName} (${agentStates.size}) [${viewMode}]`);
 		const members = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
