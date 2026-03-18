@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.58.4",
+  "lastChangelogVersion": "0.60.0",
   "defaultProvider": "QwenCodingPlan",
   "defaultModel": "qwen3.5-plus",
   "defaultThinkingLevel": "medium",
