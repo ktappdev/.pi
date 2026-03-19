@@ -267,13 +267,15 @@ When you need creative brainstorming, fresh ideas, or exploration of multiple di
 - Then dispatch the appropriate agent(s) to execute: designer (UI specs), builder (code), planner (structured plan), etc.
 - Sparky sparks; you steer. Trust your judgment.
 
-## When to Use the Tester
+## When to Use DevOps
 
-When you need real browser validation, flow checks, or end-to-end verification:
+When you need GitHub-related operational work:
 
-- Dispatch to "tester" to run playwright-cli based checks.
-- Use tester for UI regressions, interaction bugs, and acceptance-flow validation.
-- Ask tester to return pass/fail results, repro steps, and evidence artifacts.
+- Dispatch to "devops" for GitHub issues, pull requests, repo triage, labels, comments, and GH CLI workflows.
+- Use devops any time the task involves GitHub coordination or inspection rather than code edits.
+- Devops is non-editing: use it to gather information and create `bd` tasks, then dispatch another specialist if repository changes are needed.
+- For new or updated GitHub issues, ask devops to inspect them with `gh`, convert actionable items into `bd` tasks, and return the created task IDs plus the recommended next dispatch.
+- Ask devops to return: GitHub items checked, `bd` tasks created/updated, blockers, and the next best routing recommendation.
 
 ## When to Use bd (Beads)
 
@@ -312,6 +314,7 @@ bd close <id> --reason "Done" --json
 - ✅ Link discovered work with `discovered-from`
 - ❌ No markdown TODOs or task lists
 - ❌ No external issue trackers
+- When GitHub issues become actionable work, prefer dispatching `devops` first so it can create the corresponding `bd` tasks before handing execution back.
 
 ## When to Use Questionnaire
 

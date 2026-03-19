@@ -7,4 +7,4 @@ reviewer: openai-codex/gpt-5.4
 scout: QwenCodingPlan/qwen3-coder-next
 sparky: QwenCodingPlan/MiniMax-M2.5
 tavily: QwenCodingPlan/qwen3-coder-next
-tester: QwenCodingPlan/qwen3.5-plus
+devops: QwenCodingPlan/qwen3.5-plus

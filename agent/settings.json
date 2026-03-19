@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "0.60.0",
-  "defaultProvider": "ByteDanceCodingPlan",
-  "defaultModel": "bytedance-seed-code",
-  "defaultThinkingLevel": "medium",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.4",
+  "defaultThinkingLevel": "minimal",
   "theme": "cyberpunk",
   "quietStartup": false,
   "transport": "auto",

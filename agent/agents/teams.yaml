@@ -7,7 +7,7 @@ full:
   - documenter
   - tavily
   - sparky
-  - tester
+  - devops
 
 plan-build:
   - planner

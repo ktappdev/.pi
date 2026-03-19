@@ -119,7 +119,7 @@ Refactor this service and run tests.
 - `builder`: coding changes
 - `reviewer`: final verification
 - `designer`: UI/UX specs
-- `tester`: browser/E2E validation
+- `devops`: GitHub/GH CLI operations and Beads task triage
 - `tavily`: external web research
 - `sparky`: brainstorming
 - `documenter`: docs writing

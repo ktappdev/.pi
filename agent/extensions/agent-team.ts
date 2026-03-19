@@ -1402,7 +1402,7 @@ export default function (pi: ExtensionAPI) {
 					const thinking = agentThinking[key] || "(default)";
 					return `${displayName(s.def.name)}: ${model} · thinking:${thinking}`;
 				})
-				concat([`Subagents: ${agentModels["subagents"] || "(default)"} · thinking:off`])
+				.concat([`Subagents: ${agentModels["subagents"] || "(default)"} · thinking:off`])
 				.join("\n");
 
 			ctx.ui.notify(
