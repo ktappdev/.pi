@@ -250,6 +250,33 @@
           }
         }
       ]
+    },
+    "XiaomiMimo": {
+      "baseUrl": "https://api.xiaomimimo.com/v1",
+      "api": "openai-completions",
+      "apiKey": "MIMO_API_KEY",
+      "models": [
+        {
+          "id": "mimo-v2-pro",
+          "name": "Mimo V2 Pro",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          }
+        }
+      ]
     }
   }
 }
