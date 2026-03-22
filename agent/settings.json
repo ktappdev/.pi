@@ -1,14 +1,16 @@
 {
-  "lastChangelogVersion": "0.61.0",
-  "defaultProvider": "Lugetech",
-  "defaultModel": "qwen3.5-9b-omni",
-  "defaultThinkingLevel": "off",
+  "lastChangelogVersion": "0.61.1",
+  "defaultProvider": "QwenCodingPlan",
+  "defaultModel": "MiniMax-M2.5",
+  "defaultThinkingLevel": "medium",
   "theme": "cyberpunk",
   "quietStartup": true,
   "transport": "auto",
   "hideThinkingBlock": true,
-  "packages": [],
+  "packages": [
+    "npm:pi-bash-live-view"
+  ],
   "steeringMode": "one-at-a-time",
   "doubleEscapeAction": "none",
-  "agentTeamViewMode": "table"
+  "agentTeamViewMode": "tactical"
 }
