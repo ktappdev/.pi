@@ -1,12 +1,12 @@
 {
   "lastChangelogVersion": "0.61.1",
-  "defaultProvider": "QwenCodingPlan",
-  "defaultModel": "MiniMax-M2.5",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.4",
   "defaultThinkingLevel": "medium",
   "theme": "cyberpunk",
   "quietStartup": true,
   "transport": "auto",
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "packages": [
     "npm:pi-bash-live-view"
   ],
