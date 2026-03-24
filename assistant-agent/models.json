@@ -203,7 +203,7 @@
       ]
     },
     "Lugetech": {
-      "baseUrl": "http://ubuntu:8080/v1",
+      "baseUrl": "http://omarchy:8080/v1",
       "api": "openai-completions",
       "apiKey": "none",
       "models": [
@@ -215,7 +215,7 @@
             "text",
             "image"
           ],
-          "contextWindow": 32768,
+          "contextWindow": 65536,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -236,7 +236,7 @@
             "text",
             "image"
           ],
-          "contextWindow": 32768,
+          "contextWindow": 256000,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -250,13 +250,14 @@
           }
         },
         {
-          "id": "qwen3.5-9b-omnicoder",
-          "name": "Qwen 3.5 Omni",
+          "id": "gemma3-4b",
+          "name": "Gemma 3 4B",
           "reasoning": true,
           "input": [
-            "text"
+            "text",
+            "image"
           ],
-          "contextWindow": 32768,
+          "contextWindow": 128000,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -265,7 +266,7 @@
             "cacheWrite": 0
           },
           "options": {
-            "temperature": 0.6,
+            "temperature": 0.2,
             "top_p": 0.9
           }
         }

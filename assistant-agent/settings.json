@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.61.1",
-  "defaultProvider": "Lugetech",
-  "defaultModel": "qwen3.5-9b-omnicoder",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.4",
   "defaultThinkingLevel": "medium",
   "theme": "cyberpunk",
   "quietStartup": true,
