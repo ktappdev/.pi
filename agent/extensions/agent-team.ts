@@ -69,6 +69,7 @@ import {
 	renderTacticalView,
 	type AgentTeamViewMode,
 } from "./lib/agent-team-views.ts";
+import { chooseAgentModelWithFuzzyPicker } from "./lib/agent-team-model-picker.ts";
 
 // ── Helper: Find Pi Executable ───────────────────
 
@@ -215,19 +216,23 @@ async function fetchAvailableModels(): Promise<string[]> {
 			stdio: ["ignore", "pipe", "pipe"],
 		});
 
-		let stdout = "";
+		let output = "";
+		const collect = (chunk: string) => {
+			output += chunk;
+		};
+
 		proc.stdout!.setEncoding("utf-8");
-		proc.stdout!.on("data", (chunk: string) => {
-			stdout += chunk;
-		});
+		proc.stdout!.on("data", collect);
+		proc.stderr!.setEncoding("utf-8");
+		proc.stderr!.on("data", collect);
 
 		proc.on("close", () => {
 			const models: string[] = [];
-			const lines = stdout.split("\n");
+			const lines = output.split("\n");
 			
 			for (const line of lines) {
 				// Skip header and empty lines
-				if (!line.trim() || line.includes("PROVIDER") || line.includes("---")) continue;
+				if (!line.trim() || line.toLowerCase().startsWith("provider")) continue;
 				
 				// Parse table format: provider    model-id    context    output    thinking    vision
 				const parts = line.trim().split(/\s{2,}/);
@@ -1159,8 +1164,23 @@ export default function (pi: ExtensionAPI) {
 				return;
 			}
 
-			const modelsPath = getProjectAgentModelsPath(ctx.cwd);
-			const thinkingPath = getProjectAgentThinkingPath(ctx.cwd);
+			const scopeChoice = await ctx.ui.select(
+				"Save model defaults where?",
+				[
+					"Project only",
+					"Global defaults",
+				]
+			);
+
+			if (scopeChoice === undefined) {
+				return;
+			}
+
+			const isGlobalScope = scopeChoice === "Global defaults";
+			const modelsPath = isGlobalScope ? getGlobalAgentModelsPath() : getProjectAgentModelsPath(ctx.cwd);
+			const thinkingPath = isGlobalScope ? getGlobalAgentThinkingPath() : getProjectAgentThinkingPath(ctx.cwd);
+			const baseModels = isGlobalScope ? globalAgentModels : projectAgentModels;
+			const baseThinking = isGlobalScope ? globalAgentThinking : projectAgentThinking;
 
 			// Ask user if they want to configure all or select specific agent
 			const agents = Array.from(agentStates.values());
@@ -1216,16 +1236,9 @@ export default function (pi: ExtensionAPI) {
 			ctx.ui.notify("Fetching available models...", "info");
 			const availableModels = await fetchAvailableModels();
 			
-			// Build model options with session default and custom entry
-			const modelOptions = [
-				"(use session default)",
-				...availableModels,
-				"--- Enter custom model ---",
-			];
-
 			// Configure selected agent(s)
-			const newProjectModels: Record<string, string> = { ...projectAgentModels };
-			const newProjectThinking: Record<string, string> = { ...projectAgentThinking };
+			const newScopedModels: Record<string, string> = { ...baseModels };
+			const newScopedThinking: Record<string, string> = { ...baseThinking };
 
 			for (const target of targetsToConfig) {
 				const agentKey = target.key;
@@ -1233,120 +1246,19 @@ export default function (pi: ExtensionAPI) {
 					|| (target.kind === "agent" ? target.state?.model : undefined)
 					|| "(use session default)";
 
-				let selectedModel: string | undefined;
-				let searchTerm = currentModel !== "(use session default)" ? currentModel : "";
-
-				// Loop until user selects a model or cancels
-				while (!selectedModel) {
-					// Ask for a search filter
-					const inputResult = await ctx.ui.input(
-						`Filter models for ${target.label} (or press Enter for all)`,
-						searchTerm
-					);
-
-					if (inputResult === undefined) {
-						// User cancelled - save progress so far and exit
-						break;
-					}
-
-					searchTerm = inputResult;
-
-					// Filter models based on search term
-					let filteredModels = modelOptions;
-					if (searchTerm && searchTerm.trim()) {
-						const search = searchTerm.toLowerCase();
-						filteredModels = modelOptions.filter(opt => 
-							opt.toLowerCase().includes(search) || 
-							opt === "(use session default)" || 
-							opt === "--- Enter custom model ---"
-						);
-					}
-
-					// If filter resulted in too many models, limit to reasonable number
-					const maxDisplay = 20;
-					let displayModels = filteredModels;
-					let hiddenCount = 0;
-					
-					if (filteredModels.length > maxDisplay + 2) { // +2 for default and custom options
-						const specialOptions = filteredModels.filter(opt => 
-							opt === "(use session default)" || opt === "--- Enter custom model ---"
-						);
-						const regularModels = filteredModels.filter(opt => 
-							opt !== "(use session default)" && opt !== "--- Enter custom model ---"
-						);
-						hiddenCount = regularModels.length - maxDisplay;
-						displayModels = [
-							...specialOptions.filter(opt => opt === "(use session default)"),
-							...regularModels.slice(0, maxDisplay),
-							"--- Refine search ---",
-							...specialOptions.filter(opt => opt === "--- Enter custom model ---"),
-						];
-					} else {
-						// Add refine option even when under limit, in case user wants to search differently
-						const specialOptions = filteredModels.filter(opt => 
-							opt === "(use session default)" || opt === "--- Enter custom model ---"
-						);
-						const regularModels = filteredModels.filter(opt => 
-							opt !== "(use session default)" && opt !== "--- Enter custom model ---"
-						);
-						displayModels = [
-							...specialOptions.filter(opt => opt === "(use session default)"),
-							...regularModels,
-							"--- Refine search ---",
-							...specialOptions.filter(opt => opt === "--- Enter custom model ---"),
-						];
-					}
-
-					const options = displayModels.map(opt =>
-						opt === currentModel ? `${opt} ✓` : opt
-					);
-
-					const matchCount = filteredModels.length - 2; // Exclude special options
-					const promptSuffix = hiddenCount > 0 
-						? ` (showing 20 of ${matchCount})`
-						: ` (${matchCount} matches)`;
-
-					const choice = await ctx.ui.select(
-						`Model for ${target.label}${promptSuffix}`,
-						options
-					);
-
-					if (choice === undefined) {
-						// User cancelled - save progress so far and exit
-						break;
-					}
-
-					const choiceClean = choice.replace(" ✓", "");
-
-					// Handle refine search - loop back to input
-					if (choiceClean === "--- Refine search ---") {
-						continue; // Go back to filter input
-					}
-
-					// Handle custom model input
-					if (choiceClean === "--- Enter custom model ---") {
-						const customModel = await ctx.ui.input(
-							`Enter model for ${target.label}`,
-							"e.g., google/gemini-3-flash-preview"
-						);
-						if (!customModel) {
-							continue; // Go back to filter input
-						}
-						selectedModel = customModel.trim();
-						break; // Exit loop with custom model
-					}
-
-					// Regular model selected
-					selectedModel = choiceClean;
-					break; // Exit loop
-				}
+				const selectedModel = await chooseAgentModelWithFuzzyPicker(
+					ctx.ui,
+					target.label,
+					availableModels,
+					currentModel,
+				);
 
 				// Update the models map (only if user selected something)
 				if (selectedModel) {
 					if (selectedModel === "(use session default)") {
-						delete newProjectModels[agentKey];
+						delete newScopedModels[agentKey];
 					} else {
-						newProjectModels[agentKey] = selectedModel;
+						newScopedModels[agentKey] = selectedModel;
 					}
 				}
 				
@@ -1356,7 +1268,7 @@ export default function (pi: ExtensionAPI) {
 				}
 
 				if (target.kind === "subagents") {
-					delete newProjectThinking[agentKey];
+					delete newScopedThinking[agentKey];
 					continue;
 				}
 
@@ -1374,19 +1286,24 @@ export default function (pi: ExtensionAPI) {
 				// Store thinking selection
 				const thinkingKey = target.state!.def.name.toLowerCase();
 				if (thinkingChoice === "(use default)") {
-					delete newProjectThinking[thinkingKey];
+					delete newScopedThinking[thinkingKey];
 				} else {
-					newProjectThinking[thinkingKey] = thinkingChoice;
+					newScopedThinking[thinkingKey] = thinkingChoice;
 				}
 			}
 
-			projectAgentModels = newProjectModels;
-			projectAgentThinking = newProjectThinking;
+			if (isGlobalScope) {
+				globalAgentModels = newScopedModels;
+				globalAgentThinking = newScopedThinking;
+			} else {
+				projectAgentModels = newScopedModels;
+				projectAgentThinking = newScopedThinking;
+			}
 			agentModels = mergeStringMaps(globalAgentModels, projectAgentModels);
 			agentThinking = mergeStringMaps(globalAgentThinking, projectAgentThinking);
 
-			writeYamlMap(modelsPath, projectAgentModels);
-			writeYamlMap(thinkingPath, projectAgentThinking);
+			writeYamlMap(modelsPath, newScopedModels);
+			writeYamlMap(thinkingPath, newScopedThinking);
 
 			// Apply model and thinking changes in-place so session context is preserved
 			for (const state of agentStates.values()) {
@@ -1407,7 +1324,7 @@ export default function (pi: ExtensionAPI) {
 				.join("\n");
 
 			ctx.ui.notify(
-				`Updated project-local overrides for active team:\n\n${modelSummary}\n\nSaved to:\n${modelsPath}\n${thinkingPath}`,
+				`Updated ${isGlobalScope ? "global defaults" : "project-local overrides"} for active team:\n\n${modelSummary}\n\nSaved to:\n${modelsPath}\n${thinkingPath}`,
 				"info"
 			);
 		},

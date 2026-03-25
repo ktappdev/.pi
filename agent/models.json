@@ -271,19 +271,19 @@
         }
       ]
     },
-    "XiaomiMimo": {
-      "baseUrl": "https://api.xiaomimimo.com/v1",
+    "MiniMax-Coding-Plan": {
+      "baseUrl": "https://api.minimaxi.com/v1",
       "api": "openai-completions",
-      "apiKey": "MIMO_API_KEY",
+      "apiKey": "MINIMAX_API_KEY",
       "models": [
         {
-          "id": "mimo-v2-pro",
-          "name": "Mimo V2 Pro",
+          "id": "MiniMax-M2.7",
+          "name": "MiniMax M2.7",
           "reasoning": true,
           "input": [
             "text"
           ],
-          "contextWindow": 256000,
+          "contextWindow": 204800,
           "maxTokens": 32000,
           "cost": {
             "input": 0,
@@ -292,7 +292,7 @@
             "cacheWrite": 0
           },
           "options": {
-            "temperature": 1.0,
+            "temperature": 0.7,
             "top_p": 0.95
           }
         }
