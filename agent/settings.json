@@ -2,11 +2,11 @@
   "lastChangelogVersion": "0.62.0",
   "defaultProvider": "QwenCodingPlan",
   "defaultModel": "qwen3.5-plus",
-  "defaultThinkingLevel": "off",
-  "theme": "midnight-ocean",
+  "defaultThinkingLevel": "medium",
+  "theme": "cyberpunk",
   "quietStartup": true,
   "transport": "auto",
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "packages": [
     "npm:pi-bash-live-view"
   ],

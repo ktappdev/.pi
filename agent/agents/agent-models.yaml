@@ -1,12 +1,12 @@
-builder: MiniMax-Coding-Plan/MiniMax-M2.7
-designer: QwenCodingPlan/kimi-k2.5
+builder: ByteDanceCodingPlan/bytedance-seed-code
+designer: ByteDanceCodingPlan/kimi-k2.5
 devops: QwenCodingPlan/qwen3.5-plus
 documenter: minimax/MiniMax-M2.7
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: QwenCodingPlan/qwen3.5-plus
 reviewer: QwenCodingPlan/glm-5
-scout: MiniMax-Coding-Plan/MiniMax-M2.7
+scout: ByteDanceCodingPlan/bytedance-seed-code
 sparky: QwenCodingPlan/kimi-k2.5
 subagents: QwenCodingPlan/MiniMax-M2.5
 tavily: QwenCodingPlan/qwen3-coder-next
