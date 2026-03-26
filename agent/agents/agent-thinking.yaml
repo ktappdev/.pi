@@ -1,9 +1,10 @@
-builder: minimal
+builder: medium
 designer: medium
+devops: low
+documenter: off
 oracle: off
 planner: high
-reviewer: medium
-scout: medium
-sparky: medium
+reviewer: high
+scout: low
+sparky: low
 tavily: off
-devops: low
