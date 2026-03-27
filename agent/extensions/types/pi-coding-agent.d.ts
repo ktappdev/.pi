@@ -1,6 +1,7 @@
 declare module "@mariozechner/pi-coding-agent" {
 	export interface ExtensionCommandContext {
 		cwd: string;
+		isIdle(): boolean;
 		ui: {
 			notify(message: string, level: "info" | "success" | "warning" | "error"): void;
 		};
@@ -15,5 +16,6 @@ declare module "@mariozechner/pi-coding-agent" {
 				getArgumentCompletions?: (prefix: string) => unknown;
 			},
 		): void;
+		sendUserMessage(message: string, options?: { deliverAs?: "steer" | "followUp" }): void;
 	}
 }
