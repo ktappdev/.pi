@@ -1,5 +1,5 @@
 builder: ByteDanceCodingPlan/bytedance-seed-code
-designer: ByteDanceCodingPlan/kimi-k2.5
+designer: QwenCodingPlan/kimi-k2.5
 devops: QwenCodingPlan/qwen3.5-plus
 documenter: minimax/MiniMax-M2.7
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
