@@ -1,0 +1,5 @@
+#!/bin/bash
+# Launch pi with alternative agent directory
+export PI_CODING_AGENT_DIR=~/.pi/agent-alt
+export PI_PACKAGE_DIR=~/.pi/agent-alt-packages
+exec pi "$@"

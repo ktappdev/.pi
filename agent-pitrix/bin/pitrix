@@ -1,0 +1,5 @@
+#!/bin/bash
+# Launch pi with pitrix agent directory
+export PI_CODING_AGENT_DIR=~/.pi/agent-pitrix
+export PI_PACKAGE_DIR=~/.pi/agent-pitrix-packages
+exec pi "$@"

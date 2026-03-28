@@ -9,3 +9,5 @@ agent/auth.json
 # Dependencies
 node_modules/
 agent/extensions/node_modules/
+agent/bin
+agent/settings.json
