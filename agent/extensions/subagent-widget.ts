@@ -21,6 +21,14 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 import { applyExtensionDefaults } from "./themeMap.ts";
+import { 
+  getGlobalAgentModelsPath, 
+  getProjectAgentModelsPath,
+  getGlobalAgentThinkingPath,
+  getProjectAgentThinkingPath,
+  readAgentYamlMap,
+} from "./lib/agent-team-config.ts";
+import { existsSync } from "fs";
 
 interface SubState {
 	id: number;
@@ -45,6 +53,28 @@ export default function (pi: ExtensionAPI) {
 		const dir = path.join(os.homedir(), ".pi", "agent", "sessions", "subagents");
 		fs.mkdirSync(dir, { recursive: true });
 		return path.join(dir, `subagent-${id}-${Date.now()}.jsonl`);
+	}
+
+	function getConfiguredModel(ctx: any): { model: string; thinking: string } {
+		// Load from /agents-models config (same as agent-team uses)
+		const globalModelsPath = getGlobalAgentModelsPath();
+		const projectModelsPath = getProjectAgentModelsPath(ctx?.cwd || process.cwd());
+		const globalThinkingPath = getGlobalAgentThinkingPath();
+		const projectThinkingPath = getProjectAgentThinkingPath(ctx?.cwd || process.cwd());
+		
+		const globalModels = existsSync(globalModelsPath) ? readAgentYamlMap(globalModelsPath) : {};
+		const projectModels = existsSync(projectModelsPath) ? readAgentYamlMap(projectModelsPath) : {};
+		const modelConfig = { ...globalModels, ...projectModels };
+		
+		const globalThinking = existsSync(globalThinkingPath) ? readAgentYamlMap(globalThinkingPath) : {};
+		const projectThinking = existsSync(projectThinkingPath) ? readAgentYamlMap(projectThinkingPath) : {};
+		const thinkingConfig = { ...globalThinking, ...projectThinking };
+		
+		// Use "subagents" key — shared between subagent and btw
+		const model = modelConfig["subagents"] || (ctx?.model ? `${ctx.model.provider}/${ctx.model.id}` : "openrouter/google/gemini-3-flash-preview");
+		const thinking = thinkingConfig["subagents"] || "off";
+		
+		return { model, thinking };
 	}
 
 	// ── Widget rendering ──────────────────────────────────────────────────────
@@ -134,9 +164,7 @@ export default function (pi: ExtensionAPI) {
 		prompt: string,
 		ctx: any,
 	): Promise<void> {
-		const model = ctx.model
-			? `${ctx.model.provider}/${ctx.model.id}`
-			: "openrouter/google/gemini-3-flash-preview";
+		const { model, thinking } = getConfiguredModel(ctx);
 
 		return new Promise<void>((resolve) => {
 			const proc = spawn("pi", [
@@ -146,7 +174,7 @@ export default function (pi: ExtensionAPI) {
 				"--no-extensions",
 				"--model", model,
 				"--tools", "read,bash,grep,find,ls",
-				"--thinking", "off",
+				"--thinking", thinking,
 				prompt,
 			], {
 				stdio: ["ignore", "pipe", "pipe"],

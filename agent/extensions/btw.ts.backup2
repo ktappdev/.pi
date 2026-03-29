@@ -1,46 +1,17 @@
 /**
- * BTW — Side-channel Background Assistant
- * 
- * A lightweight background assistant with live streaming overlay. Ask quick
- * questions, run exploratory tasks, or plan without cluttering your main
- * conversation thread.
- * 
- * ─────────────────────────────────────────────────────────────────
- * FEATURES
- * ─────────────────────────────────────────────────────────────────
- * 
- * ✦ Live Streaming Overlay    — Watch responses stream in real-time
- * ✦ Scrolling Transcript      — ↑↓ / PageUp/PageDown to scroll history
- * ✦ Persistent Processes      — Close the overlay; the process keeps running
- * ✦ Project Context Aware     — Gets context from main conversation
- * ✦ Shared Model Config       — Uses /agents-models "Subagents" setting
- * ✦ Session Persistence       — Kept results survive session switches
- * ✦ Keep / Inject / Discard   — Choose what to do with results on completion
- * 
- * ─────────────────────────────────────────────────────────────────
- * COMMANDS
- * ─────────────────────────────────────────────────────────────────
- * 
- *   /btw <task>              — Start BTW with a task, opens overlay
- *   /btw                      — Open overlay (reconnect to running or view result)
- *   /btwlist                  — List kept results, pick one to inject
- *   /btwclear                 — Kill process and clear state
- * 
- * ─────────────────────────────────────────────────────────────────
- * SETUP
- * ─────────────────────────────────────────────────────────────────
- * 
- * Configure the model via: /agents-models → Subagents
- * The BTW shares this setting with the Subagent Widget.
- * 
- * ─────────────────────────────────────────────────────────────────
- * 
- * Author:  Ken Taylor
- * GitHub:  https://github.com/ktappdev
- * Version: 1.0.0
- * 
+ * BTW — Side-channel background assistant with live streaming overlay.
+ *
+ * Combines:
+ *   - Child process persistence from subagent-widget.ts
+ *   - Overlay UX from btw-backup.ts
+ *   - Session persistence for kept results
+ *
+ * Single instance only — no IDs, no Maps.
+ * Closing the overlay does NOT kill the process.
+ * On completion, a close prompt asks: Keep / Inject / Discard.
  */
 
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import {
 	Container,
 	Input,
@@ -97,8 +68,6 @@ interface BtwState {
 	overlayHandle?: OverlayHandle;
 	overlayRefresh?: () => void;
 	overlayClose?: () => void;
-	clearInput?: () => void;
-	scrollReset?: () => void;
 	draft: string;
 
 	// Completion flow
@@ -115,8 +84,6 @@ const BTW_DIR = path.join(os.homedir(), ".pi", "agent", "sessions", "btw");
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-
-export default function (pi: ExtensionAPI) {
 function makeSessionFile(): string {
 	fs.mkdirSync(BTW_DIR, { recursive: true });
 	return path.join(BTW_DIR, `btw-${Date.now()}.jsonl`);
@@ -196,8 +163,6 @@ class BtwOverlay extends Container implements Focusable {
 	private readonly onSubmit: (value: string) => void;
 	private readonly onDismiss: () => void;
 	private _focused = false;
-	private scrollOffset = 0;
-	private maxScrollOffset = 0;
 
 	get focused(): boolean {
 		return this._focused;
@@ -232,32 +197,10 @@ class BtwOverlay extends Container implements Focusable {
 	}
 
 	handleInput(data: string): void {
-		if (this.keybindings.matches(data, "cursorUp") || data === "\x1b[A") {
-			this.scrollOffset = Math.max(0, this.scrollOffset - 1);
-			this.tui.requestRender();
-			return;
-		}
-		if (this.keybindings.matches(data, "cursorDown") || data === "\x1b[B") {
-			this.scrollOffset = Math.min(this.maxScrollOffset, this.scrollOffset + 1);
-			this.tui.requestRender();
-			return;
-		}
-		if (this.keybindings.matches(data, "pageUp") || data === "\x1b[5~") {
-			this.scrollOffset = Math.max(0, this.scrollOffset - 5);
-			this.tui.requestRender();
-			return;
-		}
-		if (this.keybindings.matches(data, "pageDown") || data === "\x1b[6~") {
-			this.scrollOffset = Math.min(this.maxScrollOffset, this.scrollOffset + 5);
-			this.tui.requestRender();
-			return;
-		}
-
 		if (this.keybindings.matches(data, "selectCancel")) {
 			this.onDismiss();
 			return;
 		}
-
 		this.input.handleInput(data);
 	}
 
@@ -268,10 +211,6 @@ class BtwOverlay extends Container implements Focusable {
 
 	getDraft(): string {
 		return this.input.getValue();
-	}
-
-	public clearInput(): void {
-		this.input.setValue("");
 	}
 
 	private frameLine(content: string, innerWidth: number): string {
@@ -295,9 +234,7 @@ class BtwOverlay extends Container implements Focusable {
 		const transcriptHeight = Math.max(6, dialogHeight - chromeHeight);
 
 		const transcript = this.getTranscript(innerWidth, this.theme);
-		this.maxScrollOffset = Math.max(0, transcript.length - transcriptHeight);
-		const startIdx = Math.max(0, transcript.length - transcriptHeight - this.scrollOffset);
-		const visibleTranscript = transcript.slice(startIdx, startIdx + transcriptHeight);
+		const visibleTranscript = transcript.slice(-transcriptHeight);
 		const transcriptPadding = Math.max(0, transcriptHeight - visibleTranscript.length);
 
 		const status = this.getStatus();
@@ -310,10 +247,7 @@ class BtwOverlay extends Container implements Focusable {
 		const lines = [
 			this.borderLine(innerWidth, "top"),
 			this.frameLine(this.theme.fg("accent", this.theme.bold(" BTW ")) + this.theme.fg("dim", "background assistant"), innerWidth),
-			this.frameLine(
-				this.theme.fg("dim", `Esc close · ↑↓ scroll${this.maxScrollOffset > 0 ? ` (${this.scrollOffset}/${this.maxScrollOffset})` : ""}`),
-				innerWidth
-			),
+			this.frameLine(this.theme.fg("dim", "Esc closes overlay — process keeps running"), innerWidth),
 			this.theme.fg("borderMuted", `├${"─".repeat(innerWidth)}┤`),
 		];
 
@@ -396,12 +330,6 @@ function openOverlay(state: BtwState, ctx: any): void {
 				overlay.setDraft(state.draft);
 				state.overlayRefresh = () => {
 					overlay.focused = state.overlayHandle?.isFocused() ?? false;
-					tui.requestRender();
-				};
-				state.clearInput = () => overlay.clearInput();
-				state.scrollReset = () => {
-					overlay.scrollOffset = 0;
-					overlay.maxScrollOffset = 0;
 					tui.requestRender();
 				};
 
@@ -609,7 +537,7 @@ async function showClosePrompt(state: BtwState, ctx: any): Promise<void> {
 			timestamp: Date.now(),
 			id: state.id,
 		});
-		ctx.ui.notify("BTW result kept. Use /btwlist to inject it.", "success");
+		ctx.ui.notify("BTW result kept. Access it with /btw or /btwinject.", "success");
 		resetState(state);
 	} else if (choice === "Inject into main chat") {
 		await injectResultIntoMain(state, ctx);
@@ -655,8 +583,6 @@ function resetState(state?: BtwState): void {
 	s.overlayHandle = undefined;
 	s.overlayRefresh = undefined;
 	s.overlayClose = undefined;
-	s.clearInput = undefined;
-	s.scrollReset = undefined;
 	s.draft = "";
 	s.pendingChoice = false;
 	s.resultText = "";
@@ -698,8 +624,6 @@ function handleOverlaySubmit(state: BtwState, value: string, ctx: any): void {
 	state.resultText = "";
 
 	startChildProcess(state, prompt, ctx);
-	state.clearInput?.();
-	state.scrollReset?.();
 }
 
 // ── Restore kept results from session ────────────────────────────────────────
@@ -712,6 +636,7 @@ async function restoreKeptResults(ctx: any): Promise<void> {
 
 // ── Extension registration ─────────────────────────────────────────────────────
 
+export default function (pi: ExtensionAPI) {
 	// ── /btw ──────────────────────────────────────────────────────────────────
 
 	pi.registerCommand("btw", {
@@ -771,11 +696,53 @@ async function restoreKeptResults(ctx: any): Promise<void> {
 
 			openOverlay(state, ctx);
 			startChildProcess(state, prompt, ctx);
-	state.clearInput?.();
-	state.scrollReset?.();
 		},
 	});
 
+	// ── /btwinject ─────────────────────────────────────────────────────────────
+
+	pi.registerCommand("btwinject", {
+		description: "Inject a kept BTW result into the main chat: /btwinject",
+		handler: async (args, ctx) => {
+			// Find most recent kept result from session entries
+			const branch = ctx.sessionManager?.getBranch?.() ?? [];
+			let latestResult: any = null;
+
+			for (let i = branch.length - 1; i >= 0; i--) {
+				const entry = branch[i];
+				if (entry.type === "custom" && entry.customType === BTW_RESULT_TYPE) {
+					latestResult = entry.data;
+					break;
+				}
+			}
+
+			if (!latestResult) {
+				ctx.ui.notify("No kept BTW results found.", "warning");
+				return;
+			}
+
+			const summary = latestResult.result?.slice(0, 6000) + (latestResult.result?.length > 6000 ? "\n\n… [truncated]" : "");
+			const message = `BTW result for "${latestResult.task}":\n\n${summary}`;
+
+			if (ctx.isIdle?.()) {
+				pi.sendUserMessage(message);
+			} else {
+				pi.sendUserMessage(message, { deliverAs: "followUp" });
+			}
+
+			// Remove the injected entry from session
+			const entries = ctx.sessionManager?.getEntries?.() ?? [];
+			for (let i = entries.length - 1; i >= 0; i--) {
+				const entry = entries[i];
+				if (entry.type === "custom" && entry.customType === BTW_RESULT_TYPE && entry.data?.id === latestResult.id) {
+					ctx.sessionManager?.removeEntry?.(i);
+					break;
+				}
+			}
+
+			ctx.ui.notify("BTW result injected into main chat.", "info");
+		},
+	});
 
 	// ── /btwclear ──────────────────────────────────────────────────────────────
 
@@ -817,50 +784,21 @@ async function restoreKeptResults(ctx: any): Promise<void> {
 				return;
 			}
 
-			// Build select options from most recent to oldest
-			const options = results.map((r, i) => {
+			const lines = results.map((r, i) => {
 				const ts = new Date(r.timestamp).toLocaleTimeString();
-				const preview = r.task?.slice(0, 60) ?? "(no task)";
-				const label = r.task?.length > 60 ? preview + "…" : preview;
-				return `[${ts}] ${label}`;
+				const preview = r.task?.slice(0, 50) ?? "(no task)";
+				return `${i + 1}. [${ts}] ${preview}${r.task?.length > 50 ? "…" : ""}`;
 			});
-			options.push("Cancel");
 
-			const choice = await ctx.ui.select("Select BTW result to inject:", options);
-			
-			if (choice === undefined || choice === "Cancel") {
-				return;
-			}
-
-			// Find the selected result
-			const index = options.indexOf(choice);
-			if (index < 0 || index >= results.length) {
-				return;
-			}
-
-			const selected = results[index];
-			const summary = selected.result?.slice(0, 6000) + (selected.result?.length > 6000 ? "\n\n… [truncated]" : "");
-			const message = `BTW result for "${selected.task}":\n\n${summary}`;
-
+			const message = `Kept BTW results (${results.length}):\n${lines.join("\n")}`;
 			if (ctx.isIdle?.()) {
 				pi.sendUserMessage(message);
 			} else {
 				pi.sendUserMessage(message, { deliverAs: "followUp" });
 			}
-
-			// Remove the injected entry from session
-			const entries = ctx.sessionManager?.getEntries?.() ?? [];
-			for (let i = entries.length - 1; i >= 0; i--) {
-				const entry = entries[i];
-				if (entry.type === "custom" && entry.customType === BTW_RESULT_TYPE && entry.data?.id === selected.id) {
-					ctx.sessionManager?.removeEntry?.(i);
-					break;
-				}
-			}
-
-			ctx.ui.notify("BTW result injected into main chat.", "info");
 		},
 	});
+
 	// ── Lifecycle ──────────────────────────────────────────────────────────────
 
 	pi.on("session_start", async (_event, ctx) => {
