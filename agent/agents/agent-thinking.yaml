@@ -5,6 +5,6 @@ documenter: off
 oracle: off
 planner: high
 reviewer: high
-scout: low
-sparky: low
+scout: medium
+sparky: minimal
 tavily: off

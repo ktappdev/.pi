@@ -1,9 +1,12 @@
 {
   "providers": {
     "QwenCodingPlan": {
-      "baseUrl": "https://coding-intl.dashscope.aliyuncs.com/apps/anthropic",
-      "api": "anthropic-messages",
+      "baseUrl": "https://coding-intl.dashscope.aliyuncs.com/v1",
+      "api": "openai-completions",
       "apiKey": "QWEN_API_KEY",
+      "compat": {
+        "supportsDeveloperRole": false
+      },
       "models": [
         {
           "id": "qwen3.5-plus",
@@ -269,7 +272,7 @@
             "top_p": 0.9
           }
         },
-         {
+        {
           "id": "qwen3.5-35b",
           "name": "Qwen 3.5 35B Uncensored",
           "reasoning": true,
@@ -289,7 +292,6 @@
             "top_p": 0.9
           }
         }
-
       ]
     },
     "MiniMax-Coding-Plan": {
