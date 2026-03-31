@@ -196,8 +196,12 @@ class BtwOverlay extends Container implements Focusable {
 	private readonly onSubmit: (value: string) => void;
 	private readonly onDismiss: () => void;
 	private _focused = false;
-	private scrollOffset = 0;
-	private maxScrollOffset = 0;
+	protected scrollOffset = 0;
+	protected maxScrollOffset = 0;
+	protected _state: BtwState;
+	protected pendingChoice = false;
+	protected _choiceCallback: ((choice: string) => void) | null = null;
+	protected selectedChoice = 0;
 
 	get focused(): boolean {
 		return this._focused;
@@ -216,6 +220,7 @@ class BtwOverlay extends Container implements Focusable {
 		getStatus: () => string,
 		onSubmit: (value: string) => void,
 		onDismiss: () => void,
+		state: BtwState,
 	) {
 		super();
 		this.tui = tui;
@@ -225,6 +230,7 @@ class BtwOverlay extends Container implements Focusable {
 		this.getStatus = getStatus;
 		this.onSubmit = onSubmit;
 		this.onDismiss = onDismiss;
+		this._state = state;
 
 		this.input = new Input();
 		this.input.onSubmit = (value) => this.onSubmit(value);
@@ -233,13 +239,41 @@ class BtwOverlay extends Container implements Focusable {
 
 	handleInput(data: string): void {
 		if (this.keybindings.matches(data, "cursorUp") || data === "\x1b[A") {
+			if (this._state.pendingChoice) {
+				this.selectedChoice = Math.max(0, this.selectedChoice - 1);
+				this.tui.requestRender();
+				return;
+			}
 			this.scrollOffset = Math.max(0, this.scrollOffset - 1);
 			this.tui.requestRender();
 			return;
 		}
 		if (this.keybindings.matches(data, "cursorDown") || data === "\x1b[B") {
+			if (this._state.pendingChoice) {
+				this.selectedChoice = Math.min(2, this.selectedChoice + 1);
+				this.tui.requestRender();
+				return;
+			}
 			this.scrollOffset = Math.min(this.maxScrollOffset, this.scrollOffset + 1);
 			this.tui.requestRender();
+			return;
+		}
+		if (data === "j") {
+			if (this._state.pendingChoice) {
+				this.selectedChoice = Math.min(2, this.selectedChoice + 1);
+				this.tui.requestRender();
+				return;
+			}
+			this.input.handleInput(data);
+			return;
+		}
+		if (data === "k") {
+			if (this._state.pendingChoice) {
+				this.selectedChoice = Math.max(0, this.selectedChoice - 1);
+				this.tui.requestRender();
+				return;
+			}
+			this.input.handleInput(data);
 			return;
 		}
 		if (this.keybindings.matches(data, "pageUp") || data === "\x1b[5~") {
@@ -258,6 +292,17 @@ class BtwOverlay extends Container implements Focusable {
 			return;
 		}
 
+		if (this.keybindings.matches(data, "selectConfirm") || data === "\r") {
+			if (this._state.pendingChoice && this._choiceCallback) {
+				const choices = ["Keep for later", "Inject into main chat", "Discard"];
+				this._choiceCallback(choices[this.selectedChoice]);
+				this._state.pendingChoice = false;
+				this._choiceCallback = null;
+				this.selectedChoice = 0;
+				return;
+			}
+		}
+
 		this.input.handleInput(data);
 	}
 
@@ -272,6 +317,10 @@ class BtwOverlay extends Container implements Focusable {
 
 	public clearInput(): void {
 		this.input.setValue("");
+	}
+
+	public setChoiceCallback(cb: ((choice: string) => void) | null): void {
+		this._choiceCallback = cb;
 	}
 
 	private frameLine(content: string, innerWidth: number): string {
@@ -292,10 +341,14 @@ class BtwOverlay extends Container implements Focusable {
 		const terminalRows = process.stdout.rows ?? 30;
 		const dialogHeight = Math.max(16, Math.min(30, Math.floor(terminalRows * 0.75)));
 		const chromeHeight = 7;
-		const transcriptHeight = Math.max(6, dialogHeight - chromeHeight);
+		const choiceHeight = this._state.pendingChoice ? 6 : 0;
+		const transcriptHeight = Math.max(6, dialogHeight - chromeHeight - choiceHeight);
 
 		const transcript = this.getTranscript(innerWidth, this.theme);
 		this.maxScrollOffset = Math.max(0, transcript.length - transcriptHeight);
+		if (this._state.pendingChoice) {
+			this.scrollOffset = this.maxScrollOffset;
+		}
 		const startIdx = Math.max(0, transcript.length - transcriptHeight - this.scrollOffset);
 		const visibleTranscript = transcript.slice(startIdx, startIdx + transcriptHeight);
 		const transcriptPadding = Math.max(0, transcriptHeight - visibleTranscript.length);
@@ -326,8 +379,22 @@ class BtwOverlay extends Container implements Focusable {
 
 		lines.push(this.theme.fg("borderMuted", `├${"─".repeat(innerWidth)}┤`));
 		lines.push(this.frameLine(this.theme.fg("warning", status), innerWidth));
-		lines.push(`${this.theme.fg("borderMuted", "│")}${inputLine}${this.theme.fg("borderMuted", "│")}`);
-		lines.push(this.frameLine(this.theme.fg("dim", "Enter submit · Esc close overlay"), innerWidth));
+
+		if (this._state.pendingChoice) {
+			const choices = ["Keep for later", "Inject into main chat", "Discard"];
+			lines.push(this.theme.fg("borderMuted", `├${"─".repeat(innerWidth)}┤`));
+			lines.push(this.frameLine(this.theme.fg("dim", "BTW complete — choose what to do:"), innerWidth));
+			for (let i = 0; i < choices.length; i++) {
+				const marker = i === this.selectedChoice ? this.theme.fg("error", "▶ ") : this.theme.fg("dim", "  ");
+				const text = i === this.selectedChoice ? this.theme.fg("error", this.theme.bold(choices[i])) : this.theme.fg("dim", choices[i]);
+				lines.push(this.frameLine(marker + text, innerWidth));
+			}
+			lines.push(this.frameLine(this.theme.fg("dim", "↑↓ select · Enter confirm · Esc discard"), innerWidth));
+		} else {
+			lines.push(`${this.theme.fg("borderMuted", "│")}${inputLine}${this.theme.fg("borderMuted", "│")}`);
+			lines.push(this.frameLine(this.theme.fg("dim", "Enter submit · Esc close overlay"), innerWidth));
+		}
+
 		lines.push(this.borderLine(innerWidth, "bottom"));
 
 		return lines;
@@ -380,6 +447,10 @@ function openOverlay(state: BtwState, ctx: any): void {
 						// Dismiss — process keeps running
 						state!.overlayOpen = false;
 						state!.overlayHandle?.hide();
+						// If in choice mode, don't destroy overlay — showClosePrompt will re-show it
+						if (overlay._state.pendingChoice) {
+							return;
+						}
 						// Don't call showClosePrompt here — defer it so overlay keybindings are fully released
 						if (state!.pendingChoice && state!.status !== "running") {
 							// Use setTimeout to defer, so overlay keybindings are fully released
@@ -390,6 +461,7 @@ function openOverlay(state: BtwState, ctx: any): void {
 							}, 0);
 						}
 					},
+					state!,
 				);
 
 				overlay.focused = true;
@@ -397,6 +469,9 @@ function openOverlay(state: BtwState, ctx: any): void {
 				state.overlayRefresh = () => {
 					overlay.focused = state.overlayHandle?.isFocused() ?? false;
 					tui.requestRender();
+				};
+				(state as any)._setOverlayCallback = (cb: any) => {
+					overlay.setChoiceCallback(cb);
 				};
 				state.clearInput = () => overlay.clearInput();
 				state.scrollReset = () => {
@@ -600,25 +675,34 @@ function stopChildProcess(state: BtwState): void {
 async function showClosePrompt(state: BtwState, ctx: any): Promise<void> {
 	state.pendingChoice = false;
 
-	const choice = await ctx.ui.select("BTW complete:", ["Keep for later", "Inject into main chat", "Discard"]);
+	const handleChoice = (choice: string) => {
+		if (choice === "Keep for later") {
+			pi.appendEntry(BTW_RESULT_TYPE, {
+				task: state.task,
+				result: state.resultText,
+				timestamp: Date.now(),
+				id: state.id,
+			});
+			ctx.ui.notify("BTW result kept. Use /btwlist to inject it.", "success");
+			resetState(state);
+		} else if (choice === "Inject into main chat") {
+			void injectResultIntoMain(state, ctx);
+			resetState(state);
+		} else {
+			ctx.ui.notify("BTW result discarded.", "info");
+			resetState(state);
+		}
+	};
 
-	if (choice === "Keep for later") {
-		pi.appendEntry(BTW_RESULT_TYPE, {
-			task: state.task,
-			result: state.resultText,
-			timestamp: Date.now(),
-			id: state.id,
-		});
-		ctx.ui.notify("BTW result kept. Use /btwlist to inject it.", "success");
-		resetState(state);
-	} else if (choice === "Inject into main chat") {
-		await injectResultIntoMain(state, ctx);
-		resetState(state);
-	} else {
-		// Discard
-		ctx.ui.notify("BTW result discarded.", "info");
-		resetState(state);
+	if (state.overlayHandle) {
+		state.pendingChoice = true;
+		(state as any)._setOverlayCallback?.(handleChoice);
+		scheduleRefresh(state);
+		return;
 	}
+
+	const choice = await ctx.ui.select("BTW complete:", ["Keep for later", "Inject into main chat", "Discard"]);
+	handleChoice(choice);
 }
 
 async function injectResultIntoMain(state: BtwState, ctx: any): Promise<void> {

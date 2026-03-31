@@ -1,11 +1,11 @@
 builder: QwenCodingPlan/qwen3.5-plus
-designer: QwenCodingPlan/kimi-k2.5
+designer: google-antigravity/gemini-3.1-pro-low
 devops: QwenCodingPlan/qwen3.5-plus
 documenter: minimax/MiniMax-M2.7
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
-planner: QwenCodingPlan/glm-5
-reviewer: QwenCodingPlan/qwen3.5-plus
+planner: google-antigravity/claude-opus-4-6-thinking
+reviewer: google-antigravity/gemini-3.1-pro-high
 scout: QwenCodingPlan/qwen3.5-plus
 sparky: QwenCodingPlan/kimi-k2.5
 subagents: QwenCodingPlan/MiniMax-M2.5

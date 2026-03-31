@@ -165,7 +165,7 @@ interface AgentState {
 	task: string;
 	toolCount: number;
 	elapsed: number;
-	lastWork: string;
+	lastWork: string[];
 	contextPct: number;
 	sessionFile: string | null;
 	runCount: number;
@@ -491,7 +491,7 @@ export default function (pi: ExtensionAPI) {
 				task: "",
 				toolCount: 0,
 				elapsed: 0,
-				lastWork: "",
+				lastWork: [],
 				contextPct: 0,
 				sessionFile: existsSync(sessionFile) ? sessionFile : null,
 				runCount: 0,
@@ -605,7 +605,7 @@ export default function (pi: ExtensionAPI) {
 		state.task = sanitizedTask;
 		state.toolCount = 0;
 		state.elapsed = 0;
-		state.lastWork = "";
+		state.lastWork = [];
 		state.runCount++;
 		appendAgentLog(key, `[run] ${new Date().toLocaleTimeString()} — ${task}`);
 		updateWidget();
@@ -684,11 +684,22 @@ export default function (pi: ExtensionAPI) {
 								for (const completedLine of completed) {
 									appendAgentLog(key, completedLine);
 								}
-								const lastComplete = completed.slice().reverse().find((l: string) => l.trim());
-								if (lastComplete && lastComplete.trim()) {
-									state.lastWork = lastComplete;
-								} else if (liveTextBuffer.trim()) {
-									state.lastWork = liveTextBuffer.trim();
+								
+								const nonWaitLines = completed.filter(l => l.trim() && !l.trim().startsWith("[wait]"));
+								if (nonWaitLines.length > 0) {
+									for (const line of nonWaitLines) {
+										const trimmed = line.trim();
+										if (state.lastWork[state.lastWork.length - 1] !== trimmed) {
+											state.lastWork.push(trimmed);
+											if (state.lastWork.length > 10) state.lastWork.shift();
+										}
+									}
+								} else if (liveTextBuffer.trim() && !liveTextBuffer.trim().startsWith("[wait]")) {
+									const trimmed = liveTextBuffer.trim();
+									if (state.lastWork[state.lastWork.length - 1] !== trimmed) {
+										state.lastWork.push(trimmed);
+										if (state.lastWork.length > 10) state.lastWork.shift();
+									}
 								}
 								updateWidget();
 							}
@@ -758,8 +769,13 @@ export default function (pi: ExtensionAPI) {
 				}
 				
 				appendAgentLog(key, `[${isSuccess ? "done" : "error"}] exit=${code ?? 1} in ${Math.round(state.elapsed / 1000)}s`);
-				const lastWorkLine = fullLines[fullLines.length - 1] || (isSuccess ? "" : "Agent failed");
-				state.lastWork = lastWorkLine;
+				const nonWaitFullLines = fullLines.filter(l => l.trim() && !l.trim().startsWith("[wait]"));
+				if (nonWaitFullLines.length > 0) {
+					state.lastWork = nonWaitFullLines.slice(-10);
+				} else if (!isSuccess) {
+					state.lastWork = ["Agent failed"];
+				}
+				
 				if (fullLines.length > 0) {
 					appendAgentLog(key, `[summary] ${fullLines[fullLines.length - 1]}`);
 				}
@@ -1139,7 +1155,7 @@ export default function (pi: ExtensionAPI) {
 				state.task = "";
 				state.toolCount = 0;
 				state.elapsed = 0;
-				state.lastWork = "";
+				state.lastWork = [];
 				state.contextPct = 0;
 				agentLogs.set(key, []);
 				resetCount++;
