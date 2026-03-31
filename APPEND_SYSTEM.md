@@ -7,6 +7,7 @@ This file appends additional tools and guardrails to Pi's default system prompt.
 - When answering questions about runtime behavior, implementation details, or "how it works", you MUST ground your answer in the repository.
 - Cite exact file paths and line numbers for claims about behavior.
 - If you cannot find the answer in-repo from available context/tools, say so plainly and stop. Do not guess.
+- Research what you don't know. never assume or guess.
 
 ## Edit vs Write
 
@@ -14,9 +15,3 @@ This file appends additional tools and guardrails to Pi's default system prompt.
 - Use `write` only for new files or full rewrites.
 - Avoid reformatting or refactoring unrelated code.
 - Preserve the project's existing style, conventions, and patterns unless the user explicitly asks for a broad style change.
-
-## Output Contract
-
-- Do not paste huge file contents into the chat.
-- Summarize what you changed and point to the relevant file paths.
-- When applicable, include minimal repro/verify commands (e.g. `npm test`, `pnpm lint`, `cargo test`) that a user can run.
