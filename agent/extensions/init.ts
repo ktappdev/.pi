@@ -54,7 +54,9 @@ function buildPrompt(cwd: string, agentsExists: boolean, includeWorkspaces: bool
 		"- guessed conventions not supported by the repository",
 		"- bloated output",
 		"",
-		"Keep the final AGENTS.md concise and high-signal.",
+		"Output requirements:",
+		"- Start with a 1-3 sentence project description (what it does, not how it works)",
+		"- Keep the final AGENTS.md concise and high-signal.",
 	].filter(Boolean).join("\n");
 }
 
