@@ -93,16 +93,16 @@ async function selectSummaryModel(
 	if (ctx.model.provider === "anthropic") {
 		const haikuModel = ctx.modelRegistry.find("anthropic", HAIKU_MODEL_ID);
 		if (haikuModel) {
-			const apiKey = await ctx.modelRegistry.getApiKey(haikuModel);
-			if (apiKey) {
-				return { model: haikuModel, apiKey };
+			const auth = await ctx.modelRegistry.getApiKeyAndHeaders(haikuModel);
+			if (auth.ok && auth.apiKey) {
+				return { model: haikuModel, apiKey: auth.apiKey };
 			}
 		}
 	}
 
-	const apiKey = await ctx.modelRegistry.getApiKey(ctx.model);
-	if (!apiKey) return null;
-	return { model: ctx.model, apiKey };
+	const auth = await ctx.modelRegistry.getApiKeyAndHeaders(ctx.model);
+	if (!auth.ok || !auth.apiKey) return null;
+	return { model: ctx.model, apiKey: auth.apiKey };
 }
 
 async function summarizeBreakoutCondition(
@@ -400,8 +400,9 @@ export default function loopExtension(pi: ExtensionAPI): void {
 
 	pi.on("session_before_compact", async (event, ctx) => {
 		if (!loopState.active || !loopState.mode || !ctx.model) return;
-		const apiKey = await ctx.modelRegistry.getApiKey(ctx.model);
-		if (!apiKey) return;
+		const auth = await ctx.modelRegistry.getApiKeyAndHeaders(ctx.model);
+		if (!auth.ok || !auth.apiKey) return;
+		const apiKey = auth.apiKey;
 
 		const instructionParts = [event.customInstructions, getCompactionInstructions(loopState.mode, loopState.condition)]
 			.filter(Boolean)
