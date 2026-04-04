@@ -1,0 +1,42 @@
+#!/bin/bash
+# Show current pi environment status
+
+echo "=== Pi Environment Status ==="
+echo ""
+
+if [ -n "$PI_CODING_AGENT_DIR" ]; then
+    echo "Current environment: $PI_CODING_AGENT_DIR"
+else
+    echo "Current environment: ~/.pi/agent (default)"
+fi
+
+echo ""
+echo "=== Main Environment (~/.pi/agent) ==="
+if [ -f ~/.pi/agent/settings.json ]; then
+    echo "Settings:"
+    grep -E '"defaultModel"|"defaultProvider"|"theme"' ~/.pi/agent/settings.json | sed 's/^/  /'
+    echo "Extensions: $(ls -1 ~/.pi/agent/extensions/*.ts 2>/dev/null | wc -l) files"
+    echo "Agents: $(ls -1 ~/.pi/agent/agents/*.md 2>/dev/null | wc -l) files"
+    echo "Sessions: $(ls -1 ~/.pi/agent/sessions/*/ 2>/dev/null | wc -l) directories"
+fi
+
+echo ""
+echo "=== PiHack Environment (~/.pi/agent-pitrix) ==="
+if [ -f ~/.pi/agent-pitrix/settings.json ]; then
+    echo "Settings:"
+    grep -E '"defaultModel"|"defaultProvider"|"theme"' ~/.pi/agent-pitrix/settings.json | sed 's/^/  /'
+    echo "Extensions: $(ls -1 ~/.pi/agent-pitrix/extensions/*.ts 2>/dev/null | wc -l) files"
+    echo "Agents: $(ls -1 ~/.pi/agent-pitrix/agents/*.md 2>/dev/null | wc -l) files"
+    echo "Teams: $(cat ~/.pi/agent-pitrix/agents/teams.yaml 2>/dev/null | grep -c '^[a-z]' || echo 0)"
+    echo "Sessions: $(ls -1 ~/.pi/agent-pitrix/sessions/*/ 2>/dev/null | wc -l) directories"
+fi
+
+echo ""
+echo "=== Quick Commands ==="
+echo "  pi          - Use current/default environment"
+echo "  pitrix      - Use PiHack environment (hacker team)"
+echo "  main-pi     - Use main environment explicitly"
+echo "  pi-status   - Show this status"
+echo ""
+echo "  export PI_CODING_AGENT_DIR=~/.pi/agent        # Switch to main"
+echo "  export PI_CODING_AGENT_DIR=~/.pi/agent-pitrix # Switch to pitrix"

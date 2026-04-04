@@ -1,0 +1,5 @@
+builder: QwenCodingPlan/qwen3.5-plus
+planner: QwenCodingPlan/qwen3.5-plus
+reviewer: QwenCodingPlan/glm-5
+scout: MiniMax-Coding-Plan/MiniMax-M2.7
+tavily: MiniMax-Coding-Plan/MiniMax-M2.7

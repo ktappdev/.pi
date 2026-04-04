@@ -1,28 +1,34 @@
-# Root-level folders
-/agent-sessions/
-/archived-agents/
-/.pi/
-/agents/
-
-# Session folders
-piii/sessions/
-agent-pitrix/sessions/
-agent/sessions/
-
-# Sensitive files
+# Sensitive credentials - NEVER commit
 agent/telegram.json
 piii/auth.json
 agent-pitrix/auth.json
 agent/auth.json
-
-# Logs and temp
 auth.json
-agent-dispatch.log
-.pi
+
+# Session logs - constantly changing
+agent/sessions/
+piii/sessions/
+agent-pitrix/sessions/
+.pi/agent-sessions/
+agent-sessions/
+
+# Temp files
+agent/tmp/
+*.tmp
+.DS_Store
 
 # Dependencies
 node_modules/
-agent/extensions/node_modules/
-agent/bin
+
+# Build outputs
+dist/
+
+# Logs
+*.log
+agent-dispatch.log
+
+# Local config (keep templates, not actual configs)
 agent/settings.json
-agent/tmp/telegram
+piii/settings.json
+agent-pitrix/settings.json
+.pi/settings.json
