@@ -32,14 +32,3 @@ agent/settings.json
 piii/settings.json
 agent-pitrix/settings.json
 .pi/settings.json
-
-# Local user directories - NEVER commit
-/home/
-/Users/
-Pictures/
-Screenshots/
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.webp
