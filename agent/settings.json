@@ -8,7 +8,6 @@
   "packages": [
     "npm:pi-annotate",
     "npm:@tmustier/pi-files-widget",
-    "git:github.com/tmustier/pi-extensions",
     "git:github.com/ktappdev/pi-telegram"
   ],
   "quietStartup": false,
