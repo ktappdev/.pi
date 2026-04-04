@@ -1,0 +1,18 @@
+{
+  "lastChangelogVersion": "0.63.1",
+  "defaultProvider": "ByteDanceCodingPlan",
+  "defaultModel": "bytedance-seed-code",
+  "defaultThinkingLevel": "medium",
+  "theme": "matrix",
+  "quietStartup": true,
+  "transport": "auto",
+  "hideThinkingBlock": false,
+  "packages": [],
+  "steeringMode": "one-at-a-time",
+  "followUpMode": "one-at-a-time",
+  "doubleEscapeAction": "tree",
+  "agentTeamViewMode": "grid",
+  "compaction": {
+    "enabled": true
+  }
+}

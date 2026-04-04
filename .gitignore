@@ -27,9 +27,4 @@ dist/
 *.log
 agent-dispatch.log
 
-# Local config (keep templates, not actual configs)
-agent/settings.json
-piii/settings.json
-agent-pitrix/settings.json
-.pi/settings.json
 /.pi/
