@@ -1,6 +1,6 @@
 builder: MiniMax-Coding-Plan/MiniMax-M2.7
-designer: QwenCodingPlan/kimi-k2.5
-devops: QwenCodingPlan/qwen3.5-plus
+designer: QwenCodingPlan/qwen3.5-plus
+devops: MiniMax-Coding-Plan/MiniMax-M2.7
 documenter: minimax/MiniMax-M2.7
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex

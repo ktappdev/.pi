@@ -1434,12 +1434,6 @@ ${agentCatalog}`;
 			activateTeam(teamNames[0]);
 		}
 
-
-		// Set active tools: front matter tools + dynamic background subagent tools
-		pi.setActiveTools([
-			...kyrieTools,
-			...backgroundSubagents.toolNames,
-		]);
 		const members = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
 		const teamSources = getTeamsSources(_ctx.cwd).loadedFrom;
 		const sourceText = teamSources.length > 0
