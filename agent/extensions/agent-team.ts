@@ -282,6 +282,7 @@ export default function (pi: ExtensionAPI) {
 	let viewMode: AgentTeamViewMode = "grid";
 	let watchAgentKey: string | null = null;
 	let widgetCtx: any;
+	let kyrieTools: string[] = ["dispatch_agent", "read", "bash"];
 	let sessionDir = "";
 	let contextWindow = 0;
 	let footerMetrics = createFooterMetricsState();
@@ -1359,7 +1360,6 @@ export default function (pi: ExtensionAPI) {
 		// Read the Kyrie prompt and tools from the agents directory
 		const kyriePromptPath = resolve(getPiCodingAgentDir(), "agents", "kyrie.md");
 		let kyriePrompt = "";
-		let kyrieTools: string[] = ["dispatch_agent", "read", "bash"];
 		if (existsSync(kyriePromptPath)) {
 			try {
 				const raw = readFileSync(kyriePromptPath, "utf-8");

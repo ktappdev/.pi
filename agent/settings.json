@@ -2,15 +2,22 @@
   "lastChangelogVersion": "0.65.2",
   "theme": "synthwave",
   "defaultProvider": "QwenCodingPlan",
-  "defaultModel": "qwen3.5-plus",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "qwen3-max-2026-01-23",
+  "defaultThinkingLevel": "medium",
   "agentTeamViewMode": "tactical",
   "packages": [
     "npm:@tmustier/pi-files-widget",
     "git:github.com/ktappdev/pi-telegram",
     "npm:pi-web-access"
   ],
-  "quietStartup": false,
+  "quietStartup": true,
   "treeFilterMode": "all",
-  "transport": "auto"
+  "transport": "auto",
+  "thinkingBudgets": {
+    "minimal": 1024,
+    "low": 4096,
+    "medium": 10240,
+    "high": 32768,
+    "xhigh": 81920
+  }
 }

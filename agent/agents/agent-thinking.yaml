@@ -3,8 +3,8 @@ designer: medium
 devops: low
 documenter: off
 oracle: off
-planner: high
-reviewer: high
+planner: xhigh
+reviewer: xhigh
 scout: medium
 sparky: minimal
 tavily: off

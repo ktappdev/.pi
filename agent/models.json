@@ -5,7 +5,8 @@
       "api": "openai-completions",
       "apiKey": "QWEN_API_KEY",
       "compat": {
-        "supportsDeveloperRole": false
+        "supportsDeveloperRole": false,
+        "thinkingFormat": "qwen"
       },
       "models": [
         {
@@ -17,7 +18,7 @@
             "image"
           ],
           "contextWindow": 1000000,
-          "maxTokens": 64000,
+          "maxTokens": 81920,
           "cost": {
             "input": 0,
             "output": 0,
@@ -26,14 +27,15 @@
           }
         },
         {
-          "id": "qwen3-max-2026-01-23",
-          "name": "Qwen 3 MAX",
+          "id": "qwen3.6-plus",
+          "name": "Qwen 3.6 Plus",
           "reasoning": true,
           "input": [
-            "text"
+            "text",
+            "image"
           ],
-          "contextWindow": 256000,
-          "maxTokens": 32000,
+          "contextWindow": 1000000,
+          "maxTokens": 81920,
           "cost": {
             "input": 0,
             "output": 0,
@@ -60,7 +62,7 @@
         {
           "id": "qwen3-coder-next",
           "name": "Qwen3 Coder Next",
-          "reasoning": true,
+          "reasoning": false,
           "input": [
             "text"
           ],
@@ -76,12 +78,28 @@
         {
           "id": "qwen3-coder-plus",
           "name": "Qwen3 Coder Plus",
-          "reasoning": true,
+          "reasoning": false,
           "input": [
             "text"
           ],
           "contextWindow": 1000000,
           "maxTokens": 64000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "qwen3-max-2026-01-23",
+          "name": "Qwen3 Max 2026-01-23",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 262144,
+          "maxTokens": 32768,
           "cost": {
             "input": 0,
             "output": 0,
@@ -113,46 +131,6 @@
             "text"
           ],
           "contextWindow": 200000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        }
-      ]
-    },
-    "ByteDanceCodingPlan": {
-      "baseUrl": "https://ark.ap-southeast.bytepluses.com/api/coding",
-      "api": "anthropic-messages",
-      "apiKey": "BYTEDANCE_API_KEY",
-      "models": [
-        {
-          "id": "bytedance-seed-code",
-          "name": "ByteDance Seed Code",
-          "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
-          "contextWindow": 256000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "ark-code-latest",
-          "name": "Ark Code Latest",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 256000,
           "maxTokens": 32000,
           "cost": {
             "input": 0,
@@ -312,7 +290,7 @@
             "cacheWrite": 0
           },
           "options": {
-            "temperature": 0.7,
+            "temperature": 1,
             "top_p": 0.95
           }
         }
