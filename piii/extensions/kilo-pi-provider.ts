@@ -1,1 +1,0 @@
-/Users/kentaylor/.pi/agent/git/github.com/ktappdev/kilo-pi-provider/kilo.ts

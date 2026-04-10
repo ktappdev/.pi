@@ -5,7 +5,8 @@
   "hideThinkingBlock": false,
   "packages": [
     "npm:pi-web-access",
-    "git:github.com/ktappdev/pi-telegram"
+    "git:github.com/ktappdev/pi-telegram",
+    "git:github.com/ktappdev/kilo-pi-provider"
   ],
   "defaultProvider": "DeepSeek",
   "defaultModel": "deepseek-chat"

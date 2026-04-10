@@ -1,1 +1,0 @@
-/Users/kentaylor/.pi/piii/git/github.com/ktappdev/pi-telegram/index.ts

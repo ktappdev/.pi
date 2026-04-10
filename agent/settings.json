@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "0.66.1",
   "theme": "synthwave",
-  "defaultProvider": "kilo",
-  "defaultModel": "bytedance-seed/dola-seed-2.0-pro:free",
+  "defaultProvider": "QwenCodingPlan",
+  "defaultModel": "qwen3.5-plus",
   "defaultThinkingLevel": "high",
   "agentTeamViewMode": "table",
   "packages": [
