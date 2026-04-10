@@ -1,9 +1,12 @@
 {
-  "lastChangelogVersion": "0.65.2",
+  "lastChangelogVersion": "0.66.1",
   "defaultThinkingLevel": "medium",
   "quietStartup": false,
   "hideThinkingBlock": false,
   "packages": [
-    "npm:pi-web-access"
-  ]
+    "npm:pi-web-access",
+    "git:github.com/ktappdev/pi-telegram"
+  ],
+  "defaultProvider": "DeepSeek",
+  "defaultModel": "deepseek-chat"
 }

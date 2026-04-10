@@ -48,7 +48,7 @@ export default function askModeExtension(pi: ExtensionAPI): void {
 			pi.setActiveTools(ASK_MODE_TOOLS);
 			ctx.ui.notify(`Ask mode enabled. Tools: ${ASK_MODE_TOOLS.join(", ")}`);
 		} else {
-			pi.setActiveTools([]);
+			pi.setActiveTools(undefined);
 			ctx.ui.notify("Ask mode disabled. Full access restored.");
 		}
 		updateStatus(ctx);
