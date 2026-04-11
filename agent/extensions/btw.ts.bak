@@ -367,7 +367,7 @@ class BtwOverlay extends Container implements Focusable {
 				this.theme.fg("dim", `Esc close · ↑↓ scroll${this.maxScrollOffset > 0 ? ` (${this.scrollOffset}/${this.maxScrollOffset})` : ""}`),
 				innerWidth
 			),
-			this.theme.fg("border", `├${"─".repeat(innerWidth)}┤`),
+			this.theme.fg("borderMuted", `├${"─".repeat(innerWidth)}┤`),
 		];
 
 		for (const line of visibleTranscript) {
@@ -377,12 +377,12 @@ class BtwOverlay extends Container implements Focusable {
 			lines.push(this.frameLine("", innerWidth));
 		}
 
-		lines.push(this.theme.fg("border", `├${"─".repeat(innerWidth)}┤`));
+		lines.push(this.theme.fg("borderMuted", `├${"─".repeat(innerWidth)}┤`));
 		lines.push(this.frameLine(this.theme.fg("warning", status), innerWidth));
 
 		if (this._state.pendingChoice) {
 			const choices = ["Keep for later", "Inject into main chat", "Discard"];
-			lines.push(this.theme.fg("border", `├${"─".repeat(innerWidth)}┤`));
+			lines.push(this.theme.fg("borderMuted", `├${"─".repeat(innerWidth)}┤`));
 			lines.push(this.frameLine(this.theme.fg("dim", "BTW complete — choose what to do:"), innerWidth));
 			for (let i = 0; i < choices.length; i++) {
 				const marker = i === this.selectedChoice ? this.theme.fg("error", "▶ ") : this.theme.fg("dim", "  ");
@@ -391,7 +391,7 @@ class BtwOverlay extends Container implements Focusable {
 			}
 			lines.push(this.frameLine(this.theme.fg("dim", "↑↓ select · Enter confirm · Esc discard"), innerWidth));
 		} else {
-			lines.push(`${this.theme.fg("border", "│")}${inputLine}${this.theme.fg("border", "│")}`);
+			lines.push(`${this.theme.fg("borderMuted", "│")}${inputLine}${this.theme.fg("borderMuted", "│")}`);
 			lines.push(this.frameLine(this.theme.fg("dim", "Enter submit · Esc close overlay"), innerWidth));
 		}
 
@@ -489,7 +489,7 @@ function openOverlay(state: BtwState, ctx: any): void {
 					minWidth: 72,
 					maxHeight: "78%",
 					anchor: "top-center",
-					margin: { top: 2, bottom: 2, left: 4, right: 4 },
+					margin: { top: 1, left: 2, right: 2 },
 				},
 				onHandle: (handle) => {
 					state.overlayOpen = true;
