@@ -4,6 +4,7 @@
       "baseUrl": "https://coding-intl.dashscope.aliyuncs.com/v1",
       "api": "openai-completions",
       "apiKey": "QWEN_API_KEY",
+      "authHeader": true,
       "compat": {
         "supportsDeveloperRole": false,
         "thinkingFormat": "qwen"

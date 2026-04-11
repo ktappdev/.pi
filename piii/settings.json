@@ -10,6 +10,6 @@
     "git:github.com/ktappdev/pi-caveman",
     "git:github.com/ktappdev/pi-qwen-oauth"
   ],
-  "defaultProvider": "QwenCodingPlan",
-  "defaultModel": "qwen3.5-plus"
+  "defaultProvider": "qwen-oauth",
+  "defaultModel": "coder-model"
 }

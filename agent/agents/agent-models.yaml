@@ -5,7 +5,7 @@ documenter: minimax/MiniMax-M2.7
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: QwenCodingPlan/glm-5
-reviewer: QwenCodingPlan/qwen3-max-2026-01-23
+reviewer: QwenCodingPlan/glm-5
 scout: MiniMax-Coding-Plan/MiniMax-M2.7
 sparky: QwenCodingPlan/kimi-k2.5
 subagents: MiniMax-Coding-Plan/MiniMax-M2.7

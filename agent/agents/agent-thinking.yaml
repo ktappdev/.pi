@@ -4,7 +4,7 @@ devops: low
 documenter: off
 oracle: off
 planner: high
-reviewer: high
+reviewer: medium
 scout: medium
 sparky: minimal
 tavily: off
