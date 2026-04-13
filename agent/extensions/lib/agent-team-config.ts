@@ -10,6 +10,7 @@ export interface AgentDef {
 	file: string;
 	model?: string;
 	thinking?: string;
+	loadProviders?: boolean; // Whether to load provider extensions (default: true)
 }
 
 export function getProjectBaseDir(cwd: string): string {
