@@ -9,7 +9,7 @@
     "git:github.com/ktappdev/kilo-pi-provider",
     "git:github.com/ktappdev/pi-qwen-oauth",
     "npm:@tmustier/pi-files-widget",
-    "git:github.com/jonjonrankin/pi-caveman"
+    "git:github.com/ktappdev/pi-caveman"
   ],
   "quietStartup": false,
   "treeFilterMode": "all",
@@ -23,5 +23,5 @@
   },
   "defaultProvider": "QwenCodingPlan",
   "defaultModel": "qwen3.5-plus",
-  "hideThinkingBlock": true
+  "hideThinkingBlock": false
 }

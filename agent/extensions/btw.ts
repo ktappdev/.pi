@@ -44,11 +44,12 @@
 import {
 	Container,
 	Input,
+	Key,
 	Markdown,
+	matchesKey,
 	truncateToWidth,
 	visibleWidth,
 	type Focusable,
-	type KeybindingsManager,
 	type OverlayHandle,
 	type TUI,
 } from "@mariozechner/pi-tui";
@@ -190,7 +191,6 @@ class BtwOverlay extends Container implements Focusable {
 	private readonly input: Input;
 	private readonly tui: TUI;
 	private readonly theme: any;
-	private readonly keybindings: KeybindingsManager;
 	private readonly getTranscript: (width: number, theme: any) => string[];
 	private readonly getStatus: () => string;
 	private readonly onSubmit: (value: string) => void;
@@ -199,7 +199,6 @@ class BtwOverlay extends Container implements Focusable {
 	protected scrollOffset = 0;
 	protected maxScrollOffset = 0;
 	protected _state: BtwState;
-	protected pendingChoice = false;
 	protected _choiceCallback: ((choice: string) => void) | null = null;
 	protected selectedChoice = 0;
 
@@ -215,7 +214,6 @@ class BtwOverlay extends Container implements Focusable {
 	constructor(
 		tui: TUI,
 		theme: any,
-		keybindings: KeybindingsManager,
 		getTranscript: (width: number, theme: any) => string[],
 		getStatus: () => string,
 		onSubmit: (value: string) => void,
@@ -225,7 +223,6 @@ class BtwOverlay extends Container implements Focusable {
 		super();
 		this.tui = tui;
 		this.theme = theme;
-		this.keybindings = keybindings;
 		this.getTranscript = getTranscript;
 		this.getStatus = getStatus;
 		this.onSubmit = onSubmit;
@@ -238,69 +235,68 @@ class BtwOverlay extends Container implements Focusable {
 	}
 
 	handleInput(data: string): void {
-		if (this.keybindings.matches(data, "cursorUp") || data === "\x1b[A") {
-			if (this._state.pendingChoice) {
+		// In choice mode — only handle navigation + confirm/cancel
+		if (this._state.pendingChoice) {
+			if (matchesKey(data, Key.up) || matchesKey(data, "k")) {
 				this.selectedChoice = Math.max(0, this.selectedChoice - 1);
 				this.tui.requestRender();
 				return;
 			}
+			if (matchesKey(data, Key.down) || matchesKey(data, "j")) {
+				this.selectedChoice = Math.min(2, this.selectedChoice + 1);
+				this.tui.requestRender();
+				return;
+			}
+			if (matchesKey(data, Key.enter)) {
+				if (this._choiceCallback) {
+					const choices = ["Keep for later", "Inject into main chat", "Discard"];
+					this._choiceCallback(choices[this.selectedChoice]);
+					this._state.pendingChoice = false;
+					this._choiceCallback = null;
+					this.selectedChoice = 0;
+				}
+				return;
+			}
+			if (matchesKey(data, Key.escape)) {
+				this.onDismiss();
+				return;
+			}
+			// Swallow all other keys in choice mode
+			return;
+		}
+
+		// Normal mode — scrolling + input
+		if (matchesKey(data, Key.up) || matchesKey(data, "k")) {
 			this.scrollOffset = Math.max(0, this.scrollOffset - 1);
 			this.tui.requestRender();
 			return;
 		}
-		if (this.keybindings.matches(data, "cursorDown") || data === "\x1b[B") {
-			if (this._state.pendingChoice) {
-				this.selectedChoice = Math.min(2, this.selectedChoice + 1);
-				this.tui.requestRender();
-				return;
-			}
+		if (matchesKey(data, Key.down) || matchesKey(data, "j")) {
 			this.scrollOffset = Math.min(this.maxScrollOffset, this.scrollOffset + 1);
 			this.tui.requestRender();
 			return;
 		}
-		if (data === "j") {
-			if (this._state.pendingChoice) {
-				this.selectedChoice = Math.min(2, this.selectedChoice + 1);
-				this.tui.requestRender();
-				return;
-			}
-			this.input.handleInput(data);
-			return;
-		}
-		if (data === "k") {
-			if (this._state.pendingChoice) {
-				this.selectedChoice = Math.max(0, this.selectedChoice - 1);
-				this.tui.requestRender();
-				return;
-			}
-			this.input.handleInput(data);
-			return;
-		}
-		if (this.keybindings.matches(data, "pageUp") || data === "\x1b[5~") {
+		if (matchesKey(data, Key.pageUp)) {
 			this.scrollOffset = Math.max(0, this.scrollOffset - 5);
 			this.tui.requestRender();
 			return;
 		}
-		if (this.keybindings.matches(data, "pageDown") || data === "\x1b[6~") {
+		if (matchesKey(data, Key.pageDown)) {
 			this.scrollOffset = Math.min(this.maxScrollOffset, this.scrollOffset + 5);
 			this.tui.requestRender();
 			return;
 		}
 
-		if (this.keybindings.matches(data, "selectCancel")) {
-			this.onDismiss();
+		// Submit on Enter
+		if (matchesKey(data, Key.enter)) {
+			this.onSubmit(this.input.getValue());
 			return;
 		}
 
-		if (this.keybindings.matches(data, "selectConfirm") || data === "\r") {
-			if (this._state.pendingChoice && this._choiceCallback) {
-				const choices = ["Keep for later", "Inject into main chat", "Discard"];
-				this._choiceCallback(choices[this.selectedChoice]);
-				this._state.pendingChoice = false;
-				this._choiceCallback = null;
-				this.selectedChoice = 0;
-				return;
-			}
+		// Escape closes overlay
+		if (matchesKey(data, Key.escape)) {
+			this.onDismiss();
+			return;
 		}
 
 		this.input.handleInput(data);
@@ -437,23 +433,20 @@ function openOverlay(state: BtwState, ctx: any): void {
 				const overlay = new BtwOverlay(
 					tui,
 					theme,
-					keybindings,
 					(w, t) => getTranscriptLines(state!, w, t),
 					() => getStatusText(state!),
 					(value) => {
 						handleOverlaySubmit(state!, value, ctx);
 					},
 					() => {
-						// Dismiss — process keeps running
+						// Dismiss overlay — process keeps running in background
 						state!.overlayOpen = false;
 						state!.overlayHandle?.hide();
-						// If in choice mode, don't destroy overlay — showClosePrompt will re-show it
-						if (overlay._state.pendingChoice) {
-							return;
-						}
-						// Don't call showClosePrompt here — defer it so overlay keybindings are fully released
+						state!.overlayHandle = undefined;
+						state!.overlayRefresh = undefined;
+						state!.overlayClose = undefined;
 						if (state!.pendingChoice && state!.status !== "running") {
-							// Use setTimeout to defer, so overlay keybindings are fully released
+							// Defer showClosePrompt so overlay keybindings are fully released first
 							setTimeout(() => {
 								if (state!.status !== "running") {
 									void showClosePrompt(state!, ctx);

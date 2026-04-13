@@ -192,6 +192,9 @@ function hasEditCapabilities(tools: string): boolean {
 }
 
 function getSubagentExtensionArgs(agentName: string, tools: string): string[] {
+	if (agentName.toLowerCase() === "orchestrator" || agentName.toLowerCase() === "caveman") {
+		return ["-e", "pi-caveman"];
+	}
 	if (!hasEditCapabilities(tools)) {
 		return ["--no-extensions"];
 	}
@@ -282,7 +285,7 @@ export default function (pi: ExtensionAPI) {
 	let viewMode: AgentTeamViewMode = "grid";
 	let watchAgentKey: string | null = null;
 	let widgetCtx: any;
-	let kyrieTools: string[] = ["dispatch_agent", "read", "bash"];
+	let orchestratorTools: string[] = ["dispatch_agent", "read", "bash"];
 	let sessionDir = "";
 	let contextWindow = 0;
 	let footerMetrics = createFooterMetricsState();
@@ -476,7 +479,7 @@ export default function (pi: ExtensionAPI) {
 
 		agentStates.clear();
 		for (const member of members) {
-			if (member.toLowerCase() === "kyrie") continue;
+			if (member.toLowerCase() === "caveman") continue;
 			const def = defsByName.get(member.toLowerCase());
 			if (!def) continue;
 			const key = def.name.toLowerCase().replace(/\s+/g, "-");
@@ -983,7 +986,7 @@ export default function (pi: ExtensionAPI) {
 			const options = teamNames.map(name => {
 				const available = new Set(allAgentDefs.map(d => d.name.toLowerCase()));
 				const members = teams[name]
-					.filter(m => m.toLowerCase() !== "kyrie")
+					.filter(m => m.toLowerCase() !== "caveman")
 					.filter(m => available.has(m.toLowerCase()))
 					.map(m => displayName(m));
 				return `${name} — ${members.join(", ")}`;
@@ -1357,26 +1360,26 @@ export default function (pi: ExtensionAPI) {
 
 		const teamMembers = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
 
-		// Read the Kyrie prompt and tools from the agents directory
-		const kyriePromptPath = resolve(getPiCodingAgentDir(), "agents", "kyrie.md");
-		let kyriePrompt = "";
-		if (existsSync(kyriePromptPath)) {
+		// Read the Orchestrator prompt and tools from the agents directory
+		const orchestratorPromptPath = resolve(getPiCodingAgentDir(), "agents", "orchestrator.md");
+		let orchestratorPrompt = "";
+		if (existsSync(orchestratorPromptPath)) {
 			try {
-				const raw = readFileSync(kyriePromptPath, "utf-8");
+				const raw = readFileSync(orchestratorPromptPath, "utf-8");
 				const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
 				if (match) {
 					// Parse tools from front matter
 					const toolsMatch = match[1].match(/^tools:\s*(.+)$/m);
 					if (toolsMatch) {
-						kyrieTools = toolsMatch[1].split(",").map((t: string) => t.trim()).filter(Boolean);
+						orchestratorTools = toolsMatch[1].split(",").map((t: string) => t.trim()).filter(Boolean);
 					}
-					kyriePrompt = match[2].trim();
+					orchestratorPrompt = match[2].trim();
 				}
 			} catch {}
 		}
-		// Fallback to dispatcher prompt if Kyrie file not found
-		if (!kyriePrompt) {
-			kyriePrompt = `You are a dispatcher agent. You coordinate specialist agents to accomplish tasks.
+		// Fallback to dispatcher prompt if Caveman file not found
+		if (!orchestratorPrompt) {
+			orchestratorPrompt = `You are a dispatcher agent. You coordinate specialist agents to accomplish tasks.
 You do NOT have direct access to the codebase. You MUST delegate all work through
 agents using the dispatch_agent tool.
 
@@ -1400,8 +1403,8 @@ Members: ${teamMembers}
 ${agentCatalog}`;
 		}
 
-		// Inject dynamic content into the Kyrie prompt
-		const finalPrompt = mergeSystemPrompt(kyriePrompt
+		// Inject dynamic content into the Orchestrator prompt
+		const finalPrompt = mergeSystemPrompt(orchestratorPrompt
 			.replace(/\${agentCatalog}/g, agentCatalog)
 			.replace(/\${teamMembers}/g, teamMembers)
 			.replace(/\${activeTeamName}/g, activeTeamName));
@@ -1435,11 +1438,14 @@ ${agentCatalog}`;
 		}
 
 
-		// Set active tools: front matter tools + dynamic background subagent tools
-		pi.setActiveTools([
-			...kyrieTools,
+		// Set active tools: merge existing registered tools + front matter + subagent tools
+		const existingTools = pi.getActiveTools();
+		const requestedTools = new Set([
+			...existingTools,
+			...orchestratorTools,
 			...backgroundSubagents.toolNames,
 		]);
+		pi.setActiveTools(Array.from(requestedTools));
 		const members = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
 		const teamSources = getTeamsSources(_ctx.cwd).loadedFrom;
 		const sourceText = teamSources.length > 0

@@ -1,18 +1,20 @@
-# Kyrie
+# Orchestrator
 
-Kyrie is a multi-agent coding setup for the Pi CLI.
+Minimal multi-agent coding setup for Pi CLI. No fluff. Only code.
 
-## How it works (30 seconds)
+## How it works (10 seconds)
 
-You talk to `kyrie`.
-`kyrie` delegates work to specialist agents (`scout`, `planner`, `builder`, `reviewer`, etc.).
-Those specialists do the actual codebase work and report back through `kyrie`.
+You talk to **Orchestrator**.
+Orchestrator delegates all work to specialist agents.
+Specialists do actual work. Orchestrator reports back short.
+
+Orchestrator runs the `pi-caveman` extension: removes all pleasantries, filler, hedging. Only facts, only actions.
 
 ## What this is
 
 - User-level Pi configuration stored in `~/.pi`
-- A tuned main agent (`kyrie`) plus specialist agents in `agent/agents/`
-- Custom extensions in `agent/extensions/` for workflow, safety, and quality-of-life features
+- Minimal orchestrator (`orchestrator`) + specialist agents in `agent/agents/`
+- Custom extensions in `agent/extensions/` for safety, workflow, quality of life
 
 ## Prerequisites
 
@@ -22,7 +24,7 @@ Those specialists do the actual codebase work and report back through `kyrie`.
 
 ## 1) Install the base Pi coding agent
 
-Kyrie builds on top of the Pi coding agent:
+Orchestrator builds on top of the Pi coding agent:
 
 - Repo: `https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent`
 
@@ -32,16 +34,13 @@ Install globally:
 npm install -g @mariozechner/pi-coding-agent
 ```
 
-## 2) Install Kyrie config
-
-If you are starting from scratch:
+## 2) Install Orchestrator config
 
 ```bash
 git clone https://github.com/ktappdev/.pi.git ~/.pi
 ```
 
-If you already have a `~/.pi`, back it up first:
-
+Existing config? Backup first:
 ```bash
 mv ~/.pi ~/.pi.backup.$(date +%Y%m%d-%H%M%S)
 git clone https://github.com/ktappdev/.pi.git ~/.pi
@@ -49,7 +48,7 @@ git clone https://github.com/ktappdev/.pi.git ~/.pi
 
 ## 3) Install extension dependencies
 
-Kyrie extensions live in `~/.pi/agent/extensions` and use local npm packages.
+Extensions live in `~/.pi/agent/extensions`:
 
 ```bash
 cd ~/.pi/agent/extensions
@@ -58,29 +57,20 @@ npm install
 
 ## 4) Set environment variables
 
-Add these to your shell profile (`~/.zshrc` or `~/.bashrc`), then restart your terminal.
-
-Example (`~/.zshrc`):
+Add keys to `~/.zshrc`:
 
 ```bash
-# Kyrie / Pi keys
+# Orchestrator / Pi keys
 export QWEN_API_KEY="your_qwen_api_key"
 export TAVILY_API_KEY="your_tavily_api_key"
 ```
 
-Then apply changes in the current shell:
+Apply: `source ~/.zshrc`
 
-```bash
-source ~/.zshrc
-```
-
-### Required (default setup)
-
+### Required
 ```bash
 export QWEN_API_KEY="your_qwen_api_key"
 ```
-
-Kyrie defaults to the `QwenCodingPlan` provider (`agent/settings.json`).
 
 ### Highly recommended
 
@@ -111,27 +101,26 @@ Then work normally, for example:
 Refactor this service and run tests.
 ```
 
-## Agent map (quick view)
+## Agent map
 
-- `kyrie`: main orchestrator
-- `scout`: codebase discovery
-- `planner`: implementation planning
-- `builder`: coding changes
-- `reviewer`: final verification
-- `designer`: UI/UX specs
-- `devops`: GitHub/GH CLI operations and Beads task triage
-- `tavily`: external web research
-- `sparky`: brainstorming
-- `documenter`: docs writing
+- `orchestrator`: orchestrator (you talk to this one)
+- `scout`: find things in code
+- `planner`: write implementation plans
+- `builder`: write code
+- `reviewer`: verify changes
+- `designer`: UI specs
+- `devops`: git / ci / tasks
+- `tavily`: web research
+- `sparky`: brainstorm
+- `documenter`: write docs
 
 ## Verify your setup
 
-Quick checks:
+Verify:
 
-- `echo $QWEN_API_KEY` returns a value
-- `echo $TAVILY_API_KEY` returns a value (if using web research)
-- Pi starts without provider/auth errors
-- Kyrie can dispatch specialists in a normal coding task
+- `echo $QWEN_API_KEY` works
+- Pi starts without errors
+- Orchestrator dispatches agents correctly
 
 ## Security notes
 

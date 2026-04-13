@@ -337,6 +337,15 @@ export default function loopExtension(pi: ExtensionAPI): void {
 		},
 	});
 
+	// Add signal_loop_success to active tools unconditionally when loop is active
+	pi.on("agent_before_start", (_, ctx) => {
+		if (loopState.active) {
+			const activeTools = new Set(ctx.getActiveTools());
+			activeTools.add("signal_loop_success");
+			ctx.setActiveTools(Array.from(activeTools));
+		}
+	});
+
 	pi.registerCommand("loop", {
 		description: "Start a follow-up loop until a breakout condition is met",
 		handler: async (args, ctx) => {

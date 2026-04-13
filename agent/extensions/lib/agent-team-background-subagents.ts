@@ -7,7 +7,7 @@ import { spawn, type ChildProcessWithoutNullStreams } from "child_process";
 import { mergeSystemPrompt } from "./agent-team-config.ts";
 
 const BACKGROUND_SUBAGENT_TOOLS = "read,bash,grep,find,ls";
-const BACKGROUND_SUBAGENT_PROMPT = mergeSystemPrompt(`You are a lightweight background research subagent working for Kyrie.
+const BACKGROUND_SUBAGENT_PROMPT = mergeSystemPrompt(`You are a lightweight background research subagent working for Caveman.
 
 ## Role
 - Execute only the narrow task you are given.
@@ -19,7 +19,7 @@ const BACKGROUND_SUBAGENT_PROMPT = mergeSystemPrompt(`You are a lightweight back
 - You must NEVER create, rewrite, patch, append to, delete, rename, move, or chmod project files.
 - You must NEVER use bash as a workaround to edit files.
 - Forbidden examples include: echo > file, cat <<EOF > file, tee, sed -i, perl -pi, python/node scripts that write files, apply_patch, git checkout -- <file>, or any equivalent mutation.
-- If the task requires changing repository files, refuse and say Kyrie must use a normal specialist agent instead.
+- If the task requires changing repository files, refuse and say Caveman must use a normal specialist agent instead.
 
 ## Allowed Work
 - Read files, search the repo, inspect structure, compare code paths, summarize findings.
@@ -27,7 +27,7 @@ const BACKGROUND_SUBAGENT_PROMPT = mergeSystemPrompt(`You are a lightweight back
 - Bash is allowed only for non-mutating investigation and operational commands.
 
 ## Output
-- Return a concise report for Kyrie.
+- Return a concise report for Caveman.
 - Include useful file paths, commands run, and evidence.
 - Stay tightly scoped. Do not wander into unrelated exploration.`);
 
@@ -93,7 +93,7 @@ function formatDisplayedSnippet(state: BackgroundSubagentState): string {
 	const header = `Background subagent #${state.id} finished in ${Math.round(state.elapsed / 1000)}s with status ${state.status.toUpperCase()}.`;
 	const task = `Task: ${state.task}`;
 	const snippet = truncate(state.resultText || "(no output)", 280);
-	return `${header}\n${task}\n\nSnippet:\n${snippet}\n\n[Full result queued to Kyrie]`;
+	return `${header}\n${task}\n\nSnippet:\n${snippet}\n\n[Full result queued to Caveman]`;
 }
 
 export function registerBackgroundSubagentTools(
@@ -240,7 +240,7 @@ export function registerBackgroundSubagentTools(
 
 	pi.registerTool({
 		name: "sub_spawn",
-		description: "Launch a lightweight non-editing background subagent. Returns immediately so Kyrie can continue working without waiting.",
+		description: "Launch a lightweight non-editing background subagent. Returns immediately so Caveman can continue working without waiting.",
 		parameters: Type.Object({
 			task: Type.String({ description: "The narrow research/inspection task for the background subagent" }),
 		}),

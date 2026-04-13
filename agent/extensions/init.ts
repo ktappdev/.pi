@@ -15,7 +15,7 @@ async function pathExists(filePath: string): Promise<boolean> {
 
 function helpText(): string {
 	return [
-		"/init         - ask Kyrie/Scout/Builder to create or improve AGENTS.md here",
+		"/init         - ask Caveman/Scout/Builder to create or improve AGENTS.md here",
 		"/init --w     - mention monorepo workspace-aware behavior for root-level initialization",
 		"/init --help  - show this help",
 	].join("\n");
@@ -34,7 +34,7 @@ function buildPrompt(cwd: string, agentsExists: boolean, includeWorkspaces: bool
 		`${existingMode}`,
 		"",
 		"Use the agent team workflow:",
-		"- Kyrie should orchestrate.",
+		"- Caveman should orchestrate.",
 		"- Scout should do discovery/read-only analysis.",
 		"- Builder should make the file edits.",
 		"",
@@ -70,7 +70,7 @@ function parseArgs(args: string): { includeWorkspaces: boolean; showHelp: boolea
 
 export default function initExtension(pi: ExtensionAPI): void {
 	pi.registerCommand("init", {
-		description: "Ask Kyrie/Scout/Builder to create or improve AGENTS.md in the current project",
+		description: "Ask Caveman/Scout/Builder to create or improve AGENTS.md in the current project",
 		getArgumentCompletions: (prefix) => {
 			const items = [
 				{ value: "--w", label: "--w", description: "Mention workspace-aware monorepo initialization" },
@@ -94,7 +94,7 @@ export default function initExtension(pi: ExtensionAPI): void {
 				pi.sendUserMessage(prompt);
 			} else {
 				pi.sendUserMessage(prompt, { deliverAs: "followUp" });
-				ctx.ui.notify("/init queued as a follow-up task for Kyrie.", "info");
+				ctx.ui.notify("/init queued as a follow-up task for Caveman.", "info");
 			}
 		},
 	});
