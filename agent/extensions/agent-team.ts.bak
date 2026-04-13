@@ -634,14 +634,6 @@ export default function (pi: ExtensionAPI) {
 		const agentKey = state.def.name.toLowerCase().replace(/\s+/g, "-");
 		const agentSessionFile = join(sessionDir, `${agentKey}.json`);
 
-		// Load global APPEND_SYSTEM.md for sub-agents (exclude certain agents)
-		const globalAppendPath = join(homedir(), '.pi', 'agent', 'APPEND_SYSTEM.md');
-		const globalAppendRaw = existsSync(globalAppendPath) ? readFileSync(globalAppendPath, 'utf-8').trim() : '';
-		// Agents that should NOT get the global append (research/search/doc agents don't need coding guidelines)
-		const excludedAgents = ['scout', 'tavily', 'documenter', 'designer', 'devops', 'sparky'];
-		const shouldAppend = !excludedAgents.includes(state.def.name.toLowerCase());
-		const globalAppend = shouldAppend ? globalAppendRaw : '';
-
 		// Build args
 		const args = [
 			"--mode", "json",
@@ -650,7 +642,7 @@ export default function (pi: ExtensionAPI) {
 			"--model", model,
 			"--thinking", state.thinking || state.def.thinking || "off",
 			"--tools", state.def.tools,
-			"--append-system-prompt", mergeSystemPrompt(state.def.systemPrompt + (globalAppend ? "\n\n" + globalAppend : "")),
+				"--append-system-prompt", mergeSystemPrompt(state.def.systemPrompt),
 			"--session", agentSessionFile,
 		];
 
@@ -1417,11 +1409,8 @@ ${agentCatalog}`;
 			.replace(/\${teamMembers}/g, teamMembers)
 			.replace(/\${activeTeamName}/g, activeTeamName));
 
-		// Load global APPEND_SYSTEM.md and append to orchestrator prompt
-		const globalAppendPath = join(homedir(), '.pi', 'agent', 'APPEND_SYSTEM.md');
-		const globalAppend = existsSync(globalAppendPath) ? readFileSync(globalAppendPath, 'utf-8').trim() : '';
 		return {
-			systemPrompt: `${finalPrompt}\n\n---\n\n${backgroundSubagents.promptGuidance}${globalAppend ? `\n\n---\n\n${globalAppend}` : ``}`,
+			systemPrompt: `${finalPrompt}\n\n---\n\n${backgroundSubagents.promptGuidance}`,
 		};
 	});
 

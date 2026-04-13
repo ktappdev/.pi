@@ -10,6 +10,6 @@
     "git:github.com/jonjonrankin/pi-caveman",
     "git:github.com/ktappdev/pi-qwen-oauth"
   ],
-  "defaultProvider": "kilo",
-  "defaultModel": "bytedance-seed/dola-seed-2.0-pro:free"
+  "defaultProvider": "QwenCodingPlan",
+  "defaultModel": "qwen3.5-plus"
 }
