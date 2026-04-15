@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.67.1",
+  "lastChangelogVersion": "0.67.2",
   "defaultThinkingLevel": "medium",
   "quietStartup": false,
   "hideThinkingBlock": false,
@@ -10,6 +10,6 @@
     "git:github.com/jonjonrankin/pi-caveman",
     "git:github.com/ktappdev/pi-qwen-oauth"
   ],
-  "defaultProvider": "opencode-go",
-  "defaultModel": "qwen3.6-plus"
+  "defaultProvider": "QwenCodingPlan",
+  "defaultModel": "qwen3.5-plus"
 }
