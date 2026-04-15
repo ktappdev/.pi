@@ -8,5 +8,5 @@ planner: opencode-go/glm-5.1
 reviewer: opencode-go/glm-5.1
 scout: kilo/bytedance-seed/dola-seed-2.0-pro:free
 sparky: QwenCodingPlan/kimi-k2.5
-subagents: MiniMax-Coding-Plan/MiniMax-M2.7
+subagents: QwenCodingPlan/qwen3.5-plus
 tavily: QwenCodingPlan/qwen3-coder-next

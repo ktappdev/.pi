@@ -1023,8 +1023,25 @@ export default function (pi: ExtensionAPI) {
 		});
 	}
 
-	// ── dispatch_agent Tool (registered at top level) ──
+	// ── dispatch_agent Tool (orchestrator only) ──
 
+	// Determine if this is the orchestrator (main session) or a sub-agent.
+	// - Main orchestrator: no --tools arg (started directly by user)
+	// - Sub-agents: have --tools arg (spawned via dispatchAgent)
+	// Only orchestrator should have dispatch_agent capability.
+	const args = process.argv;
+	const toolsIdx = args.findIndex(arg => arg === '--tools');
+	const isMainSession = toolsIdx === -1; // No --tools = main orchestrator session
+	
+	// For sub-agents, check if they have dispatch_agent in their tools (shouldn't happen, but be safe)
+	let isOrchestrator = isMainSession;
+	if (!isMainSession && toolsIdx + 1 < args.length) {
+		const toolsList = args[toolsIdx + 1];
+		isOrchestrator = toolsList.split(',').map(t => t.trim()).includes('dispatch_agent');
+	}
+
+	// Only register dispatch_agent for orchestrator
+	if (isOrchestrator) {
 	pi.registerTool({
 		name: "dispatch_agent",
 		label: "Dispatch Agent",
@@ -1123,6 +1140,7 @@ export default function (pi: ExtensionAPI) {
 			return new Text(header, 0, 0);
 		},
 	});
+	} // End orchestrator-only check
 
 	pi.registerCommand("agents-watch", {
 		description: "Watch one agent's live output: /agents-watch [agent]",
