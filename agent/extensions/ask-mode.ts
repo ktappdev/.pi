@@ -18,6 +18,7 @@ import { Key } from "@mariozechner/pi-tui";
 import { isSafeCommand } from "./lib/ask-mode-utils.js";
 
 const ASK_MODE_TOOLS = ["read", "bash", "grep", "find", "ls", "questionnaire"];
+const DEFAULT_TOOLS = ["read", "bash", "edit", "write"];
 
 function isAssistantMessage(m: AgentMessage): m is AgentMessage & { content: unknown } {
 	return m.role === "assistant" && Array.isArray(m.content);
@@ -48,7 +49,7 @@ export default function askModeExtension(pi: ExtensionAPI): void {
 			pi.setActiveTools(ASK_MODE_TOOLS);
 			ctx.ui.notify(`Ask mode enabled. Tools: ${ASK_MODE_TOOLS.join(", ")}`);
 		} else {
-			pi.setActiveTools(undefined);
+			pi.setActiveTools(DEFAULT_TOOLS);
 			ctx.ui.notify("Ask mode disabled. Full access restored.");
 		}
 		updateStatus(ctx);

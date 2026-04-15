@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.66.1",
+  "lastChangelogVersion": "0.67.1",
   "theme": "synthwave",
   "defaultThinkingLevel": "high",
   "agentTeamViewMode": "table",
@@ -11,7 +11,7 @@
     "npm:@tmustier/pi-files-widget",
     "git:github.com/ktappdev/pi-caveman"
   ],
-  "quietStartup": false,
+  "quietStartup": true,
   "treeFilterMode": "all",
   "transport": "auto",
   "thinkingBudgets": {
