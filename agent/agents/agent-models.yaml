@@ -5,7 +5,7 @@ documenter: minimax/MiniMax-M2.7
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: opencode-go/glm-5.1
-reviewer: opencode-go/glm-5.1
+reviewer: opencode-go/qwen3.6-plus
 scout: kilo/bytedance-seed/dola-seed-2.0-pro:free
 sparky: QwenCodingPlan/kimi-k2.5
 subagents: QwenCodingPlan/qwen3.5-plus

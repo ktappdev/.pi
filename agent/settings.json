@@ -21,7 +21,7 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "QwenCodingPlan",
+  "defaultProvider": "opencode-go",
   "defaultModel": "qwen3.5-plus",
   "hideThinkingBlock": false
 }
