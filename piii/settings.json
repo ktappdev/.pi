@@ -8,7 +8,8 @@
     "git:github.com/ktappdev/pi-telegram",
     "git:github.com/ktappdev/kilo-pi-provider",
     "git:github.com/jonjonrankin/pi-caveman",
-    "git:github.com/ktappdev/pi-qwen-oauth"
+    "git:github.com/ktappdev/grill-me-tui",
+    "git:github.com/mikeyobrien/pi-provider-kiro"
   ],
   "defaultProvider": "QwenCodingPlan",
   "defaultModel": "qwen3.5-plus"

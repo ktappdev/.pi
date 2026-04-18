@@ -1,10 +1,10 @@
 builder: medium
-designer: high
-devops: low
+designer: medium
+devops: medium
 documenter: off
 oracle: off
 planner: high
 reviewer: medium
 scout: medium
-sparky: minimal
+sparky: medium
 tavily: off

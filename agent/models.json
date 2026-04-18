@@ -302,6 +302,9 @@
       "api": "openai-completions",
       "apiKey": "OPENCODE_API_KEY",
       "authHeader": true,
+      "headers": {
+        "x-opencode-client": "cli"
+      },
       "models": [
         {
           "id": "glm-5.1",
@@ -373,7 +376,10 @@
           "input": ["text", "image"],
           "contextWindow": 1000000,
           "maxTokens": 81920,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+          "options": {
+            "enable_thinking": true
+          }
         },
         {
           "id": "qwen3.5-plus",
@@ -382,7 +388,10 @@
           "input": ["text", "image"],
           "contextWindow": 1000000,
           "maxTokens": 81920,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+          "options": {
+            "enable_thinking": true
+          }
         }
       ]
     }

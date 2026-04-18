@@ -7,8 +7,8 @@
     "git:github.com/ktappdev/pi-telegram",
     "npm:pi-web-access",
     "git:github.com/ktappdev/kilo-pi-provider",
-    "git:github.com/ktappdev/pi-qwen-oauth",
-    "git:github.com/jonjonrankin/pi-caveman"
+    "git:github.com/jonjonrankin/pi-caveman",
+    "git:github.com/mikeyobrien/pi-provider-kiro"
   ],
   "quietStartup": true,
   "treeFilterMode": "all",
@@ -21,6 +21,6 @@
     "xhigh": 81920
   },
   "defaultProvider": "opencode-go",
-  "defaultModel": "qwen3.5-plus",
+  "defaultModel": "mimo-v2-pro",
   "hideThinkingBlock": false
 }
