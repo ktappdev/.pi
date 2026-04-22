@@ -1,6 +1,6 @@
 {
   "lastChangelogVersion": "0.67.2",
-  "defaultThinkingLevel": "medium",
+  "defaultThinkingLevel": "high",
   "quietStartup": false,
   "hideThinkingBlock": false,
   "packages": [
@@ -8,9 +8,8 @@
     "git:github.com/ktappdev/pi-telegram",
     "git:github.com/ktappdev/kilo-pi-provider",
     "git:github.com/jonjonrankin/pi-caveman",
-    "git:github.com/ktappdev/grill-me-tui",
     "git:github.com/mikeyobrien/pi-provider-kiro"
   ],
-  "defaultProvider": "QwenCodingPlan",
-  "defaultModel": "qwen3.5-plus"
+  "defaultProvider": "github-copilot",
+  "defaultModel": "gpt-5.4-mini"
 }
