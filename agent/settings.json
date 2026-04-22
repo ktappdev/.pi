@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.67.2",
   "theme": "synthwave",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "medium",
   "agentTeamViewMode": "table",
   "packages": [
     "git:github.com/ktappdev/pi-telegram",
@@ -20,7 +20,7 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "opencode-go",
-  "defaultModel": "mimo-v2-pro",
+  "defaultProvider": "MiniMax-Coding-Plan",
+  "defaultModel": "MiniMax-M2.7",
   "hideThinkingBlock": false
 }

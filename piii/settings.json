@@ -11,5 +11,5 @@
     "git:github.com/mikeyobrien/pi-provider-kiro"
   ],
   "defaultProvider": "github-copilot",
-  "defaultModel": "gpt-5.4-mini"
+  "defaultModel": "claude-sonnet-4.6"
 }

@@ -1,4 +1,4 @@
-builder: github-copilot/gpt-5.4-mini
+builder: kilo/bytedance-seed/dola-seed-2.0-pro:free
 designer: github-copilot/gemini-3-flash-preview
 devops: github-copilot/gpt-5-mini
 documenter: opencode-go/minimax-m2.5
@@ -6,7 +6,7 @@ mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: opencode-go/mimo-v2-pro
 reviewer: openai-codex/gpt-5.4
-scout: kilo/stepfun/step-3.5-flash:free
+scout: kilo/bytedance-seed/dola-seed-2.0-pro:free
 sparky: github-copilot/gpt-5-mini
 subagents: opencode-go/minimax-m2.7
 tavily: opencode-go/minimax-m2.5

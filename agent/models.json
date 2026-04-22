@@ -1,147 +1,5 @@
 {
   "providers": {
-    "QwenCodingPlan": {
-      "baseUrl": "https://coding-intl.dashscope.aliyuncs.com/v1",
-      "api": "openai-completions",
-      "apiKey": "QWEN_API_KEY",
-      "authHeader": true,
-      "compat": {
-        "supportsDeveloperRole": false,
-        "thinkingFormat": "qwen"
-      },
-      "models": [
-        {
-          "id": "qwen3.5-plus",
-          "name": "Qwen 3.5 Plus",
-          "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
-          "contextWindow": 1000000,
-          "maxTokens": 81920,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3.6-plus",
-          "name": "Qwen 3.6 Plus",
-          "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
-          "contextWindow": 1000000,
-          "maxTokens": 81920,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "kimi-k2.5",
-          "name": "Kimi K2.5",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 256000,
-          "maxTokens": 64000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3-coder-next",
-          "name": "Qwen3 Coder Next",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 256000,
-          "maxTokens": 64000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3-coder-plus",
-          "name": "Qwen3 Coder Plus",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 1000000,
-          "maxTokens": 64000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3-max-2026-01-23",
-          "name": "Qwen3 Max 2026-01-23",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "glm-5",
-          "name": "GLM 5",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 200000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "MiniMax-M2.5",
-          "name": "MiniMax M2.5",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 200000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        }
-      ]
-    },
     "DeepSeek": {
       "baseUrl": "https://api.deepseek.com",
       "api": "openai-completions",
@@ -182,7 +40,7 @@
       ]
     },
     "Lugetech": {
-      "baseUrl": "http://ubuntu:8080/v1",
+      "baseUrl": "http://llama.kentaylor.dev/v1",
       "api": "openai-completions",
       "apiKey": "none",
       "models": [
@@ -249,13 +107,13 @@
           }
         },
         {
-          "id": "qwen3.5-35b",
-          "name": "Qwen 3.5 35B Uncensored",
+          "id": "qwen3.6-35b",
+          "name": "Qwen 3.6 35B",
           "reasoning": true,
           "input": [
             "text"
           ],
-          "contextWindow": 32768,
+          "contextWindow": 256000,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -265,7 +123,8 @@
           },
           "options": {
             "temperature": 0.6,
-            "top_p": 0.9
+            "top_p": 0.95,
+            "top_k": 20
           }
         }
       ]
@@ -310,73 +169,131 @@
           "id": "glm-5.1",
           "name": "GLM 5.1 (Go)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 200000,
           "maxTokens": 32000,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
         },
         {
           "id": "glm-5",
           "name": "GLM 5 (Go)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 200000,
           "maxTokens": 32000,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
         },
         {
           "id": "kimi-k2.5",
           "name": "Kimi K2.5 (Go)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 256000,
           "maxTokens": 64000,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
         },
         {
           "id": "mimo-v2-pro",
           "name": "MiMo V2 Pro (Go)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 32000,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
         },
         {
           "id": "mimo-v2-omni",
           "name": "MiMo V2 Omni (Go)",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 256000,
           "maxTokens": 32000,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
         },
         {
           "id": "minimax-m2.7",
           "name": "MiniMax M2.7 (Go)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 204800,
           "maxTokens": 32000,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
         },
         {
           "id": "minimax-m2.5",
           "name": "MiniMax M2.5 (Go)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 204800,
           "maxTokens": 32000,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
         },
         {
           "id": "qwen3.6-plus",
           "name": "Qwen 3.6 Plus (Go)",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 81920,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
           "options": {
             "enable_thinking": true
           }
@@ -385,10 +302,18 @@
           "id": "qwen3.5-plus",
           "name": "Qwen 3.5 Plus (Go)",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 81920,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
           "options": {
             "enable_thinking": true
           }
