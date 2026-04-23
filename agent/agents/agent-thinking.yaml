@@ -1,6 +1,6 @@
-builder: medium
-designer: medium
-devops: medium
+builder: high
+designer: high
+devops: minimal
 documenter: off
 oracle: off
 planner: medium

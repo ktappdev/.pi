@@ -20,7 +20,7 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "MiniMax-Coding-Plan",
-  "defaultModel": "MiniMax-M2.7",
+  "defaultProvider": "kilo",
+  "defaultModel": "tencent/hy3-preview:free",
   "hideThinkingBlock": false
 }

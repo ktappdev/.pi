@@ -8,8 +8,10 @@
     "git:github.com/ktappdev/pi-telegram",
     "git:github.com/ktappdev/kilo-pi-provider",
     "git:github.com/jonjonrankin/pi-caveman",
-    "git:github.com/mikeyobrien/pi-provider-kiro"
+    "git:github.com/mikeyobrien/pi-provider-kiro",
+    "../../developer/context-monitor",
+    "../../developer/pi-context-monitor"
   ],
-  "defaultProvider": "github-copilot",
-  "defaultModel": "claude-sonnet-4.6"
+  "defaultProvider": "DeepSeek",
+  "defaultModel": "deepseek-chat"
 }

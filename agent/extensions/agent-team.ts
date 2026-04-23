@@ -176,7 +176,6 @@ interface DispatchResult {
 }
 
 const MAX_AGENT_LOG_LINES = 500;
-const BUILDER_ONLY_EXTENSIONS = ["multi-edit.ts", "fresh-read.ts"];
 const EXTENSIONS_DIR = fileURLToPath(new URL(".", import.meta.url));
 // Package names that are likely providers (fallback if code scan fails)
 const PROVIDER_PACKAGE_PATTERNS = [
@@ -338,7 +337,7 @@ function getSubagentExtensionArgs(agentName: string, tools: string, loadProvider
 
 	// Add agent-specific extensions
 	if (hasEditCapabilities(tools)) {
-		const extensionNames = agentName.toLowerCase() === "builder" ? BUILDER_ONLY_EXTENSIONS : [];
+		const extensionNames: string[] = [];
 		for (const extensionName of extensionNames) {
 			const extensionPath = join(EXTENSIONS_DIR, extensionName);
 			if (existsSync(extensionPath)) {
@@ -827,6 +826,7 @@ export default function (pi: ExtensionAPI) {
 		const args = [
 			"--mode", "json",
 			"-p",
+			"--no-extensions",
 			...getSubagentExtensionArgs(state.def.name, state.def.tools, state.def.loadProviders ?? true),
 			"--model", model,
 			"--thinking", state.thinking || state.def.thinking || "off",

@@ -1,12 +1,12 @@
-builder: kilo/bytedance-seed/dola-seed-2.0-pro:free
-designer: github-copilot/gemini-3-flash-preview
-devops: github-copilot/gpt-5-mini
+builder: MiniMax-Coding-Plan/MiniMax-M2.7
+designer: MiniMax-Coding-Plan/MiniMax-M2.7
+devops: MiniMax-Coding-Plan/MiniMax-M2.7
 documenter: opencode-go/minimax-m2.5
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: opencode-go/mimo-v2-pro
 reviewer: openai-codex/gpt-5.4
-scout: kilo/bytedance-seed/dola-seed-2.0-pro:free
-sparky: github-copilot/gpt-5-mini
+scout: MiniMax-Coding-Plan/MiniMax-M2.7
+sparky: opencode/big-pickle
 subagents: opencode-go/minimax-m2.7
 tavily: opencode-go/minimax-m2.5
