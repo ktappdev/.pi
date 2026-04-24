@@ -10,7 +10,7 @@
     "git:github.com/jonjonrankin/pi-caveman",
     "git:github.com/mikeyobrien/pi-provider-kiro"
   ],
-  "quietStartup": true,
+  "quietStartup": false,
   "treeFilterMode": "all",
   "transport": "auto",
   "thinkingBudgets": {
@@ -20,7 +20,7 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "kilo",
-  "defaultModel": "tencent/hy3-preview:free",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "mimo-v2-pro",
   "hideThinkingBlock": false
 }

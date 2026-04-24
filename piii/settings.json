@@ -13,5 +13,5 @@
     "../../developer/pi-context-monitor"
   ],
   "defaultProvider": "DeepSeek",
-  "defaultModel": "deepseek-chat"
+  "defaultModel": "deepseek-v4-flash"
 }

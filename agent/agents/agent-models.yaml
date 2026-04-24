@@ -1,12 +1,12 @@
-builder: MiniMax-Coding-Plan/MiniMax-M2.7
-designer: MiniMax-Coding-Plan/MiniMax-M2.7
+builder: DeepSeek/deepseek-v4-flash
+designer: opencode-go/kimi-k2.5
 devops: MiniMax-Coding-Plan/MiniMax-M2.7
 documenter: opencode-go/minimax-m2.5
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: opencode-go/mimo-v2-pro
 reviewer: openai-codex/gpt-5.4
-scout: MiniMax-Coding-Plan/MiniMax-M2.7
+scout: DeepSeek/deepseek-v4-flash
 sparky: opencode/big-pickle
-subagents: opencode-go/minimax-m2.7
+subagents: DeepSeek/deepseek-v4-flash
 tavily: opencode-go/minimax-m2.5
