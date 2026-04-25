@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.67.2",
+  "lastChangelogVersion": "0.70.2",
   "theme": "synthwave",
   "defaultThinkingLevel": "medium",
   "agentTeamViewMode": "table",
@@ -8,7 +8,8 @@
     "npm:pi-web-access",
     "git:github.com/ktappdev/kilo-pi-provider",
     "git:github.com/jonjonrankin/pi-caveman",
-    "git:github.com/mikeyobrien/pi-provider-kiro"
+    "git:github.com/mikeyobrien/pi-provider-kiro",
+    "npm:pi-context-cap"
   ],
   "quietStartup": false,
   "treeFilterMode": "all",
@@ -21,6 +22,6 @@
     "xhigh": 81920
   },
   "defaultProvider": "opencode-go",
-  "defaultModel": "mimo-v2-pro",
+  "defaultModel": "qwen3.5-plus",
   "hideThinkingBlock": false
 }
