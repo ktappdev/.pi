@@ -14,6 +14,10 @@
  *   /agents-list          — list loaded agents
  *   /agents-models        — configure models for agents
  *   /agents-reset         — reset agent context (clear session memory)
+ *   /agents-stateless     — mark agents as stateless (no context across dispatches)
+ *   /agents-stateless-off — remove agents from stateless set
+ *   /agents-stateless-list — show which agents are stateless
+ *   /agents-stateless-mode — global stateless toggle (on/off)
  *   /agents-grid N        — set column count (default 2)
  *   /agents-view <mode>   — switch grid/table/tactical view
  *
@@ -69,6 +73,14 @@ import {
 	renderTacticalView,
 	type AgentTeamViewMode,
 } from "./lib/agent-team-views.ts";
+import {
+	isStateless,
+	markStateless,
+	unmarkStateless,
+	listStateless,
+	getStatelessMode,
+	setStatelessMode,
+} from "./lib/agent-team-stateless.ts";
 import { chooseAgentModelWithFuzzyPicker } from "./lib/agent-team-model-picker.ts";
 
 // ── Helper: Find Pi Executable ───────────────────
@@ -489,8 +501,11 @@ export default function (pi: ExtensionAPI) {
 				state.elapsed = Date.now() - (Date.now() - state.elapsed);
 				state.status = "idle";
 
-				// Keep session file intact for context preservation
-				// Don't delete state.sessionFile
+				// Keep session file intact for context preservation (unless stateless)
+				if (isStateless(key) && state.sessionFile && existsSync(state.sessionFile)) {
+					try { unlinkSync(state.sessionFile); } catch {}
+					state.sessionFile = null;
+				}
 
 				stoppedAgents.push(displayName(state.def.name));
 			}
@@ -503,7 +518,7 @@ export default function (pi: ExtensionAPI) {
 			// Notify user
 			if (widgetCtx) {
 				widgetCtx.ui.notify(
-					`Stopped ${stoppedAgents.join(", ")} (context preserved)`,
+					`Stopped ${stoppedAgents.join(", ")}`,
 					"info"
 				);
 			}
@@ -814,6 +829,14 @@ export default function (pi: ExtensionAPI) {
 		const agentKey = state.def.name.toLowerCase().replace(/\s+/g, "-");
 		const agentSessionFile = join(sessionDir, `${agentKey}.json`);
 
+		// If stateless, delete any existing session so we start fresh
+		if (isStateless(key)) {
+			if (existsSync(agentSessionFile)) {
+				unlinkSync(agentSessionFile);
+			}
+			state.sessionFile = null;
+		}
+
 		// Load global APPEND_SYSTEM.md for sub-agents (exclude certain agents)
 		const globalAppendPath = join(homedir(), '.pi', 'agent', 'APPEND_SYSTEM.md');
 		const globalAppendRaw = existsSync(globalAppendPath) ? readFileSync(globalAppendPath, 'utf-8').trim() : '';
@@ -956,9 +979,15 @@ export default function (pi: ExtensionAPI) {
 				const isSuccess = code === 0;
 				state.status = isSuccess ? "done" : "error";
 
-				// Mark session file as available for resume
-				if (isSuccess) {
+				// Mark session file as available for resume (skip if stateless)
+				if (isSuccess && !isStateless(key)) {
 					state.sessionFile = agentSessionFile;
+				} else if (isStateless(key)) {
+					// Delete session file so no context persists
+					state.sessionFile = null;
+					if (existsSync(agentSessionFile)) {
+						unlinkSync(agentSessionFile);
+					}
 				}
 
 				const full = textChunks.join("");
@@ -1334,11 +1363,15 @@ export default function (pi: ExtensionAPI) {
 			target.elapsed = Date.now() - (Date.now() - target.elapsed);
 			target.status = "idle";
 
-			// Keep session file intact for context preservation
-			// Don't delete target.sessionFile
+			// Clean up session file for stateless agents
+			const cancelKey = target.def.name.toLowerCase();
+			if (isStateless(cancelKey) && target.sessionFile && existsSync(target.sessionFile)) {
+				try { unlinkSync(target.sessionFile); } catch {}
+				target.sessionFile = null;
+			}
 
 			updateWidget();
-			ctx.ui.notify(`Cancelled ${displayName(target.def.name)} (context preserved)`, "info");
+			ctx.ui.notify(`Cancelled ${displayName(target.def.name)}`, "info");
 		},
 	});
 
@@ -1543,6 +1576,128 @@ export default function (pi: ExtensionAPI) {
 				`Reset ${resetCount} agent(s): ${agentList}\nKilled running tasks, cleared timers, fresh context.`,
 				"info"
 			);
+		},
+	});
+
+	// ── Stateless Mode Commands ──────────────
+
+	pi.registerCommand("agents-stateless", {
+		description: "Mark agents as stateless (no context across dispatches): /agents-stateless <agent1> [agent2 ...]",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const items = Array.from(agentStates.values()).map(s => ({
+				value: s.def.name,
+				label: `${displayName(s.def.name)} (${s.status})`,
+			}));
+			const p = prefix.trim().toLowerCase();
+			if (!p) return items;
+			const filtered = items.filter(i => i.value.toLowerCase().includes(p) || i.label.toLowerCase().includes(p));
+			return filtered.length > 0 ? filtered : items;
+		},
+		handler: async (args, ctx) => {
+			widgetCtx = ctx;
+			const names = (args || "").trim().split(/\s+/).filter(Boolean);
+			if (names.length === 0) {
+				ctx.ui.notify("Usage: /agents-stateless <agent1> [agent2 ...]", "error");
+				return;
+			}
+			const marked: string[] = [];
+			for (const name of names) {
+				const state = resolveAgentByInput(name);
+				if (!state) {
+					ctx.ui.notify(`Agent not found: ${name}`, "warning");
+					continue;
+				}
+				const key = state.def.name.toLowerCase();
+				markStateless(key);
+				marked.push(displayName(state.def.name));
+			}
+			if (marked.length > 0) {
+				ctx.ui.notify(`Stateless: ${marked.join(", ")}`, "info");
+			}
+		},
+	});
+
+	pi.registerCommand("agents-stateless-off", {
+		description: "Remove agents from stateless set: /agents-stateless-off <agent1> [agent2 ...]",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const items = listStateless().map(key => {
+				const state = agentStates.get(key);
+				const label = state ? displayName(state.def.name) : key;
+				return { value: key, label };
+			});
+			const p = prefix.trim().toLowerCase();
+			if (!p) return items;
+			const filtered = items.filter(i => i.value.toLowerCase().includes(p) || i.label.toLowerCase().includes(p));
+			return filtered.length > 0 ? filtered : items;
+		},
+		handler: async (args, ctx) => {
+			widgetCtx = ctx;
+			const names = (args || "").trim().split(/\s+/).filter(Boolean);
+			if (names.length === 0) {
+				ctx.ui.notify("Usage: /agents-stateless-off <agent1> [agent2 ...]", "error");
+				return;
+			}
+			const unmarked: string[] = [];
+			for (const name of names) {
+				const resolved = resolveAgentByInput(name);
+				if (!resolved) {
+					ctx.ui.notify(`Agent not found: ${name}`, "warning");
+					continue;
+				}
+				const key = resolved.def.name.toLowerCase();
+				if (!listStateless().includes(key)) {
+					ctx.ui.notify(`${displayName(resolved.def.name)} is not stateless`, "warning");
+					continue;
+				}
+				unmarkStateless(key);
+				unmarked.push(displayName(resolved.def.name));
+			}
+			if (unmarked.length > 0) {
+				ctx.ui.notify(`No longer stateless: ${unmarked.join(", ")}`, "info");
+			}
+		},
+	});
+
+	pi.registerCommand("agents-stateless-list", {
+		description: "Show which agents are stateless",
+		handler: async (_args, ctx) => {
+			widgetCtx = ctx;
+			const mode = getStatelessMode();
+			const agents = listStateless();
+			const modeLine = `Global mode: ${mode ? "ON (all agents stateless)" : "OFF"}`;
+			const agentsLine = agents.length > 0
+				? `Per-agent: ${agents.map(a => displayName(a)).join(", ")}`
+				: "No per-agent stateless overrides";
+			ctx.ui.notify(`${modeLine}\n${agentsLine}`, "info");
+		},
+	});
+
+	pi.registerCommand("agents-stateless-mode", {
+		description: "Toggle global stateless mode: /agents-stateless-mode <on|off>",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const items = [
+				{ value: "on", label: "All agents stateless" },
+				{ value: "off", label: "Use per-agent settings" },
+			];
+			const p = prefix.trim().toLowerCase();
+			if (!p) return items;
+			const filtered = items.filter(i => i.value.startsWith(p) || i.label.toLowerCase().includes(p));
+			return filtered.length > 0 ? filtered : items;
+		},
+		handler: async (args, ctx) => {
+			widgetCtx = ctx;
+			const raw = (args || "").trim().toLowerCase();
+			if (!raw) {
+				const current = getStatelessMode();
+				ctx.ui.notify(`Global stateless mode: ${current ? "ON" : "OFF"}`, "info");
+				return;
+			}
+			if (raw !== "on" && raw !== "off") {
+				ctx.ui.notify("Usage: /agents-stateless-mode on|off", "error");
+				return;
+			}
+			setStatelessMode(raw === "on");
+			ctx.ui.notify(`Global stateless mode: ${raw.toUpperCase()}`, "info");
 		},
 	});
 
@@ -1845,6 +2000,10 @@ ${agentCatalog}`;
 			`/agents-models        Configure models for agents\n` +
 			`/agents-reset         Reset agent context\n` +
 			`/agents-cancel        Cancel a running agent\n` +
+			`/agents-stateless     Mark agents stateless (no context)\n` +
+			`/agents-stateless-off Remove from stateless set\n` +
+			`/agents-stateless-list Show stateless agents\n` +
+			`/agents-stateless-mode Toggle global stateless\n` +
 			`/agents-grid <1-6>    Set grid column count\n` +
 			`/agents-view <mode>   Switch grid/table/tactical view\n` +
 			`/agents-watch [agent] Focus on one agent's live output\n` +
