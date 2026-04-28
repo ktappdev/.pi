@@ -19,6 +19,7 @@
  *   /agents-stateless-list — show which agents are stateless
  *   /agents-stateless-mode — global stateless toggle (on/off)
  *   /agents-grid N        — set column count (default 2)
+ *   /agents-context-cap N — set context window cap in tokens (0 = model default)
  *   /agents-view <mode>   — switch grid/table/tactical view
  *
  * Usage: pi -e extensions/agent-team.ts
@@ -1527,6 +1528,41 @@ export default function (pi: ExtensionAPI) {
 		},
 	});
 
+	pi.registerCommand("agents-context-cap", {
+		description: "Set context window cap in tokens: /agents-context-cap <tokens> (0 = use model default)",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const presets = [
+				{ value: "0", label: "Reset to model default" },
+				{ value: "8192", label: "8K tokens" },
+				{ value: "16384", label: "16K tokens" },
+				{ value: "32768", label: "32K tokens" },
+				{ value: "65536", label: "64K tokens" },
+				{ value: "131072", label: "128K tokens" },
+				{ value: "262144", label: "256K tokens" },
+			];
+			const p = prefix.trim();
+			if (!p) return presets;
+			const filtered = presets.filter(i => i.value.startsWith(p) || i.label.toLowerCase().includes(p.toLowerCase()));
+			return filtered.length > 0 ? filtered : presets;
+		},
+		handler: async (args, _ctx) => {
+			widgetCtx = _ctx;
+			const n = parseInt(args?.trim() || "", 10);
+			if (isNaN(n) || n < 0) {
+				_ctx.ui.notify("Usage: /agents-context-cap <tokens> (0 = model default)", "error");
+				return;
+			}
+
+			if (n === 0) {
+				contextWindow = _ctx.model?.contextWindow || 0;
+				_ctx.ui.notify(`Context cap reset to model default: ${contextWindow} tokens`, "info");
+			} else {
+				contextWindow = n;
+				_ctx.ui.notify(`Context cap set to ${n} tokens`, "info");
+			}
+		},
+	});
+
 	pi.registerCommand("agents-reset", {
 		description: "Reset agent (kills running task, clears context, fresh start)",
 		handler: async (_args, ctx) => {
@@ -2079,6 +2115,7 @@ ${agentCatalog}`;
 			`/agents-stateless-list Show stateless agents\n` +
 			`/agents-stateless-mode Toggle global stateless\n` +
 			`/agents-grid <1-6>    Set grid column count\n` +
+			`/agents-context-cap N Set context window cap (tokens)\n` +
 			`/agents-view <mode>   Switch grid/table/tactical view\n` +
 			`/agents-watch [agent] Focus on one agent's live output\n` +
 			`/agents-watch-off     Return to team view`,
