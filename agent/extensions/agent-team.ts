@@ -58,6 +58,8 @@ import {
 	getProjectAgentModelsPath,
 	getGlobalAgentThinkingPath,
 	getProjectAgentThinkingPath,
+	getGlobalAgentStatelessPath,
+	getProjectAgentStatelessPath,
 	writeYamlMap,
 	displayName,
 	readTeamsFile,
@@ -80,6 +82,8 @@ import {
 	listStateless,
 	getStatelessMode,
 	setStatelessMode,
+	load as loadStatelessConfig,
+	save as saveStatelessConfig,
 } from "./lib/agent-team-stateless.ts";
 import { chooseAgentModelWithFuzzyPicker } from "./lib/agent-team-model-picker.ts";
 
@@ -442,6 +446,8 @@ export default function (pi: ExtensionAPI) {
 	let widgetCtx: any;
 	let orchestratorTools: string[] = ["dispatch_agent", "read", "bash"];
 	let sessionDir = "";
+	let globalStatelessPath = "";
+	let projectStatelessPath = "";
 	let contextWindow = 0;
 	let footerMetrics = createFooterMetricsState();
 	let backgroundSubagents = {
@@ -662,6 +668,11 @@ export default function (pi: ExtensionAPI) {
 			? readAgentYamlMap(projectThinkingPath)
 			: {};
 		agentThinking = mergeStringMaps(globalAgentThinking, projectAgentThinking);
+
+		// Load stateless config (global + project)
+		globalStatelessPath = getGlobalAgentStatelessPath();
+		projectStatelessPath = getProjectAgentStatelessPath(cwd);
+		loadStatelessConfig(globalStatelessPath, projectStatelessPath);
 	}
 
 	function activateTeam(teamName: string) {
@@ -703,6 +714,35 @@ export default function (pi: ExtensionAPI) {
 		if (watchAgentKey && !agentStates.has(watchAgentKey)) {
 			watchAgentKey = null;
 		}
+	}
+
+	function updateStatelessWidget() {
+		if (!widgetCtx) return;
+
+		const globalMode = getStatelessMode();
+		const allStateless = listStateless();
+
+		// Filter to only agents in current team
+		const teamKeys = new Set(Array.from(agentStates.keys()));
+		const teamStateless = allStateless.filter(k => teamKeys.has(k));
+
+		if (!globalMode && teamStateless.length === 0) {
+			widgetCtx.ui.setWidget("agent-team-stateless", undefined);
+			return;
+		}
+
+		widgetCtx.ui.setWidget("agent-team-stateless", (_tui: any, theme: any) => {
+			return {
+				render(_width: number): string[] {
+					if (globalMode) {
+						return [theme.fg("warning", "⚡ all agents stateless")];
+					}
+					const names = teamStateless.map(a => displayName(a)).join(", ");
+					return [theme.fg("warning", `⚡ stateless: ${names}`)];
+				},
+				invalidate() {},
+			};
+		});
 	}
 
 	function updateWidget() {
@@ -1403,6 +1443,7 @@ export default function (pi: ExtensionAPI) {
 			const name = teamNames[idx];
 			activateTeam(name);
 			updateWidget();
+			updateStatelessWidget();
 			ctx.ui.setStatus("agent-team", `Team: ${name} (${agentStates.size}) [${viewMode}]`);
 			ctx.ui.notify(`Team: ${name} — ${Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ")}`, "info");
 		},
@@ -1600,6 +1641,15 @@ export default function (pi: ExtensionAPI) {
 				ctx.ui.notify("Usage: /agents-stateless <agent1> [agent2 ...]", "error");
 				return;
 			}
+
+			const scopeChoice = await ctx.ui.select(
+				"Save stateless setting where?",
+				["Project only", "Global defaults"]
+			);
+			if (scopeChoice === undefined) return;
+			const isGlobalScope = scopeChoice === "Global defaults";
+			const savePath = isGlobalScope ? globalStatelessPath : projectStatelessPath;
+
 			const marked: string[] = [];
 			for (const name of names) {
 				const state = resolveAgentByInput(name);
@@ -1612,7 +1662,9 @@ export default function (pi: ExtensionAPI) {
 				marked.push(displayName(state.def.name));
 			}
 			if (marked.length > 0) {
-				ctx.ui.notify(`Stateless: ${marked.join(", ")}`, "info");
+				saveStatelessConfig(savePath);
+				updateStatelessWidget();
+				ctx.ui.notify(`Stateless: ${marked.join(", ")} → ${isGlobalScope ? "global" : "project"}`, "info");
 			}
 		},
 	});
@@ -1637,6 +1689,15 @@ export default function (pi: ExtensionAPI) {
 				ctx.ui.notify("Usage: /agents-stateless-off <agent1> [agent2 ...]", "error");
 				return;
 			}
+
+			const scopeChoice = await ctx.ui.select(
+				"Remove from where?",
+				["Project only", "Global defaults"]
+			);
+			if (scopeChoice === undefined) return;
+			const isGlobalScope = scopeChoice === "Global defaults";
+			const savePath = isGlobalScope ? globalStatelessPath : projectStatelessPath;
+
 			const unmarked: string[] = [];
 			for (const name of names) {
 				const resolved = resolveAgentByInput(name);
@@ -1653,13 +1714,15 @@ export default function (pi: ExtensionAPI) {
 				unmarked.push(displayName(resolved.def.name));
 			}
 			if (unmarked.length > 0) {
-				ctx.ui.notify(`No longer stateless: ${unmarked.join(", ")}`, "info");
+				saveStatelessConfig(savePath);
+				updateStatelessWidget();
+				ctx.ui.notify(`No longer stateless: ${unmarked.join(", ")} → ${isGlobalScope ? "global" : "project"}`, "info");
 			}
 		},
 	});
 
 	pi.registerCommand("agents-stateless-list", {
-		description: "Show which agents are stateless",
+		description: "Show which agents are stateless and where config is stored",
 		handler: async (_args, ctx) => {
 			widgetCtx = ctx;
 			const mode = getStatelessMode();
@@ -1668,7 +1731,8 @@ export default function (pi: ExtensionAPI) {
 			const agentsLine = agents.length > 0
 				? `Per-agent: ${agents.map(a => displayName(a)).join(", ")}`
 				: "No per-agent stateless overrides";
-			ctx.ui.notify(`${modeLine}\n${agentsLine}`, "info");
+			const configFileLine = `Project: ${projectStatelessPath}`;
+			ctx.ui.notify(`${modeLine}\n${agentsLine}\n\n${configFileLine}`, "info");
 		},
 	});
 
@@ -1697,7 +1761,17 @@ export default function (pi: ExtensionAPI) {
 				return;
 			}
 			setStatelessMode(raw === "on");
-			ctx.ui.notify(`Global stateless mode: ${raw.toUpperCase()}`, "info");
+
+			const scopeChoice = await ctx.ui.select(
+				"Save where?",
+				["Project only", "Global defaults"]
+			);
+			if (scopeChoice === undefined) return;
+			const isGlobalScope = scopeChoice === "Global defaults";
+			saveStatelessConfig(isGlobalScope ? globalStatelessPath : projectStatelessPath);
+			updateStatelessWidget();
+
+			ctx.ui.notify(`Global stateless mode: ${raw.toUpperCase()} → ${isGlobalScope ? "global" : "project"}`, "info");
 		},
 	});
 
@@ -2011,6 +2085,7 @@ ${agentCatalog}`;
 			"info",
 		);
 		updateWidget();
+		updateStatelessWidget();
 
 		// Footer: model | team | context bar (+ local response speed metrics)
 		_ctx.ui.setFooter((tui, theme, _footerData) => {
