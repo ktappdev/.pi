@@ -1,12 +1,12 @@
 builder: opencode-go/mimo-v2.5-pro
-designer: opencode-go/kimi-k2.5
+designer: ocg2/kimi-k2.6
 devops: opencode/big-pickle
 documenter: opencode-go/minimax-m2.5
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
-planner: opencode-go/mimo-v2-pro
+planner: ocg2/deepseek-v4-pro
 reviewer: openai-codex/gpt-5.4
-scout: DeepSeek/deepseek-v4-flash
+scout: ocg2/minimax-m2.7
 sparky: opencode/big-pickle
 subagents: DeepSeek/deepseek-v4-flash
-tavily: opencode-go/minimax-m2.5
+tavily: opencode/minimax-m2.5-free

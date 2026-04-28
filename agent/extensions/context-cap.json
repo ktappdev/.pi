@@ -1,5 +1,7 @@
 {
-  "cap": 80000,
+  "cap": 100000,
   "appliesOver": 0,
-  "matchPatterns": ["*"]
+  "matchPatterns": [
+    "*"
+  ]
 }

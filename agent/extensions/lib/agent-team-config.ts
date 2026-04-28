@@ -143,6 +143,15 @@ export function getProjectAgentThinkingPath(cwd: string): string {
 	return join(getProjectAgentsDir(cwd), "agent-thinking.yaml");
 }
 
+export function getGlobalAgentStatelessPath(): string {
+	return join(getGlobalAgentsDir(), "agent-stateless.yaml");
+}
+
+export function getProjectAgentStatelessPath(cwd: string): string {
+	ensureDir(getProjectAgentsDir(cwd));
+	return join(getProjectAgentsDir(cwd), "agent-stateless.yaml");
+}
+
 export function writeYamlMap(path: string, values: Record<string, string>) {
 	ensureDir(dirname(path));
 	const lines = Object.entries(values)

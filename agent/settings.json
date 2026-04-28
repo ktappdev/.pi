@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.70.2",
+  "lastChangelogVersion": "0.70.5",
   "theme": "synthwave",
-  "defaultThinkingLevel": "medium",
-  "agentTeamViewMode": "table",
+  "defaultThinkingLevel": "high",
+  "agentTeamViewMode": "grid",
   "packages": [
     "git:github.com/ktappdev/pi-telegram",
     "npm:pi-web-access",
@@ -21,7 +21,16 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "opencode-go",
-  "defaultModel": "qwen3.5-plus",
-  "hideThinkingBlock": false
+  "defaultProvider": "ocg1",
+  "defaultModel": "mimo-v2.5-pro",
+  "hideThinkingBlock": false,
+  "enabledModels": [
+    "deepseek/*",
+    "ocg1/*",
+    "ocg2/*",
+    "kilo/*",
+    "openai-codex/*"
+  ],
+  "steeringMode": "all",
+  "followUpMode": "all"
 }

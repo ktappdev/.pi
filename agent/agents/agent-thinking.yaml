@@ -1,10 +1,9 @@
 builder: medium
 designer: medium
 devops: medium
-documenter: off
+documenter: medium
 oracle: off
-planner: medium
+planner: high
 reviewer: medium
 scout: medium
 sparky: medium
-tavily: off
