@@ -88,6 +88,16 @@ import {
 } from "./lib/agent-team-stateless.ts";
 import { chooseAgentModelWithFuzzyPicker } from "./lib/agent-team-model-picker.ts";
 
+// ── Contexting Detection ────────────────────────────
+
+function detectContexting(cwd: string): "snapshot" | "memory" | "unavailable" {
+	// Check for live watch mode first (fastest, most current)
+	if (existsSync(join(cwd, ".contexting_runtime.json"))) return "memory";
+	// Check for snapshot index
+	if (existsSync(join(cwd, "context.json"))) return "snapshot";
+	return "unavailable";
+}
+
 // ── Helper: Find Pi Executable ───────────────────
 
 let cachedPiPath: string | null = null;
@@ -451,6 +461,7 @@ export default function (pi: ExtensionAPI) {
 	let projectStatelessPath = "";
 	let contextWindow = 0;
 	let footerMetrics = createFooterMetricsState();
+	let contextingStatus: "snapshot" | "memory" | "unavailable" = "unavailable";
 	let backgroundSubagents = {
 		reset: (_ctx?: any) => {},
 		toolNames: [] as string[],
@@ -822,7 +833,11 @@ export default function (pi: ExtensionAPI) {
 		ctx: any,
 	): Promise<DispatchResult> {
 		// Strip Pi's "@" tag prefix from local file references so the model sees clean paths
-		const sanitizedTask = task.replace(/@(?=(\/|\.\/|~\/))/g, "");
+		let sanitizedTask = task.replace(/@(?=(\/|\.\/|~\/))/g, "");
+		// Inject contexting status for scout agent
+		if (agentName.toLowerCase() === "scout" && contextingStatus !== "unavailable") {
+			sanitizedTask = `Contexting: ${contextingStatus}\n${sanitizedTask}`;
+		}
 		const key = agentName.toLowerCase();
 		const state = agentStates.get(key);
 		if (!state) {
@@ -2081,6 +2096,7 @@ ${agentCatalog}`;
 		viewMode = getAgentTeamViewMode(_ctx.cwd);
 
 		loadAgents(_ctx.cwd);
+		contextingStatus = detectContexting(_ctx.cwd);
 
 		// Default to first team — use /agents-team to switch
 		const teamNames = Object.keys(teams);
