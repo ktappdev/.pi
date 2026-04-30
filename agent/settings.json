@@ -21,8 +21,8 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "opencode-go",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultProvider": "mimo",
+  "defaultModel": "mimo-v2.5",
   "hideThinkingBlock": false,
   "enabledModels": [
     "deepseek/*",

@@ -1,1920 +1,1843 @@
 {
   ".gitattributes": [
     "gitignore",
-    "file-extensions",
-    "line-ending",
-    "attribute-file"
+    "attribute file",
+    "configuration file",
+    "version control"
   ],
   ".npmignore": [
-    "node-ignore",
-    "package-exclude",
-    "npm-exclusions",
-    "build-output"
+    "npmignore",
+    "package ignore",
+    "node package ignore",
+    "package exclude"
   ],
   "2026-04-16-twitter-launch.md": [
-    "launch-notes",
-    "release-plan",
-    "deployment-log",
-    "twitter-strategy"
+    "launch announcement",
+    "twitter launch",
+    "product launch",
+    "news release"
   ],
   "AGENTS.md": [
-    "agent-config",
-    "ai-agents",
-    "system-prompts",
-    "agent-specs"
+    "agents documentation",
+    "agent guide",
+    "agents manual",
+    "agent reference"
   ],
   "APPEND_SYSTEM.md": [
-    "append-system-prompt",
-    "system-instructions",
-    "override-prompt",
-    "context-setup"
+    "append system documentation",
+    "append system guide",
+    "append system manual",
+    "append system reference"
   ],
   "CHANGELOG.md": [
-    "version-history",
-    "release-notes",
-    "update-log",
-    "changelog"
+    "changelog",
+    "change log",
+    "release notes",
+    "version history"
   ],
   "CLAUDE.md": [
-    "claude-config",
-    "claude-prompts",
-    "clauda-guidelines",
-    "claude-rules"
+    "claudes documentation",
+    "claudes guide",
+    "claudes manual",
+    "claudes reference"
   ],
   "CODEX.md": [
-    "code-examples",
-    "development-guide",
-    "coding-standards",
-    "developer-docs"
+    "codex documentation",
+    "codex guide",
+    "codex manual",
+    "codex reference"
   ],
   "Cargo.toml": [
-    "rust-manifest",
-    "package.json",
-    "dependencies",
-    "project-config"
+    "cargo configuration",
+    "cargo file",
+    "rust project configuration",
+    "cargo manifest"
   ],
   "DESIGN.md": [
-    "system-design",
-    "architecture",
-    "design-spec",
-    "technical-arch"
+    "design documentation",
+    "design guide",
+    "design manual",
+    "design reference"
   ],
   "Dockerfile.lint": [
-    "docker-lint",
-    "container-security",
-    "build-lint",
-    "docker-config"
+    "dockerfile linting",
+    "dockerfile validation",
+    "dockerfile checking",
+    "dockerfile verification"
   ],
   "ENGRAM.md": [
-    "engram-config",
-    "engram-prompts",
-    "engram-rules",
-    "engram-setup"
+    "engram documentation",
+    "engram guide",
+    "engram manual",
+    "engram reference"
   ],
   "GEMINI.md": [
-    "gemini-config",
-    "gemini-prompts",
-    "gemini-rules",
-    "gemini-guidelines"
+    "geminis documentation",
+    "geminis guide",
+    "geminis manual",
+    "geminis reference"
   ],
   "HACKER_GUIDE.md": [
-    "hacker-setup",
-    "hacker-config",
-    "dev-hack",
-    "quick-start"
+    "hacker guide",
+    "hacking guide",
+    "security guide",
+    "hacking manual"
   ],
   "ISSUES.md": [
-    "bug-tracker",
-    "issue-list",
-    "problem-report",
-    "known-issues"
+    "issues documentation",
+    "issues guide",
+    "issues manual",
+    "issues reference"
   ],
   "LICENSE": [
-    "licensing",
-    "copyright",
-    "permissive-lic",
-    "open-source-lic"
+    "license",
+    "agreement",
+    "permissions",
+    "copyright"
   ],
   "OPERATOR_MANUAL.md": [
-    "operator-guide",
-    "admin-manual",
-    "system-ops",
-    "user-manual"
-  ],
-  "PI_KNOWLEDGE.md": [
-    "pi-knowledge",
-    "pi-docs",
-    "pi-reference",
-    "pi-setup"
-  ],
-  "README.md": [
-    "readme",
-    "project-info",
-    "getting-started",
-    "installation-guide"
-  ],
-  "RELEASE.md": [
-    "release-notes",
-    "version-release",
-    "deployment-guide",
-    "launch-plan"
-  ],
-  "RELEASING.md": [
-    "releasing-guide",
-    "version-upgrade",
-    "release-proc",
-    "distribution-logs"
-  ],
-  "SKILL.md": [
-    "skill-config",
-    "skill-prompts",
-    "skill-setup",
-    "ability-specs"
-  ],
-  "TODO.md": [
-    "to-do-list",
-    "backlog",
-    "pending-tasks",
-    "future-work"
-  ],
-  "Uncodixfy.md": [
-    "uncodixfy-setup",
-    "uncodixfy-config",
-    "uncodixfy-rules",
-    "uncodixfy-prompt"
-  ],
-  "actions.ts": [
-    "actions",
-    "workflow",
-    "script",
-    "task-runner"
-  ],
-  "agent": [
-    "agents-dir",
-    "ai-agents",
-    "bot-config",
-    "agent-stack"
-  ],
-  "agent-guidance": [
-    "agent-guidelines",
-    "agent-prompts",
-    "agent-logic",
-    "agent-strategy"
-  ],
-  "agent-guidance.ts": [
-    "agent-guidance-script",
-    "agent-prompts-file",
-    "agent-rules.ts",
-    "agent-strategy-file"
-  ],
-  "agent-models.yaml": [
-    "model-config",
-    "llm-settings",
-    "ai-models",
-    "model-specs"
-  ],
-  "agent-pitrix": [
-    "pitrix-agent",
-    "pitrix-stack",
-    "pitrix-config",
-    "pitrix-setup"
-  ],
-  "agent-pitrix-packages": [
-    "pitrix-packages",
-    "pitrix-modules",
-    "pitrix-libraries",
-    "pitrix-deps"
-  ],
-  "agent-states": [
-    "agent-state",
-    "agent-memory",
-    "agent-store",
-    "agent-context"
-  ],
-  "agent-team-background-subagents.ts": [
-    "background-agents",
-    "sub-agent-config",
-    "team-background",
-    "silent-agents"
-  ],
-  "agent-team-config.ts": [
-    "agent-team-config",
-    "team-settings",
-    "multi-agent-setup",
-    "team-parameters"
-  ],
-  "agent-team-footer-metrics.ts": [
-    "footer-metrics",
-    "agent-stats",
-    "team-performance",
-    "metrics-tracker"
-  ],
-  "agent-team-model-picker.ts": [
-    "model-picker",
-    "model-selection",
-    "model-router",
-    "model-chooser"
-  ],
-  "agent-team-stateless.ts": [
-    "stateless-agents",
-    "no-memory-agents",
-    "ephemeral-agents",
-    "stateless-setup"
-  ],
-  "agent-team-views.ts": [
-    "agent-views",
-    "ui-views",
-    "team-ui",
-    "agent-display"
-  ],
-  "agent-team.ts": [
-    "main-agent",
-    "agent-core",
-    "team-manager",
-    "agent-controller"
-  ],
-  "agent-team.ts.bak": [
-    "agent-backup",
-    "old-agent-team",
-    "backup-agent",
-    "agent-rev1"
-  ],
-  "agent-team.ts.bak2": [
-    "agent-backup-2",
-    "agent-old-backup",
-    "rev2-agent",
-    "agent-archive"
-  ],
-  "agent-thinking.yaml": [
-    "thinking-config",
-    "reasoning-settings",
-    "thought-process",
-    "cognitive-prompt"
-  ],
-  "agents": [
-    "agent-folder",
-    "ai-agents-dir",
-    "bot-folder",
-    "agent-stack"
-  ],
-  "agents.ts": [
-    "agents-manager",
-    "agent-orchestrator",
-    "multi-agent-core",
-    "agent-controller"
-  ],
-  "alt-pi": [
-    "alternative-pi",
-    "pi-alternative",
-    "backup-pi",
-    "secondary-pi"
-  ],
-  "ambient": [
-    "ambient-config",
-    "environment-setup",
-    "global-vars",
-    "ambient-settings"
-  ],
-  "arcade": [
-    "arcade-game",
-    "arcade-mode",
-    "game-loop",
-    "arcade-engine"
-  ],
-  "ask-mode-utils.ts": [
-    "ask-utils",
-    "query-utils",
-    "ask-helper",
-    "mode-tools"
-  ],
-  "ask-mode.ts": [
-    "ask-mode",
-    "question-mode",
-    "query-handler",
-    "ask-interface"
-  ],
-  "assets": [
-    "static-assets",
-    "media-files",
-    "build-assets"
-  ],
-  "auth-soak.sh": [
-    "auth-test",
-    "soak-test",
-    "login-test",
-    "auth-validation"
-  ],
-  "auto-session-name.ts": [
-    "session-namer",
-    "session-generator",
-    "auto-name",
-    "session-id"
-  ],
-  "badlogic": [
-    "bad-logic",
-    "flawed-logic",
-    "buggy-code",
-    "logic-error"
-  ],
-  "bak": [
-    "backup",
-    "old-files",
-    "archive",
-    "pre-release"
-  ],
-  "bin": [
-    "executable",
-    "scripts",
-    "launcher",
-    "entry-point"
-  ],
-  "biome.json": [
-    "biome-config",
-    "biome-settings",
-    "linter-config",
-    "formatting-rules"
-  ],
-  "boss.js": [
-    "main-player",
-    "game-controller",
-    "primary-entity",
-    "master-class"
-  ],
-  "bracket-tool-parser.test.ts": [
-    "parser-tests",
-    "tool-validation",
-    "unit-tests",
-    "test-suite"
-  ],
-  "bracket-tool-parser.ts": [
-    "parser-logic",
-    "tool-interpreter",
-    "syntax-analyzer",
-    "core-parser"
-  ],
-  "browser.ts": [
-    "web-interface",
-    "ui-layer",
-    "browser-support",
-    "desktop-client"
-  ],
-  "btw.ts": [
-    "utils",
-    "helper-module",
-    "common-functions",
-    "shared-lib"
-  ],
-  "btw.ts.bak": [
-    "backup-btw",
-    "previous-version",
-    "old-utils",
-    "temp-helper"
-  ],
-  "build.rs": [
-    "compile-script",
-    "build-config",
-    "makefile",
-    "compiler-gen"
-  ],
-  "builder.md": [
-    "build-guide",
-    "compilation-instructions",
-    "deployment-ops",
-    "setup-docs"
-  ],
-  "camera.js": [
-    "input-system",
-    "view-controller",
-    "tracking-module",
-    "render-input"
-  ],
-  "catppuccin-mocha.json": [
-    "theme-config",
-    "color-scheme",
-    "editor-theme",
-    "dark-mode-settings"
-  ],
-  "caveman": [
-    "legacy-code",
-    "archived-folder",
-    "old-repo",
-    "deprecated-files"
-  ],
-  "caveman.json": [
-    "config-map",
-    "settings-file",
-    "meta-data",
-    "caveman-profile"
-  ],
-  "caveman.ts": [
-    "legacy-module",
-    "old-utils",
-    "archived-lib",
-    "deprecated-ts"
-  ],
-  "clear.mp3": [
-    "audio-clear",
-    "silence-track",
-    "empty-sound",
-    "mute-audio"
-  ],
-  "cloudy.mp3": [
-    "weather-audio",
-    "ambient-sound",
-    "cloud-track",
-    "atmosphere-music"
-  ],
-  "code-actions": [
-    "editor-commands",
-    "vim-snippets",
-    "autocomplete",
-    "keyboard-shortcuts"
-  ],
-  "collision.js": [
-    "hit-detection",
-    "entity-interaction",
-    "spatial-check",
-    "overlap-test"
-  ],
-  "colors.js": [
-    "palette",
-    "theme-data",
-    "color-matrix",
-    "hex-values"
-  ],
-  "comment.ts": [
-    "docstrings",
-    "type-comments",
-    "javadoc",
-    "source-notes"
-  ],
-  "constants.js": [
-    "config-values",
-    "global-vars",
-    "static-props",
-    "shared-consts"
-  ],
-  "constants.ts": [
-    "static-consts",
-    "global-types",
-    "shared-config",
-    "immutable-values"
-  ],
-  "context-cap.json": [
-    "capability-map",
-    "feature-list",
-    "permissions",
-    "context-meta"
-  ],
-  "context.ts": [
-    "state-manager",
-    "ui-context",
-    "runtime-env",
-    "app-state"
-  ],
-  "core.js": [
-    "main-module",
-    "base-class",
-    "primary-engine",
-    "root-object"
-  ],
-  "custom": [
-    "overrides",
-    "user-config",
-    "local-settings",
-    "personalization"
-  ],
-  "custom-footer.ts": [
-    "page-footer",
-    "site-end",
-    "copyright-section",
-    "footer-component"
-  ],
-  "cypher.md": [
-    "graph-query",
-    "neo4j-script",
-    "db-cypher",
-    "relationship-map"
-  ],
-  "darwin-arm64": [
-    "macos-arm",
-    "silicon-mac",
-    "apple-silicon",
-    "m1-build"
-  ],
-  "darwin-x64": [
-    "macos-intel",
-    "intel-mac",
-    "x86_64-build",
-    "traditional-mac"
-  ],
-  "death.js": [
-    "game-over",
-    "kill-state",
-    "failure-mode",
-    "end-condition"
-  ],
-  "debug.ts": [
-    "tracing",
-    "logging",
-    "instrumentation",
-    "profiling"
-  ],
-  "demo.mp4": [
-    "video-preview",
-    "showcase-file",
-    "trailers",
-    "demo-reel"
-  ],
-  "demo.svg": [
-    "mock-up",
-    "prototype-graphic",
-    "wireframe",
-    "design-sprite"
-  ],
-  "designer.md": [
-    "ui-specs",
-    "visual-guide",
-    "interface-design",
-    "art-direction"
-  ],
-  "devops.md": [
-    "deployment-pipeline",
-    "ci-cd-guide",
-    "infrastructure-docs",
-    "release-process"
-  ],
-  "docs": [
-    "documentation",
-    "readme",
-    "wiki",
-    "manual"
-  ],
-  "documenter.md": [
-    "api-reference",
-    "usage-guide",
-    "tutorials",
-    "help-files"
-  ],
-  "dozer.md": [
-    "deletion-policy",
-    "cleanup-script",
-    "archive-proc",
-    "prune-guide"
-  ],
-  "dracula.json": [
-    "dark-theme",
-    "night-mode",
-    "purple-scheme",
-    "dracula-config"
-  ],
-  "e2e.test.js": [
-    "integration-tests",
-    "browser-tests",
-    "full-suite",
-    "system-tests"
-  ],
-  "effects.js": [
-    "particle-system",
-    "visual-effects",
-    "animations",
-    "render-effects"
-  ],
-  "enemies.js": [
-    "hostile-entities",
-    "foes",
-    "antagonists",
-    "opponent-class"
-  ],
-  "engine.js": [
-    "main-loop",
-    "game-core",
-    "runtime-engine",
-    "base-system"
-  ],
-  "engine.test.js": [
-    "core-tests",
-    "system-validation",
-    "engine-specs",
-    "logic-tests"
-  ],
-  "event-parser.test.ts": [
-    "parser-tests",
-    "input-validation",
-    "event-handlers",
-    "test-suite"
-  ],
-  "event-parser.ts": [
-    "input-handler",
-    "event-dispatcher",
-    "message-parser",
-    "signal-manager"
-  ],
-  "everforest.json": [
-    "green-theme",
-    "nature-scheme",
-    "everforest-config",
-    "color-palette"
-  ],
-  "extending-pi": [
-    "modular-addons",
-    "plugin-system",
-    "custom-builds",
-    "extension-points"
-  ],
-  "extensions": [
-    "plugins",
-    "add-ons",
-    "modularity",
-    "custom-modules"
-  ],
-  "fcb2e087-ea92-47a7-a437-c67c54850483.json": [
-    "unique-id-config",
-    "session-data",
-    "user-profile",
-    "metadata-map"
-  ],
-  "file-tree.ts": [
-    "directory-structure",
-    "fs-hierarchy",
-    "path-traversal",
-    "tree-builder"
-  ],
-  "file-viewer.ts": [
-    "preview-panel",
-    "image-display",
-    "viewer-component",
-    "file-browser"
-  ],
-  "files-widget": [
-    "file-widgets",
-    "file-widget",
-    "file-ui",
-    "file-component"
-  ],
-  "files.ts.bk.ts": [
-    "files-backup-ts",
-    "files-backup",
-    "files-backup-ts-file",
-    "files-bak-ts"
-  ],
-  "fireballs.js": [
-    "fireball",
-    "fireball-system",
-    "fireball-engine",
-    "fireball-utils"
-  ],
-  "fix-lint-all-branches.sh": [
-    "lint-fix-all",
-    "fix-lint",
-    "run-lint-fixes",
-    "auto-lint-fix"
-  ],
-  "fixtures": [
-    "test-data",
-    "mock-data",
-    "fixtures-dir",
-    "testdata"
-  ],
-  "format.ts": [
-    "formatter",
-    "code-formatter",
-    "styler",
-    "formatter-ts"
-  ],
-  "git": [
-    "version-control",
-    "git-repo",
-    "git-util",
-    "git-system"
-  ],
-  "git-worktree.ts": [
-    "git-worktree",
-    "worktree-manager",
-    "wtree-ts",
-    "git-wt"
-  ],
-  "git.ts": [
-    "git-util",
-    "git-core",
-    "git-lib",
-    "git-module"
-  ],
-  "github.com": [
-    "github",
-    "github-host",
-    "github-api",
-    "ghe"
-  ],
-  "grill-me": [
-    "grillme",
-    "grillme-app",
-    "grillme-ui",
-    "grillme-cli"
-  ],
-  "grill-me-tui": [
-    "grillme-tui",
-    "grillme-terminal",
-    "grillme-tui-app",
-    "tui-grillme"
-  ],
-  "gruvbox.json": [
-    "gruvbox-theme",
-    "gruvbox-config",
-    "gruvbox-settings",
-    "gruvbox-json"
-  ],
-  "history.test.ts": [
-    "history-test",
-    "history-unit-test",
-    "history.spec.ts",
-    "test-history"
-  ],
-  "history.ts": [
-    "history-log",
-    "history-manager",
-    "history-store",
-    "history-service"
-  ],
-  "implement-and-review.md": [
-    "implement-review",
-    "review-plan",
-    "dev-review-guide",
-    "pr-review"
-  ],
-  "implement.md": [
-    "implementation-guide",
-    "dev-impl",
-    "build-impl",
-    "code-impl"
-  ],
-  "import-cc-codex": [
-    "import-cc-codex-tool",
-    "codex-importer",
-    "cc-codex-import",
-    "codex-sync"
-  ],
-  "import-chats-from-other-agents.md": [
-    "chat-import",
-    "agent-chat-sync",
-    "multi-agent-import",
-    "chat-migration"
-  ],
-  "index.d.ts": [
-    "types-index",
-    "type-declarations",
-    "index-types",
-    "d-ts"
-  ],
-  "index.js": [
-    "main-js",
-    "entry-point",
-    "app-entry",
-    "root-module"
-  ],
-  "index.ts": [
-    "main-ts",
-    "entry-point-ts",
-    "app-root",
-    "root-module-ts"
-  ],
-  "init.ts": [
-    "initializer",
-    "setup-ts",
-    "init-config",
-    "bootstrap-ts"
-  ],
-  "input-utils.ts": [
-    "input-handlers",
-    "input-manager",
-    "input-system",
-    "input-utils-lib"
-  ],
-  "instances": [
-    "instances-dir",
-    "instance-list",
-    "active-instances",
-    "instance-store"
-  ],
-  "items.js": [
-    "item-list",
-    "data-items",
-    "app-items",
-    "items-manager"
-  ],
-  "jonjonrankin": [
-    "jonjonrankin-profile",
-    "jr-profile",
-    "jonjon-rankin",
-    "jr-config"
-  ],
-  "keymaker.md": [
-    "keymaker-guide",
-    "keymaker-docs",
-    "keymaker-manual",
-    "mk-guide"
-  ],
-  "kilo-pi-provider": [
-    "kilo-pi-provider-lib",
-    "pi-kilo-provider",
-    "kilo-provider",
-    "pi-kilo-sync"
-  ],
-  "kilo.ts": [
-    "kilo-core",
-    "kilo-system",
-    "kilo-module",
-    "main-kilo"
-  ],
-  "kiro-cli.test.ts": [
-    "kiro-cli-test",
-    "cli-test-kit",
-    "test-cli",
-    "kiro-spec"
-  ],
-  "kiro-cli.ts": [
-    "kiro-command-line",
-    "cli-tool",
-    "cli-entry",
-    "kiro-shell"
-  ],
-  "kiro-ide.ts": [
-    "kiro-ide-app",
-    "ide-engine",
-    "kiro-editor",
-    "main-ide"
-  ],
-  "ktappdev": [
-    "ktapp-dev",
-    "ktapp-dev-tools",
-    "ktapp-dev-kit",
-    "ktd-dev"
-  ],
-  "land-the-plane": [
-    "land-the-plane-game",
-    "plane-game",
-    "landing-game",
-    "flight-game"
-  ],
-  "last-greeting.json": [
-    "last-greeting-config",
-    "final-greeting",
-    "greeting-state",
-    "last-msg"
-  ],
-  "last-greetings.json": [
-    "last-greetings-list",
-    "all-final-greetings",
-    "greeting-history",
-    "greeting-log"
-  ],
-  "launches": [
-    "launches-dir",
-    "game-launches",
-    "launch-log",
-    "launch-history"
-  ],
-  "levels.js": [
-    "level-system",
-    "game-levels",
-    "level-data",
-    "levels-manager"
-  ],
-  "lib": [
-    "library",
-    "lib-folder",
-    "internal-lib",
-    "utils-lib"
-  ],
-  "lib.rs": [
-    "rust-lib",
-    "lib-rs",
-    "main-rust",
-    "core-rust"
-  ],
-  "link.md": [
-    "link-guide",
-    "linking-docs",
-    "connection-links",
-    "hyper-link"
-  ],
-  "linux-x64-gnu": [
-    "linux-x64-gnu",
-    "gnu-x64-linux",
-    "linux-gnu-64",
-    "gnu-linux-x64"
-  ],
-  "logic.js": [
-    "game-logic",
-    "logic-system",
-    "core-logic",
-    "logic-engine"
-  ],
-  "login-ui.ts": [
-    "login-interface",
-    "auth-ui",
-    "login-screen",
-    "login-component"
-  ],
-  "login.test.ts": [
-    "login-test",
-    "auth-test",
-    "login-spec",
-    "test-login"
-  ],
-  "login.ts": [
-    "auth-module",
-    "login-service",
-    "login-handler",
-    "authentication-ts"
-  ],
-  "loop.ts": [
-    "main-loop",
-    "game-loop",
-    "render-loop",
-    "event-loop"
-  ],
-  "mario-not": [
-    "mario-not-game",
-    "mario-not-app",
-    "not-mario",
-    "mario-not-ui"
-  ],
-  "mario-not.ts": [
-    "mario-not-core",
-    "mario-not-engine",
-    "main-mario",
-    "mario-ts"
-  ],
-  "matrix.json": [
-    "matrix-config",
-    "matrix-settings",
-    "matrix-data",
-    "matrix-meta"
-  ],
-  "merovingian.md": [
-    "merovingian-guide",
-    "merovingian-docs",
-    "merovingian-manual",
-    "merovingian-notes"
-  ],
-  "midnight-ocean.json": [
-    "midnight-ocean-config",
-    "ocean-midnight",
-    "midnight-data",
-    "midnight-meta"
-  ],
-  "mikeyobrien": [
-    "mikeyobrien-profile",
-    "mo-profile",
-    "mikey-obrien",
-    "mo-config"
-  ],
-  "models.json": [
-    "schema",
-    "data-structure",
-    "database",
-    "configuration"
-  ],
-  "models.test.ts": [
-    "tests",
-    "unit-tests",
-    "validation",
-    "model-specs"
-  ],
-  "models.ts": [
-    "entities",
-    "classes",
-    "database-schema",
-    "data-types"
-  ],
-  "morpheus.md": [
-    "readme",
-    "documentation",
-    "guide",
-    "wiki"
-  ],
-  "native": [
-    "core",
-    "platform",
-    "built-in",
-    "local"
-  ],
-  "neo.md": [
-    "readme",
-    "docs",
-    "instructions",
-    "setup"
-  ],
-  "nord.json": [
-    "theme",
-    "colors",
-    "configuration",
-    "settings"
-  ],
-  "notify.ts": [
-    "alerts",
-    "events",
-    "notifications",
-    "webhooks"
-  ],
-  "npm": [
-    "registry",
-    "dependencies",
-    "packages",
-    "modules"
-  ],
-  "oauth.test.ts": [
-    "auth-tests",
-    "token-validation",
-    "login-tests",
-    "credential-verification"
-  ],
-  "oauth.ts": [
-    "authentication",
-    "auth-flow",
-    "token-handling",
-    "session-management"
-  ],
-  "ocean-breeze.json": [
-    "theme",
-    "config",
-    "settings",
-    "preferences"
-  ],
-  "oracle.md": [
-    "readme",
-    "api-docs",
+    "operator",
+    "manual",
     "guide",
     "documentation"
   ],
-  "orchestrator.md": [
+  "PI_KNOWLEDGE.md": [
+    "pi",
+    "knowledge",
+    "reference"
+  ],
+  "README.md": [
     "readme",
+    "introduction",
+    "overview",
+    "welcome"
+  ],
+  "RELEASE.md": [
+    "release",
+    "notes",
+    "changes",
+    "update"
+  ],
+  "RELEASING.md": [
+    "releasing",
+    "deployment",
+    "delivery",
+    "distribution"
+  ],
+  "SKILL.md": [
+    "skill",
+    "ability",
+    "competence",
+    "talent"
+  ],
+  "TODO.md": [
+    "todo",
+    "tasks",
+    "to-do",
+    "pending"
+  ],
+  "Uncodixfy.md": [
+    "uncodixfy",
+    "decode",
+    "decrypt"
+  ],
+  "actions.ts": [
+    "actions",
+    "functions",
+    "methods",
+    "code"
+  ],
+  "agent": [
+    "agent",
+    "proxy",
+    "intermediary",
+    "middleman"
+  ],
+  "agent-guidance": [
+    "guidance",
+    "advice",
+    "counsel",
+    "direction"
+  ],
+  "agent-guidance.ts": [
+    "guidance",
+    "advice",
+    "counsel",
+    "direction"
+  ],
+  "agent-models.yaml": [
+    "models",
+    "schema",
+    "definition",
+    "specification"
+  ],
+  "agent-pitrix": [
+    "pitrix",
+    "container",
+    "enclosure",
+    "housing"
+  ],
+  "agent-pitrix-packages": [
+    "package",
+    "pitrix",
+    "agent",
+    "bundles"
+  ],
+  "agent-states": [
+    "state",
+    "statuses",
+    "agent",
+    "conditions"
+  ],
+  "agent-team-background-subagents.ts": [
+    "background",
+    "subagents",
+    "team",
+    "agent"
+  ],
+  "agent-team-config.ts": [
+    "config",
+    "configuration",
+    "team",
+    "agent"
+  ],
+  "agent-team-footer-metrics.ts": [
+    "footer",
+    "metrics",
+    "team",
+    "agent"
+  ],
+  "agent-team-model-picker.ts": [
+    "model",
+    "picker",
+    "team",
+    "agent"
+  ],
+  "agent-team-stateless.ts": [
+    "stateless",
+    "team",
+    "agent"
+  ],
+  "agent-team-views.ts": [
+    "views",
+    "team",
+    "agent"
+  ],
+  "agent-team.ts": [
+    "team",
+    "agent"
+  ],
+  "agent-team.ts.bak": [
+    "backup",
+    "team",
+    "agent"
+  ],
+  "agent-team.ts.bak2": [
+    "backup",
+    "team",
+    "agent"
+  ],
+  "agent-thinking.yaml": [
+    "thinking",
+    "agent"
+  ],
+  "agents": [
+    "agent",
+    "collection"
+  ],
+  "agents.ts": [
+    "agent",
+    "collection"
+  ],
+  "alt-pi": [
+    "alternative",
+    "pi"
+  ],
+  "ambient": [
+    "atmosphere",
+    "environment",
+    "background",
+    "scene"
+  ],
+  "arcade": [
+    "game",
+    "play",
+    "entertainment",
+    "fun"
+  ],
+  "ask-mode-utils.ts": [
+    "assistant",
+    "mode",
+    "utilities",
+    "functions"
+  ],
+  "ask-mode.ts": [
+    "assistant",
+    "mode",
+    "implementation",
+    "logic"
+  ],
+  "assets": [
+    "files",
+    "media",
+    "content"
+  ],
+  "auth-soak.sh": [
+    "authentication",
+    "soak",
+    "test",
+    "script"
+  ],
+  "auto-session-name.ts": [
+    "automatic",
+    "session",
+    "name",
+    "generator"
+  ],
+  "badlogic": [
+    "error",
+    "issue",
+    "problem",
+    "bug"
+  ],
+  "bak": [
+    "backup",
+    "archive",
+    "copy",
+    "duplicate"
+  ],
+  "bin": [
+    "executable",
+    "binary",
+    "program",
+    "application"
+  ],
+  "biome.json": [
+    "ecosystem",
+    "environment",
+    "terrain",
+    "configuration"
+  ],
+  "boss.js": [
+    "main",
+    "controller",
+    "script",
+    "program"
+  ],
+  "bracket-tool-parser.test.ts": [
+    "parser",
+    "test",
+    "bracket",
+    "tool"
+  ],
+  "bracket-tool-parser.ts": [
+    "parser",
+    "bracket",
+    "tool",
+    "implementation"
+  ],
+  "browser.ts": [
+    "browser",
+    "client",
+    "application",
+    "script"
+  ],
+  "btw.ts": [
+    "typescript",
+    "utility",
+    "helper",
+    "function"
+  ],
+  "btw.ts.bak": [
+    "backup",
+    "typescript",
+    "utility",
+    "helper"
+  ],
+  "build.rs": [
+    "cargo",
+    "build",
+    "script",
+    "rust"
+  ],
+  "builder.md": [
+    "documentation",
+    "markdown",
+    "builder"
+  ],
+  "camera.js": [
+    "javascript",
+    "camera",
+    "image",
+    "capture"
+  ],
+  "catppuccin-mocha.json": [
+    "mocha",
+    "testing",
+    "configuration",
+    "json"
+  ],
+  "caveman": [
+    "caveman",
+    "theme",
+    "style"
+  ],
+  "caveman.json": [
+    "caveman",
+    "theme",
+    "configuration",
+    "json"
+  ],
+  "caveman.ts": [
+    "typescript",
+    "caveman",
+    "theme",
+    "style"
+  ],
+  "clear.mp3": [
+    "audio",
+    "sound",
+    "clear"
+  ],
+  "cloudy.mp3": [
+    "audio",
+    "sound",
+    "cloudy"
+  ],
+  "code-actions": [
+    "code",
+    "actions",
+    "editor"
+  ],
+  "collision.js": [
+    "javascript",
+    "collision",
+    "physics"
+  ],
+  "colors.js": [
+    "javascript",
+    "colors",
+    "palette"
+  ],
+  "comment.ts": [
+    "typescript",
+    "comment",
+    "annotation"
+  ],
+  "constants.js": [
+    "config",
+    "settings",
+    "variables",
+    "definitions"
+  ],
+  "constants.ts": [
+    "config",
+    "settings",
+    "variables",
+    "definitions"
+  ],
+  "context-cap.json": [
+    "capabilities",
+    "context",
+    "settings",
+    "config"
+  ],
+  "context.ts": [
+    "context",
+    "settings",
+    "config",
+    "parameters"
+  ],
+  "core.js": [
+    "main",
+    "library",
+    "engine",
+    "kernel"
+  ],
+  "custom": [
+    "user",
+    "specific",
+    "personalized",
+    "customized"
+  ],
+  "custom-footer.ts": [
+    "footer",
+    "custom",
+    "user",
+    "specific"
+  ],
+  "cypher.md": [
+    "cypher",
+    "query",
+    "language",
+    "syntax"
+  ],
+  "darwin-arm64": [
+    "darwin",
+    "arm64",
     "architecture",
-    "workflow",
-    "coordination-guide"
+    "platform"
+  ],
+  "darwin-x64": [
+    "darwin",
+    "x64",
+    "architecture",
+    "platform"
+  ],
+  "death.js": [
+    "error",
+    "exception",
+    "handling",
+    "termination"
+  ],
+  "debug.ts": [
+    "debug",
+    "logging",
+    "console",
+    "output"
+  ],
+  "demo.mp4": [
+    "video",
+    "demo",
+    "example",
+    "tutorial"
+  ],
+  "demo.svg": [
+    "image",
+    "demo",
+    "example",
+    "icon"
+  ],
+  "designer.md": [
+    "designer",
+    "tool",
+    "interface",
+    "gui"
+  ],
+  "devops.md": [
+    "devops-documentation",
+    "operations-guide",
+    "infrastructure-management",
+    "development-ops"
+  ],
+  "docs": [
+    "documentation",
+    "manuals",
+    "guides",
+    "reference-material"
+  ],
+  "documenter.md": [
+    "doc-generator",
+    "markdown-documenter",
+    "documentation-tool"
+  ],
+  "dozer.md": [
+    "migrator",
+    "data-mapper",
+    "object-relational-mapper"
+  ],
+  "dracula.json": [
+    "vampire-theme",
+    "dark-mode-config",
+    "goth-config"
+  ],
+  "e2e.test.js": [
+    "end-to-end-tests",
+    "integration-tests",
+    "system-tests"
+  ],
+  "effects.js": [
+    "visual-effects",
+    "graphic-effects",
+    "animation-logic"
+  ],
+  "enemies.js": [
+    "game-enemies",
+    "npcs",
+    "characters"
+  ],
+  "engine.js": [
+    "game-engine",
+    "rendering-engine",
+    "physics-engine"
+  ],
+  "engine.test.js": [
+    "game-engine-tests",
+    "rendering-engine-tests"
+  ],
+  "event-parser.test.ts": [
+    "event-parser-tests",
+    "event-handler-tests"
+  ],
+  "event-parser.ts": [
+    "event-parser",
+    "event-handler",
+    "event-processor"
+  ],
+  "everforest.json": [
+    "forest-simulation",
+    "ecosystem-model",
+    "nature-simulation"
+  ],
+  "extending-pi": [
+    "pi-extension",
+    "pi-implementation",
+    "math-library"
+  ],
+  "extensions": [
+    "plugin-registry",
+    "module-registry",
+    "component-registry"
+  ],
+  "fcb2e087-ea92-47a7-a437-c67c54850483.json": [
+    "record",
+    "entry",
+    "json-data"
+  ],
+  "file-tree.ts": [
+    "directory-view",
+    "file-system",
+    "tree-view",
+    "filesystem"
+  ],
+  "file-viewer.ts": [
+    "file-browser",
+    "document-viewer",
+    "file-explorer"
+  ],
+  "files-widget": [
+    "file-list",
+    "document-panel",
+    "file-browser"
+  ],
+  "files.ts.bk.ts": [
+    "backup",
+    "file-utility",
+    "file-functions"
+  ],
+  "fireballs.js": [
+    "animation",
+    "particle-effect",
+    "fire-effect"
+  ],
+  "fix-lint-all-branches.sh": [
+    "linting",
+    "code-formatting",
+    "branch-check"
+  ],
+  "fixtures": [
+    "sample-data",
+    "test-entries",
+    "example-records"
+  ],
+  "format.ts": [
+    "code-format",
+    "text-formatting",
+    "string-format"
+  ],
+  "git": [
+    "version-control",
+    "source-control"
+  ],
+  "git-worktree.ts": [
+    "git-branch",
+    "git-branching",
+    "git-worktree"
+  ],
+  "git.ts": [
+    "git-functions",
+    "git-utility"
+  ],
+  "github.com": [
+    "github-api",
+    "github-utility",
+    "github-integration"
+  ],
+  "grill-me": [
+    "app",
+    "application",
+    "main"
+  ],
+  "grill-me-tui": [
+    "gui",
+    "graphical-user-interface",
+    "tui-application"
+  ],
+  "gruvbox.json": [
+    "color scheme",
+    "theme settings",
+    "ui config"
+  ],
+  "history.test.ts": [
+    "test history",
+    "test logging",
+    "log testing"
+  ],
+  "history.ts": [
+    "log management",
+    "event history",
+    "logging system"
+  ],
+  "implement-and-review.md": [
+    "implementation guide",
+    "review process",
+    "best practices"
+  ],
+  "implement.md": [
+    "implementation steps",
+    "development guide",
+    "tutorial"
+  ],
+  "import-cc-codex": [
+    "codex import",
+    "custom code import",
+    "library integration"
+  ],
+  "import-chats-from-other-agents.md": [
+    "chat import",
+    "agent chat import",
+    "message integration"
+  ],
+  "index.d.ts": [
+    "type definitions",
+    "interface file",
+    "type declaration"
+  ],
+  "index.js": [
+    "main file",
+    "entry point",
+    "javascript entry"
+  ],
+  "index.ts": [
+    "typescript entry",
+    "typescript main",
+    "typescript file"
+  ],
+  "init.ts": [
+    "initialization file",
+    "setup script",
+    "project initializer"
+  ],
+  "input-utils.ts": [
+    "input helpers",
+    "input utilities",
+    "user input management"
+  ],
+  "instances": [
+    "instance management",
+    "instance list",
+    "instance collection"
+  ],
+  "items.js": [
+    "item management",
+    "item list",
+    "item collection"
+  ],
+  "jonjonrankin": [
+    "username",
+    "user account",
+    "user profile"
+  ],
+  "keymaker.md": [
+    "keygen",
+    "password manager",
+    "secret keeper",
+    "authentication tool"
+  ],
+  "kilo-pi-provider": [
+    "kilo provider",
+    "pi provider",
+    "kilopiprovider",
+    "provider kilo pi"
+  ],
+  "kilo.ts": [
+    "kilofunctions",
+    "kiloapi",
+    "kiloservice",
+    "kiloimplementation"
+  ],
+  "kiro-cli.test.ts": [
+    "kiroclicommands",
+    "kirocliunit tests",
+    "kiroclitest"
+  ],
+  "kiro-cli.ts": [
+    "kirocli",
+    "kiroclient",
+    "kirocommandline"
+  ],
+  "kiro-ide.ts": [
+    "kiroide",
+    "kiroideplugin",
+    "kiroideintegration"
+  ],
+  "ktappdev": [
+    "ktappdevtool",
+    "ktappdevkit",
+    "ktappdevutility"
+  ],
+  "land-the-plane": [
+    "landtheplane",
+    "plane landing",
+    "aircraft landing"
+  ],
+  "last-greeting.json": [
+    "lastgreetingdata",
+    "lastgreetingfile",
+    "lastgreetingrecord"
+  ],
+  "last-greetings.json": [
+    "lastgreetingsdata",
+    "lastgreetingsfile",
+    "lastgreetingrecord"
+  ],
+  "launches": [
+    "launchlist",
+    "launchesdatabase",
+    "launchesrepository"
+  ],
+  "levels.js": [
+    "leveldata",
+    "levelinformation",
+    "gamelevel"
+  ],
+  "lib": [
+    "library",
+    "librarypackage",
+    "librarymodule"
+  ],
+  "lib.rs": [
+    "libraryfunction",
+    "libraryimplementation",
+    "librarycode"
+  ],
+  "link.md": [
+    "linkreference",
+    "linkdocumentation",
+    "linktutorial"
+  ],
+  "linux-x64-gnu": [
+    "linux",
+    "x64",
+    "gnu",
+    "x86_64"
+  ],
+  "logic.js": [
+    "logic",
+    "script",
+    "javascript",
+    "logic_function"
+  ],
+  "login-ui.ts": [
+    "login_ui",
+    "ui_login",
+    "login_interface",
+    "login_screen"
+  ],
+  "login.test.ts": [
+    "login_test",
+    "login_unit_test",
+    "login_test_case",
+    "login_test_suite"
+  ],
+  "login.ts": [
+    "login",
+    "login_function",
+    "login_code",
+    "login_handler"
+  ],
+  "loop.ts": [
+    "loop",
+    "loop_function",
+    "loop_code",
+    "loop_handler"
+  ],
+  "mario-not": [
+    "mario",
+    "mario_game",
+    "mario_character",
+    "mario_level"
+  ],
+  "mario-not.ts": [
+    "mario_not",
+    "mario_not_function",
+    "mario_not_code",
+    "mario_not_handler"
+  ],
+  "matrix.json": [
+    "matrix",
+    "matrix_data",
+    "matrix_model",
+    "matrix_structure"
+  ],
+  "merovingian.md": [
+    "merovingian",
+    "merovingian_documentation",
+    "merovingian_guide",
+    "merovingian_reference"
+  ],
+  "midnight-ocean.json": [
+    "midnight_ocean",
+    "midnight_ocean_data",
+    "midnight_ocean_model",
+    "midnight_ocean_structure"
+  ],
+  "mikeyobrien": [
+    "mikeyobrien",
+    "mikeyobrien_data",
+    "mikeyobrien_model",
+    "mikeyobrien_structure"
+  ],
+  "models.json": [
+    "models",
+    "model_data",
+    "model_model",
+    "model_structure"
+  ],
+  "models.test.ts": [
+    "models_test",
+    "models_unit_test",
+    "models_test_case",
+    "models_test_suite"
+  ],
+  "models.ts": [
+    "models",
+    "models_function",
+    "models_code",
+    "models_handler"
+  ],
+  "morpheus.md": [
+    "matrix",
+    "source",
+    "reference",
+    "guide"
+  ],
+  "native": [
+    "local",
+    "system",
+    "integration",
+    "interface"
+  ],
+  "neo.md": [
+    "matrix",
+    "agent",
+    "node",
+    "server"
+  ],
+  "nord.json": [
+    "config",
+    "settings",
+    "preferences",
+    "options"
+  ],
+  "notify.ts": [
+    "alert",
+    "message",
+    "event",
+    "callback"
+  ],
+  "npm": [
+    "package",
+    "manager",
+    "dependencies",
+    "modules"
+  ],
+  "oauth.test.ts": [
+    "authentication",
+    "authorization",
+    "test",
+    "example"
+  ],
+  "oauth.ts": [
+    "auth",
+    "login",
+    "token",
+    "credentials"
+  ],
+  "ocean-breeze.json": [
+    "settings",
+    "config",
+    "preferences",
+    "options"
+  ],
+  "oracle.md": [
+    "database",
+    "query",
+    "schema",
+    "model"
+  ],
+  "orchestrator.md": [
+    "controller",
+    "manager",
+    "coordinator",
+    "scheduler"
   ],
   "package-lock.json": [
-    "lockfile",
-    "dependencies-locked",
-    "node-modules",
-    "version-pinned"
+    "dependencies",
+    "modules",
+    "packages",
+    "metadata"
   ],
   "package.json": [
     "manifest",
+    "metadata",
     "dependencies",
-    "config",
-    "metadata"
+    "modules"
   ],
   "permission-gate.ts": [
-    "access-control",
-    "authorization",
-    "roles",
-    "security-checks"
+    "access",
+    "control",
+    "policy",
+    "rule"
   ],
   "pi-caveman": [
-    "module",
-    "component"
+    "project",
+    "root",
+    "base"
   ],
   "pi-caveman.gif": [
-    "assets",
-    "media",
-    "images"
+    "caveman",
+    "gif",
+    "image",
+    "icon"
   ],
   "pi-coding-agent.d.ts": [
-    "types",
-    "interface",
-    "declaration",
-    "typescript-definitions"
+    "coding",
+    "agent",
+    "typescript",
+    "interface"
   ],
   "pi-extensions": [
+    "extensions",
+    "pi",
     "plugins",
-    "add-ons",
-    "modules",
-    "extensions-dir"
+    "addons"
   ],
   "pi-provider-kiro": [
-    "service",
-    "backend",
     "provider",
-    "api"
+    "kiro",
+    "pi",
+    "integration"
   ],
   "pi-status": [
-    "state",
-    "health",
-    "monitoring",
+    "status",
+    "pi",
+    "indicator",
     "dashboard"
   ],
   "pi-telegram": [
-    "client",
-    "integration",
+    "telegram",
+    "pi",
     "bot",
-    "messenger"
+    "integration"
   ],
   "picman.png": [
-    "assets",
-    "images",
-    "media"
+    "picman",
+    "png",
+    "image",
+    "icon"
   ],
   "picman.ts": [
-    "logic",
-    "controller",
-    "script",
-    "handler"
+    "picman",
+    "typescript",
+    "class",
+    "module"
   ],
   "piii": [
-    "module",
-    "component"
+    "piii",
+    "pi",
+    "version",
+    "release"
   ],
   "ping.png": [
-    "assets",
-    "images",
-    "media"
+    "ping",
+    "png",
+    "image",
+    "icon"
   ],
   "ping.ts": [
-    "heartbeat",
-    "status-check",
-    "monitoring",
-    "liveness"
+    "ping",
+    "typescript",
+    "function",
+    "module"
   ],
   "pitrix": [
-    "module",
-    "component"
+    "pitrix",
+    "pi",
+    "component",
+    "module"
   ],
   "planner.md": [
-    "readme",
-    "guide",
-    "documentation",
-    "strategy"
+    "planner",
+    "markdown",
+    "document",
+    "guide"
   ],
   "player.js": [
-    "streaming",
-    "media-control",
-    "audio",
-    "video"
+    "player",
+    "javascript",
+    "class",
+    "module"
   ],
   "playwright-cli-example.txt": [
-    "tests",
-    "examples",
-    "automation",
-    "scripts"
+    "playwright",
+    "cli",
+    "example",
+    "tutorial"
   ],
   "pnpm-lock.yaml": [
+    "package-lock",
     "lockfile",
-    "dependencies-locked",
-    "node-modules",
-    "version-pinned"
+    "dependency-lock",
+    "npm-lock"
   ],
   "pompom": [
-    "module",
-    "component"
+    "pom-pom",
+    "pom-poms",
+    "pom",
+    "pom-pom-effect"
   ],
   "prompts": [
-    "templates",
-    "input",
+    "questions",
     "queries",
-    "messages"
+    "input-prompts",
+    "user-prompts"
   ],
   "protected-paths.ts": [
-    "security",
-    "access-control",
-    "authorization",
-    "guard-rules"
+    "secure-paths",
+    "sensitive-paths",
+    "protected-routes",
+    "secured-paths"
   ],
   "questionnaire.ts": [
-    "forms",
     "survey",
-    "inputs",
-    "data-collection"
+    "quiz",
+    "assessment",
+    "interview"
   ],
   "rain.mp3": [
-    "assets",
-    "audio",
-    "media"
+    "sound-effect",
+    "audio-effect",
+    "weather-sound",
+    "rain-sound"
   ],
   "ralph-wiggum": [
-    "module",
-    "component"
+    "character-profile",
+    "person-profile",
+    "fictional-character",
+    "tv-character"
   ],
   "ralph.yml": [
-    "config",
-    "settings",
-    "environment",
-    "metadata"
+    "config-file",
+    "configuration-file",
+    "settings-file",
+    "profile-file"
   ],
   "raw-paste": [
-    "input",
-    "buffer",
-    "stream"
+    "plain-text",
+    "unformatted-text",
+    "raw-text",
+    "untouched-text"
   ],
   "registration.test.ts": [
-    "auth-tests",
-    "signup-validation",
-    "user-creation",
-    "onboarding-tests"
+    "sign-up-test",
+    "registration-test",
+    "account-creation-test",
+    "user-sign-up-test"
   ],
   "render.js": [
-    "template",
-    "html-generation",
-    "output",
-    "display"
+    "display-function",
+    "drawing-function",
+    "rendering-function",
+    "display-method"
   ],
   "research": [
-    "module",
-    "component"
+    "study",
+    "investigation",
+    "experiment",
+    "analysis"
   ],
   "retry.test.ts": [
-    "resilience-tests",
-    "recovery-tests",
-    "error-handling",
-    "stability-tests"
+    "retry-logic-test",
+    "retry-mechanism-test",
+    "retry-logic",
+    "retry-mechanism"
   ],
   "retry.ts": [
-    "backoff",
-    "reconnection",
-    "fallback",
-    "timeout"
+    "retry-logic",
+    "retry-mechanism",
+    "retry-function",
+    "retry-implementation"
   ],
   "reviewer.md": [
-    "readme",
-    "guide",
-    "documentation",
-    "process"
+    "evaluation-document",
+    "review-document",
+    "assessment-document",
+    "evaluation-report"
   ],
   "rose-pine.json": [
     "theme",
-    "colors",
-    "configuration",
-    "settings"
+    "styling",
+    "design",
+    "layout"
   ],
   "schema.ts": [
-    "data-structure",
-    "entities",
-    "classes",
-    "database-schema"
+    "model",
+    "structure",
+    "database",
+    "schema"
   ],
   "scout-and-plan.md": [
-    "readme",
-    "guide",
-    "documentation",
-    "strategy"
+    "planning",
+    "strategy",
+    "scouting",
+    "organization"
   ],
   "scout.md": [
-    "readme",
-    "docs",
-    "instructions",
-    "setup"
+    "scouting",
+    "exploration",
+    "discovery",
+    "research"
   ],
   "screenshot.png": [
-    "assets",
-    "images",
-    "media"
+    "image",
+    "capture",
+    "snapshot",
+    "visual"
   ],
   "scripts": [
-    "build",
-    "dev",
-    "utils",
-    "tasks"
+    "commands",
+    "executions",
+    "tasks",
+    "actions"
   ],
   "search.ts": [
-    "handlers",
     "query",
-    "filters",
-    "matchers"
+    "lookup",
+    "find",
+    "locate"
   ],
   "settings.json": [
-    "config",
+    "configuration",
+    "preferences",
     "options",
-    "prefs",
-    "defaults"
+    "parameters"
   ],
   "setup.sh": [
-    "install",
-    "init",
-    "configure",
-    "bootstrap"
+    "installation",
+    "initialization",
+    "configuration",
+    "deployment"
   ],
   "skill-creator": [
-    "tool",
     "builder",
     "generator",
-    "maker"
+    "maker",
+    "constructor"
   ],
   "skills": [
     "abilities",
-    "capacities",
-    "techniques",
-    "modules"
+    "competencies",
+    "proficiencies",
+    "talents"
   ],
   "snippets.ts": [
     "fragments",
-    "chunks",
-    "bits",
-    "pieces"
+    "pieces",
+    "snippets",
+    "code"
   ],
   "snow.mp3": [
-    "winter",
-    "cold",
-    "flakes",
-    "crisp"
+    "sound",
+    "audio",
+    "music",
+    "effect"
   ],
   "sparky.md": [
-    "quickstart",
-    "guide",
-    "intro",
-    "cheatsheet"
+    "inspiration",
+    "motivation",
+    "spark",
+    "idea"
   ],
   "spec.md": [
+    "specification",
     "requirements",
-    "specs",
-    "design-doc",
-    "blueprint"
+    "definition",
+    "description"
   ],
   "spice-invaders.png": [
-    "invader-art",
-    "alien-sprite",
-    "game-asset",
-    "texture-map"
+    "invaders-image",
+    "spice-game-icon",
+    "game-logo",
+    "spice-invaders-logo"
   ],
   "spice-invaders.ts": [
-    "invader-logic",
-    "enemy-handler",
-    "sprite-updater",
-    "game-entity"
+    "invaders-game",
+    "spice-game-code",
+    "game-logic",
+    "invaders-game-logic"
   ],
   "src": [
-    "source",
-    "root",
-    "main",
-    "entry"
+    "source-code",
+    "project-root",
+    "main-directory",
+    "project-base"
   ],
   "state.js": [
-    "store",
-    "context",
-    "global",
-    "runtime"
+    "application-state",
+    "game-state-management",
+    "state-management-code",
+    "game-state"
   ],
   "stats.json": [
-    "metrics",
-    "scores",
-    "progress",
-    "leaderboard"
+    "game-statistics",
+    "player-statistics",
+    "scoreboard-data",
+    "game-data"
   ],
   "storm.mp3": [
-    "weather",
-    "rain",
-    "thunder",
-    "heavy"
+    "background-music",
+    "game-soundtrack",
+    "storm-sound-effect",
+    "game-audio"
   ],
   "story0-frame.txt": [
-    "frame-0",
-    "start",
-    "init",
-    "base-case"
+    "frame-data",
+    "level-data",
+    "story-frame",
+    "level-0-data"
   ],
   "story1-camera.txt": [
-    "camera-move",
-    "panning",
-    "tracking",
-    "view-shift"
+    "camera-settings",
+    "camera-position",
+    "story-1-camera",
+    "camera-data"
   ],
   "story1-glyphs.txt": [
-    "text-render",
-    "char-display",
-    "font-test",
-    "visual-output"
+    "glyph-data",
+    "font-data",
+    "story-1-glyphs",
+    "font-asset"
   ],
   "story10-item.txt": [
-    "loot",
-    "collectible",
-    "power-up"
+    "item-data",
+    "item-asset",
+    "story-10-item",
+    "item-settings"
   ],
   "story11-hazards.txt": [
-    "danger",
-    "obstacle",
-    "trap",
-    "threat"
+    "hazard-data",
+    "obstacle-data",
+    "story-11-hazards",
+    "obstacle-settings"
   ],
   "story12-used-block.txt": [
-    "placed",
-    "constructed",
-    "built",
-    "installed"
+    "block-data",
+    "used-block",
+    "story-12-used-block",
+    "block-settings"
   ],
   "story13-pipes.txt": [
-    "conduit",
-    "tube",
-    "channel",
-    "barrier"
+    "pipe-data",
+    "pipe-asset",
+    "story-13-pipes",
+    "pipe-settings"
   ],
   "story14-goal.txt": [
-    "target",
-    "win-condition",
-    "objective",
-    "end-point"
+    "goal-data",
+    "goal-settings",
+    "story-14-goal",
+    "goal-object"
   ],
   "story15-hud-narrow.txt": [
-    "ui-tight",
-    "compact-display",
-    "minimal-panel",
-    "simplified-view"
+    "hud-data",
+    "hud-settings",
+    "story-15-hud-narrow",
+    "hud-asset"
   ],
   "story16-unknown-tile.txt": [
-    "mystery-block",
-    "unknown-entity",
-    "random-tile",
-    "unmapped-cell"
+    "unknown tile",
+    "tile map",
+    "map data",
+    "story tile"
   ],
   "story17-mix.txt": [
-    "blend",
-    "combine",
-    "overlay",
-    "composite"
+    "mix story",
+    "story mix",
+    "mix file",
+    "story file"
   ],
   "story18-hud-score.txt": [
-    "points",
-    "scoreboard",
-    "tally",
-    "count-up"
+    "hud score",
+    "score hud",
+    "hud display",
+    "score display"
   ],
   "story19-cue.txt": [
-    "signal",
-    "trigger",
-    "prompt",
-    "indicator"
+    "cue story",
+    "story cue",
+    "cue file",
+    "story file"
   ],
   "story2-enemy.txt": [
-    "hostile",
-    "antagonist",
-    "monster",
-    "foe"
+    "enemy story",
+    "story enemy",
+    "enemy data"
   ],
   "story20-camera-offset.txt": [
-    "camera-shift",
-    "viewport-move",
-    "pan-adjust",
-    "view-translate"
+    "camera offset",
+    "offset camera",
+    "camera position",
+    "offset position"
   ],
   "story21-hud-zero.txt": [
-    "reset-ui",
-    "zero-display",
-    "clear-counter",
-    "null-state"
+    "hud zero",
+    "zero hud",
+    "hud reset",
+    "zero reset"
   ],
   "story22-big-viewport.txt": [
-    "wide-screen",
-    "large-view",
-    "expanded-canvas",
-    "full-viewport"
+    "big viewport",
+    "viewport big",
+    "large viewport",
+    "viewport large"
   ],
   "story23-camera-negative.txt": [
-    "camera-left",
-    "reverse-pan",
-    "negative-offset",
-    "backward-shift"
+    "camera negative",
+    "negative camera",
+    "camera offset",
+    "negative offset"
   ],
   "story24-camera-width.txt": [
-    "camera-scale",
-    "zoom-level",
-    "width-adjust",
-    "aspect-ratio"
+    "camera width",
+    "width camera",
+    "camera size",
+    "width size"
   ],
   "story25-camera-positive.txt": [
-    "camera-right",
-    "forward-pan",
-    "positive-offset",
-    "rightward-shift"
+    "camera positive",
+    "positive camera",
+    "camera offset",
+    "positive offset"
   ],
   "story26-hud-lives.txt": [
-    "health",
-    "hp-bar",
-    "alive-count",
-    "survival-meter"
+    "hud lives",
+    "lives hud",
+    "hud health",
+    "lives health"
   ],
   "story27-hud-coins.txt": [
-    "currency",
-    "gold",
-    "money",
-    "token-count"
+    "hud coins",
+    "coins hud",
+    "hud currency",
+    "coins currency"
   ],
   "story28-item-viewport.txt": [
-    "loot-view",
-    "inventory-display",
-    "item-canvas",
-    "collectible-screen"
+    "item viewport",
+    "viewport item",
+    "item view"
   ],
   "story29-enemy-viewport.txt": [
-    "enemy-screen",
-    "hostile-view",
-    "foe-canvas",
-    "antagonist-display"
+    "enemy viewport",
+    "viewport enemy",
+    "enemy view"
   ],
   "story3-hud.txt": [
-    "ui-layer",
-    "interface",
-    "overlay",
-    "dashboard"
+    "hud",
+    "story3",
+    "game ui",
+    "user interface"
   ],
   "story30-hud-score.txt": [
-    "score-panel",
-    "points-ui",
-    "tally-board",
-    "count-display"
+    "scoreboard",
+    "hud",
+    "story30",
+    "game stats"
   ],
   "story31-particles-viewport.txt": [
-    "effect-canvas",
-    "particle-screen",
-    "fx-display",
-    "visual-effects-view"
+    "particles",
+    "viewport",
+    "story31",
+    "visual effects"
   ],
   "story32-paused-frame.txt": [
-    "paused-state",
-    "frozen-frame",
-    "waiting-screen",
-    "halted-ui"
+    "paused",
+    "frame",
+    "story32",
+    "game state"
   ],
   "story4-big.txt": [
-    "large-scale",
-    "expanded",
-    "big-format",
-    "mega-version"
+    "big",
+    "story4",
+    "game size",
+    "scale"
   ],
   "story5-resume-hud.txt": [
-    "resume-ui",
-    "continue-panel",
-    "replay-display",
-    "restart-view"
+    "resume",
+    "hud",
+    "story5",
+    "game restart"
   ],
   "story6-particles.txt": [
-    "fx-gen",
-    "particle-system",
-    "visual-effects",
-    "anim-curve"
+    "particles",
+    "story6",
+    "visual effects"
   ],
   "story6-paused.txt": [
-    "game-over",
-    "paused-menu",
-    "stop-screen",
-    "halt-state"
+    "paused",
+    "story6",
+    "game state"
   ],
   "story7-powerup.txt": [
-    "upgrade",
-    "enhancement",
-    "boost",
-    "ability-gain"
+    "powerup",
+    "story7",
+    "game item"
   ],
   "story8-hud-time.txt": [
-    "timer",
-    "clock",
-    "duration",
-    "elapsed-time"
+    "time",
+    "hud",
+    "story8",
+    "game clock"
   ],
   "story9-hud-level.txt": [
-    "level-indicator",
-    "progress-bar",
-    "stage-counter",
-    "tier-display"
+    "level",
+    "hud",
+    "story9",
+    "game progress"
   ],
   "stream.test.ts": [
-    "test-stream",
-    "mock-data",
-    "fake-output",
-    "unit-test"
+    "streaming",
+    "test",
+    "media streaming"
   ],
   "stream.ts": [
-    "data-flow",
-    "pipe",
-    "pipeline",
-    "throughput"
+    "streaming",
+    "media streaming"
   ],
   "subagent": [
-    "helper",
-    "assistant",
-    "worker",
-    "bot"
+    "sub agent",
+    "agent",
+    "assistant"
   ],
   "subagent-widget.ts": [
-    "ui-component",
-    "widget-ui",
-    "interactive-element",
-    "control-panel"
+    "widget",
+    "subagent",
+    "ui component"
   ],
   "switch.md": [
     "toggle",
-    "switching",
-    "change-state",
-    "state-change"
+    "change",
+    "swap",
+    "switcher"
   ],
   "synthwave.json": [
-    "retro-audio",
-    "synth-config",
-    "80s-music",
-    "retro-json"
+    "synthwave-data",
+    "wave-synth",
+    "synth-wave-config",
+    "wave-synth-config"
   ],
   "tab-status": [
-    "tab-active",
-    "current-tab",
-    "selection",
-    "focus-state"
+    "tab-state",
+    "tab-info",
+    "tab-status-bar",
+    "tab-indicator"
   ],
   "tab-status.png": [
-    "ui-icon",
-    "status-badge",
-    "active-tab",
-    "visual-indicator"
+    "tab-status-icon",
+    "tab-indicator-image",
+    "tab-icon-image",
+    "tab-status-image"
   ],
   "tab-status.ts": [
-    "tab-manager",
-    "ui-state",
-    "component",
-    "renderer"
+    "tab-status-function",
+    "tab-status-handler",
+    "tab-status-controller",
+    "tab-status-service"
   ],
   "tank.md": [
-    "vehicle",
-    "combat-unit",
-    "army",
-    "strategy"
+    "tank-info",
+    "tank-data",
+    "tank-specs",
+    "tank-features"
   ],
   "tavily.md": [
-    "search-engine",
-    "data-fetcher",
-    "query-api",
-    "research-tool"
+    "tavily-guide",
+    "tavily-tutorial",
+    "tavily-documentation",
+    "tavily-reference"
   ],
   "teams.yaml": [
-    "messaging-config",
-    "bot-settings",
-    "channel-map",
-    "slack-config"
+    "team-config",
+    "team-settings",
+    "team-data",
+    "team-info"
   ],
   "telegram-locks.json": [
-    "secure-channels",
-    "privacy-settings",
-    "access-control",
-    "encrypted-groups"
+    "telegram-lock-data",
+    "telegram-lock-config",
+    "telegram-lock-params"
   ],
   "telegram.json": [
-    "bot-data",
-    "chat-history",
-    "user-list",
-    "message-log"
+    "telegram-api",
+    "telegram-data",
+    "telegram-config",
+    "telegram-info"
   ],
   "templates": [
-    "layouts",
-    "html-snippets",
-    "reusable-components",
-    "html-files"
+    "template-files",
+    "template-data",
+    "template-info",
+    "template-library"
   ],
   "test": [
-    "unit-tests",
-    "validation",
-    "assertions",
-    "checks"
+    "testing",
+    "test-suite",
+    "test-run",
+    "test-results"
   ],
   "test-1m-context.ts": [
-    "large-context-test",
-    "long-prompt-test",
-    "context-window-check",
-    "memory-test"
+    "test-context",
+    "test-environment",
+    "test-setup",
+    "test-initialization"
   ],
   "tests": [
-    "unit-tests",
-    "integration-tests",
-    "verification",
-    "check-suite"
+    "test-files",
+    "test-data",
+    "test-info",
+    "test-results"
   ],
   "tetris.png": [
-    "game-assets",
-    "block-graphic",
-    "cubes",
-    "tetromino-icon"
+    "tetris-icon",
+    "tetris-image",
+    "tetris-logo",
+    "tetris-art"
   ],
   "tetris.ts": [
-    "game-logic",
-    "block-faller",
-    "stacker",
-    "puzzle-engine"
+    "puzzle",
+    "game",
+    "block",
+    "shape"
   ],
   "theme-cycler.ts": [
-    "color-changer",
-    "skin-switcher",
-    "visual-theme",
-    "palette-cycler"
+    "color",
+    "scheme",
+    "palette",
+    "cycle"
   ],
   "themeMap.ts": [
-    "color-map",
-    "style-reference",
-    "theme-data",
-    "palette-lookup"
+    "style",
+    "map",
+    "mapper",
+    "renderer"
   ],
   "themes": [
-    "design-system",
-    "color-schemes",
-    "ui-overrides",
-    "visual-configs"
+    "styles",
+    "schemes",
+    "palettes",
+    "layouts"
   ],
   "thinking-parser.test.ts": [
-    "reasoning-check",
-    "llm-analysis-test",
-    "chain-of-thought-test",
-    "logic-validation"
+    "logic",
+    "parser",
+    "interpreter",
+    "solver"
   ],
   "thinking-parser.ts": [
-    "reasoning-engine",
-    "llm-analyzer",
-    "thought-parser",
-    "inference-module"
+    "logic",
+    "parser",
+    "interpreter",
+    "solver"
   ],
   "tiles.js": [
-    "game-elements",
-    "grid-assets",
-    "block-set",
-    "map-tiles"
+    "pieces",
+    "blocks",
+    "shapes",
+    "grid"
   ],
   "tmustier": [
-    "ranking-system",
-    "difficulty-meter",
-    "score-calculator",
-    "challenge-leaderboard"
+    "matcher",
+    "validator",
+    "verifier",
+    "comparator"
   ],
   "tokenizer.test.ts": [
-    "tokenization-test",
-    "encoding-check",
-    "word-splitter-test",
-    "vocab-verify"
+    "lexer",
+    "tokenizer",
+    "parser",
+    "scanner"
   ],
   "tokenizer.ts": [
-    "text-tokenizer",
-    "word-splitter",
-    "embedding-prep",
-    "nlp-utils"
+    "lexer",
+    "tokenizer",
+    "parser",
+    "scanner"
   ],
   "tokyo-night.json": [
-    "dark-theme",
-    "neon-config",
-    "cyberpunk-json",
-    "night-mode"
+    "theme",
+    "style",
+    "palette",
+    "scheme"
   ],
   "transform.test.ts": [
-    "data-transformation-test",
-    "mapping-check",
-    "converter-verify",
-    "mapper-test"
+    "converter",
+    "transformer",
+    "mapper",
+    "adapter"
   ],
   "transform.ts": [
-    "data-transformer",
-    "mapper",
     "converter",
-    "pipeline-step"
+    "transformer",
+    "mapper",
+    "adapter"
   ],
   "trinity.md": [
-    "three-part-system",
-    "holistic-guide",
-    "triad-method",
-    "comprehensive-doc"
+    "guide",
+    "manual",
+    "tutorial",
+    "reference"
   ],
   "truncation.test.ts": [
-    "length-cutoff-test",
-    "token-limit-check",
-    "truncation-verify",
-    "max-length-test"
+    "clipper",
+    "cutter",
+    "shortener",
+    "limiter"
   ],
   "truncation.ts": [
-    "text-truncator",
-    "length-cutter",
-    "token-limiter",
-    "string-shortener"
+    "truncate",
+    "shorten",
+    "limit",
+    "cut"
   ],
   "tsconfig.json": [
-    "typescript-config",
-    "build-settings",
-    "compiler-options",
-    "project-config"
+    "typescript",
+    "config",
+    "compiler",
+    "settings"
   ],
   "types": [
-    "interfaces",
-    "type-declarations",
-    "schemas",
-    "interfaces.ts"
+    "type",
+    "definition",
+    "interface",
+    "schema"
   ],
   "types.js": [
-    "js-interfaces",
-    "runtime-types",
-    "interface-files",
-    "js-schemas"
+    "javascript",
+    "type",
+    "definition",
+    "schema"
   ],
   "types.ts": [
-    "typescript-interfaces",
-    "type-defs",
-    "interface-file",
-    "schema-defs"
+    "typescript",
+    "type",
+    "definition",
+    "interface"
   ],
   "ui.ts": [
-    "frontend-components",
-    "user-interface",
-    "react-ui",
-    "widget-library"
+    "user",
+    "interface",
+    "frontend",
+    "ui"
   ],
   "update_piii.md": [
-    "pii-compliance",
-    "privacy-update",
-    "data-policy",
-    "security-guidelines"
+    "update",
+    "pii",
+    "personal"
   ],
   "usage-extension": [
-    "extension-package",
-    "app-extensions",
-    "plugin-system",
-    "feature-add-on"
+    "usage",
+    "extension",
+    "plugin",
+    "module"
   ],
   "usage.test.ts": [
-    "api-usage-test",
-    "rate-limit-check",
-    "call-count-test",
-    "metrics-test"
+    "test",
+    "usage",
+    "example",
+    "demo"
   ],
   "usage.ts": [
-    "api-client",
-    "usage-tracker",
-    "request-handler",
-    "metrics-collector"
+    "usage",
+    "example",
+    "demo",
+    "tutorial"
   ],
   "utils.ts": [
-    "helper-functions",
-    "common-utils",
-    "library",
-    "shared-tools"
+    "utility",
+    "function",
+    "helper",
+    "service"
   ],
   "validate_skill.py": [
-    "skill-verifier",
-    "competency-checker",
-    "profiling-script",
-    "evaluation-tool"
+    "validate",
+    "skill",
+    "ability",
+    "competency"
   ],
   "viewer.ts": [
-    "data-viewer",
-    "report-ui",
-    "dashboard",
-    "visualization-component"
+    "view",
+    "display",
+    "render",
+    "show"
   ],
   "vitest.config.ts": [
-    "test-config",
-    "jest-alternative",
-    "vitest-setup",
-    "testing-framework"
+    "vitest",
+    "config",
+    "test",
+    "runner"
   ],
   "weather": [
-    "climate-data",
-    "forecast-info",
-    "meteorology",
-    "atmospheric-data"
+    "weather",
+    "forecast",
+    "climate",
+    "atmosphere"
   ],
   "weather-demo.gif": [
-    "weather-animation",
-    "cloud-graphic",
-    "rain-effect",
-    "visual-demo"
+    "weather demo image",
+    "weather demo screenshot",
+    "weather demo visual",
+    "weather demo graphic"
   ],
   "weather-demo.mp4": [
-    "weather-video",
-    "forecast-clip",
-    "sky-animation",
-    "demo-footage"
+    "weather demo video",
+    "weather demo animation",
+    "weather demo clip",
+    "weather demo movie"
   ],
   "weathr-bridge": [
-    "api-gateway",
-    "service-proxy",
-    "integration-layer",
-    "weather-service"
+    "weather bridge",
+    "weather api bridge",
+    "weather data bridge",
+    "weather integration"
   ],
   "web-search.json": [
-    "search-results",
-    "query-log",
-    "browser-data",
-    "lookup-cache"
+    "web search settings",
+    "web search configuration",
+    "web search data",
+    "search engine settings"
   ],
   "whimsical.ts": [
-    "design-tool",
-    "whiteboard-ui",
-    "canvas-drawer",
-    "creative-app"
+    "whimsical script",
+    "whimsical code",
+    "whimsical functionality",
+    "whimsical logic"
   ],
   "whimsical.ts.bk": [
-    "whimsical-backup",
-    "design-backup",
-    "whimsical-old",
-    "canvas-backup"
+    "whimsical backup",
+    "whimsical code backup",
+    "whimsical script backup",
+    "whimsical source backup"
   ],
   "win32-x64-msvc": [
-    "windows-build",
-    "native-windows",
-    "msvc-compiler",
-    "windows-x64-bin"
+    "win32 x64 msvc build",
+    "win32 x64 msvc configuration",
+    "win32 x64 msvc settings",
+    "win32 x64 msvc build settings"
   ],
   "worker.md": [
-    "background-task",
-    "thread-worker",
-    "async-job",
-    "sub-process-guide"
+    "worker documentation",
+    "worker guide",
+    "worker reference",
+    "worker tutorial"
   ]
 }
