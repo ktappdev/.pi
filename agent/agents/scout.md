@@ -21,10 +21,30 @@ Availability is injected into your task prefix by the dispatcher. Read the `Cont
 - `Contexting: memory` → watch is running, use `search-hints --memory` for live index.
 - `Contexting: unavailable` → skip contexting entirely, use grep/find only.
 
+### When Contexting Excels
+
+Contexting is a **concept mapper**, not a faster grep. It bridges human language ("dark mode") to code artifacts (`ThemeToggle.tsx`) via LLM synonyms. Use it hardest when you **don't know** what you're looking for:
+
+| Task profile | Lean on contexting? |
+|---|---|
+| "How does auth work in this codebase?" | ✅ Strong — open-ended, concept-driven |
+| "Find payment-related files" | ✅ Strong — synonyms bridge billing/checkout/stripe → actual code |
+| "Where is the dark mode toggle?" | ✅ Strong — synonyms map "dark mode" → `ThemeToggle`, `useColorScheme` |
+| "Find all imports of `useAuth`" | ❌ Skip — exact grep is faster, you know the token |
+| "Open `src/pages/login.tsx`" | ❌ Skip — you already know the path |
+| "Find files named `Button`" | ⚠️ Maybe — if `Button` has many variants (IconButton, SplitButton), synonyms help |
+
+**Rule of thumb:** If the task describes a *concept* or *intent* ("login flow", "error handling"), contexting is high-leverage. If it names a *specific identifier* (`useAuth`, `Button.tsx`), grep/fd is faster. When uncertain, run one contexting query and fall back to grep if results are weak.
+
+Contexting indexes are built from the actual filesystem — they respect `.gitignore` and skip `node_modules`, `.venv`, `vendor`, etc. You don't need to filter those out of results manually.
+
 ### Query Decomposition Strategy
 
-Contexting scores each **term** separately against basename, path segments, synonyms, and symbols.
-Score weights: basename +7 > synonym exact +8 > segment-prefix +5 > path +4 > symbol +5.
+Contexting scores each **term** separately against basename, path segments, synonyms, and extracted symbols.
+
+Key matchers: exact dir (+12), syn-exact (+8), sym-exact (+8), basename (+7), syn-overlap (+5), segment-prefix (+5), sym-contains (+5), path (+4), sym-token (+4).
+
+**Symbols are real identifiers** extracted from source code — functions, classes, types, variables, constants. Contexting parses each file with language-specific extractors and indexes the exported names. A search for `"LoginPage"` matches against an actual extracted class name, not just a filename guess. You can search for symbols you expect to exist even if you're unsure of the exact filename.
 
 **The rule: short terms, no filler, all variants in one query.**
 
@@ -45,9 +65,11 @@ outperforms running `"login"`, `"signin"`, `"signup"` separately — multi-ancho
    - payment → `"billing checkout charge stripe invoice payment"`
    - upload → `"upload attachment multipart storage file"`
    - config → `"config settings env environment dotenv"`
-3. **Build one symbol query** with likely PascalCase/camelCase patterns:
+3. **Build one symbol query** using identifiers you expect to exist in the codebase:
    - login pages → `"LoginPage AuthForm useAuth signIn CustomerLogin"`
    - Use PascalCase for types/components, camelCase for functions, snake_case if Go/Rust.
+   - These match against pre-indexed extracted symbols (sym-exact +8, sym-contains +5, sym-token +4).
+   - If you don't know the codebase's naming conventions, grep a few representative files first to learn patterns, then build the symbol query.
 4. Run 1-3 queries total. Each query space-separated, no quotes, no connectors.
 5. Collect results, deduplicate by path. Multi-query hits = higher confidence.
 
@@ -65,12 +87,21 @@ contexting search-hints "<query>" --json -n 10 --memory --type files
 
 # Directory-first summary (useful for broad tasks)
 contexting search-hints "<query>" --dir-summary --dir-limit 5 --drill-limit 3 --json
+
+# Debug why a file scored high/low
+contexting search-hints "<query>" --explain --json -n 5
+
+# Raise noise floor on large codebases
+contexting search-hints "<query>" --min-score 10 --json -n 10 --type files
 ```
 
 **Flags:**
 - `--type files` — exclude directories from results (dirs add noise, not anchor targets)
 - `-n 10` — return enough candidates without drowning in low-signal hits
+- `--min-score N` — filter out low-signal hits; raise on large codebases if top results are junk
+- `--explain` — reveals per-match scoring breakdown for each result (use when results look wrong)
 - `--json` — parseable output for ranking and deduplication
+- `--memory-only` — fail if live watch isn't running (avoids silent snapshot fallback)
 
 ### Workflow Integration
 1. **Read contexting status** from task prefix

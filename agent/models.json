@@ -152,6 +152,9 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
+          },
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true
           }
         },
         {
@@ -168,11 +171,16 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
+          },
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true
           }
         },
         {
           "id": "minimax-m2.7",
           "name": "MiniMax M2.7 (OCG1)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
           "input": [
             "text"
@@ -335,6 +343,8 @@
         {
           "id": "qwen3.6-plus",
           "name": "Qwen 3.6 Plus (OCG1)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
           "input": [
             "text",
@@ -347,14 +357,13 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
-          },
-          "options": {
-            "enable_thinking": true
           }
         },
         {
           "id": "qwen3.5-plus",
           "name": "Qwen 3.5 Plus (OCG1)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
           "input": [
             "text",
@@ -367,9 +376,6 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
-          },
-          "options": {
-            "enable_thinking": true
           }
         }
       ]
@@ -397,6 +403,9 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
+          },
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true
           }
         },
         {
@@ -413,11 +422,16 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
+          },
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true
           }
         },
         {
           "id": "minimax-m2.7",
           "name": "MiniMax M2.7 (OCG2)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
           "input": [
             "text"
@@ -580,6 +594,8 @@
         {
           "id": "qwen3.6-plus",
           "name": "Qwen 3.6 Plus (OCG2)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
           "input": [
             "text",
@@ -592,14 +608,13 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
-          },
-          "options": {
-            "enable_thinking": true
           }
         },
         {
           "id": "qwen3.5-plus",
           "name": "Qwen 3.5 Plus (OCG2)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
           "input": [
             "text",
@@ -612,9 +627,6 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
-          },
-          "options": {
-            "enable_thinking": true
           }
         }
       ]

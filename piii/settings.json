@@ -1,6 +1,6 @@
 {
   "lastChangelogVersion": "0.70.6",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "minimal",
   "quietStartup": false,
   "hideThinkingBlock": false,
   "packages": [
