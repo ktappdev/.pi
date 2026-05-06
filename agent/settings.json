@@ -1,15 +1,17 @@
 {
-  "lastChangelogVersion": "0.71.0",
+  "lastChangelogVersion": "0.73.0",
   "theme": "synthwave",
   "defaultThinkingLevel": "medium",
-  "agentTeamViewMode": "table",
+  "agentTeamViewMode": "tactical",
   "packages": [
     "git:github.com/ktappdev/pi-telegram",
     "npm:pi-web-access",
     "git:github.com/ktappdev/kilo-pi-provider",
     "git:github.com/jonjonrankin/pi-caveman",
     "git:github.com/mikeyobrien/pi-provider-kiro",
-    "npm:pi-context-cap"
+    "npm:pi-context-cap",
+    "npm:pi-free",
+    "npm:pi-provider-kiro"
   ],
   "quietStartup": false,
   "treeFilterMode": "all",
@@ -21,8 +23,8 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "ocg1",
-  "defaultModel": "qwen3.5-plus",
+  "defaultProvider": "deepseek",
+  "defaultModel": "deepseek-v4-flash",
   "hideThinkingBlock": false,
   "enabledModels": [
     "deepseek/*",

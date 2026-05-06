@@ -474,7 +474,8 @@ export default function (pi: ExtensionAPI) {
 				getModelOverride: () => agentModels["subagents"],
 			});
 		})
-		.catch(() => {
+		.catch((err) => {
+			console.error("[agent-team] Failed to load background-subagents module:", err);
 			backgroundSubagents = {
 				reset: (_ctx?: any) => {},
 				toolNames: [],

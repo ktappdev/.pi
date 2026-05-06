@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.71.0",
+  "lastChangelogVersion": "0.73.0",
   "defaultThinkingLevel": "minimal",
   "quietStartup": false,
   "hideThinkingBlock": false,
@@ -12,8 +12,8 @@
     "../../developer/context-monitor",
     "../../developer/pi-context-monitor"
   ],
-  "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultProvider": "ocg1",
+  "defaultModel": "qwen3.6-plus",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",

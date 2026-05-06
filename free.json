@@ -1,0 +1,21 @@
+{
+  "nvidia_api_key": "",
+  "ollama_api_key": "",
+  "zenmux_api_key": "",
+  "crofai_api_key": "",
+  "mistral_api_key": "",
+  "groq_api_key": "",
+  "cerebras_api_key": "",
+  "xai_api_key": "",
+  "hf_token": "",
+  "kilo_free_only": false,
+  "hidden_models": [],
+  "free_only": true,
+  "kilo_show_paid": false,
+  "ollama_show_paid": false,
+  "cline_show_paid": false,
+  "zenmux_show_paid": false,
+  "crofai_show_paid": false,
+  "openrouter_show_paid": false,
+  "opencode_show_paid": false
+}

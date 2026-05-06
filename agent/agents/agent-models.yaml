@@ -1,4 +1,4 @@
-builder: ocg2/deepseek-v4-flash
+builder: ocg2/mimo-v2.5-pro
 designer: ocg2/kimi-k2.6
 devops: opencode/big-pickle
 documenter: opencode-go/minimax-m2.5
@@ -8,5 +8,5 @@ planner: ocg2/deepseek-v4-pro
 reviewer: openai-codex/gpt-5.4
 scout: ocg2/deepseek-v4-flash
 sparky: opencode/big-pickle
-subagents: DeepSeek/deepseek-v4-flash
+subagents: ocg2/deepseek-v4-flash
 tavily: opencode/minimax-m2.5-free
