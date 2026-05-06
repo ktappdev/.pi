@@ -34,7 +34,8 @@
     "openai-codex/*",
     "opencode/*",
     "opencode-go/*",
-    "mimo/*"
+    "cline/*",
+    "nvidia/*"
   ],
   "steeringMode": "all",
   "followUpMode": "all"
