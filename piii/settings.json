@@ -12,8 +12,8 @@
     "../../developer/context-monitor",
     "../../developer/pi-context-monitor"
   ],
-  "defaultProvider": "ocg1",
-  "defaultModel": "qwen3.6-plus",
+  "defaultProvider": "ocg2",
+  "defaultModel": "deepseek-v4-flash",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",
