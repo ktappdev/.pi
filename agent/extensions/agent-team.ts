@@ -462,32 +462,10 @@ export default function (pi: ExtensionAPI) {
 	let contextWindow = 0;
 	let footerMetrics = createFooterMetricsState();
 	let contextingStatus: "snapshot" | "memory" | "unavailable" = "unavailable";
-	let backgroundSubagents = {
-		reset: (_ctx?: any) => {},
-		toolNames: [] as string[],
-		promptGuidance: "",
-	};
-	const backgroundSubagentsLoader = import("./lib/agent-team-background-subagents.ts")
-		.then(({ registerBackgroundSubagentTools }) => {
-			backgroundSubagents = registerBackgroundSubagentTools(pi, {
-				getPiExecutable: findPiExecutable,
-				getModelOverride: () => agentModels["subagents"],
-			});
-		})
-		.catch((err) => {
-			console.error("[agent-team] Failed to load background-subagents module:", err);
-			backgroundSubagents = {
-				reset: (_ctx?: any) => {},
-				toolNames: [],
-				promptGuidance: "",
-			};
-		});
-
 	const THINKING_LEVELS = ["off", "minimal", "low", "medium", "high", "xhigh"];
 
 	// Ensure sub-agents are terminated when Pi exits
 	pi.on("before_exit", async (_event, _ctx) => {
-		backgroundSubagents.reset();
 		for (const [key, proc] of runningProcs.entries()) {
 			try {
 				proc.kill("SIGKILL");
@@ -2017,7 +1995,6 @@ export default function (pi: ExtensionAPI) {
 	// ── System Prompt Override ───────────────────
 
 	pi.on("before_agent_start", async (_event, _ctx) => {
-		await backgroundSubagentsLoader;
 		const agentCatalog = Array.from(agentStates.values())
 			.map(s => `### ${displayName(s.def.name)}\n**Dispatch as:** \`${s.def.name}\`\n${s.def.description}\n**Tools:** ${s.def.tools}`)
 			.join("\n\n");
@@ -2077,16 +2054,14 @@ ${agentCatalog}`;
 		const globalAppendPath = join(homedir(), '.pi', 'agent', 'APPEND_SYSTEM.md');
 		const globalAppend = existsSync(globalAppendPath) ? readFileSync(globalAppendPath, 'utf-8').trim() : '';
 		return {
-			systemPrompt: `${finalPrompt}\n\n---\n\n${backgroundSubagents.promptGuidance}${globalAppend ? `\n\n---\n\n${globalAppend}` : ``}`,
+			systemPrompt: `${finalPrompt}${globalAppend ? `\n\n---\n\n${globalAppend}` : ``}`,
 		};
 	});
 
 	// ── Session Start ────────────────────────────
 
 	pi.on("session_start", async (_event, _ctx) => {
-		await backgroundSubagentsLoader;
 		applyExtensionDefaults(import.meta.url, _ctx);
-		backgroundSubagents.reset(_ctx);
 
 		// Clear widgets from previous session
 		if (widgetCtx) {
@@ -2111,7 +2086,6 @@ ${agentCatalog}`;
 		const requestedTools = new Set([
 			...existingTools,
 			...orchestratorTools,
-			...backgroundSubagents.toolNames,
 		]);
 		pi.setActiveTools(Array.from(requestedTools));
 		const members = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
