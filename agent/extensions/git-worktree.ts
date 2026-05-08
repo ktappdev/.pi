@@ -211,7 +211,7 @@ export default function (pi: ExtensionAPI) {
 			if (cmd === "list") {
 				const list = await getWorktrees(repoRoot);
 				if (list.length === 0) {
-					ctx.ui.notify("No worktrees found.", "info");
+					ctx.ui.notify("Could not list worktrees. Repository may be corrupted or inaccessible.", "error");
 					await refreshWorktreeStatus(ctx);
 					return;
 				}
@@ -277,14 +277,12 @@ export default function (pi: ExtensionAPI) {
 					return;
 				}
 
-				if (cmd === "new") {
-					try {
-						process.chdir(targetPath);
-						ctx.ui.notify(`Switched to new worktree: ${branch}`, "success");
-						ctx.ui.notify(`Pi cwd: ${targetPath}`, "info");
-					} catch {
-						ctx.ui.notify("Worktree created, but auto-switch failed. Use /wt cd to jump.", "warning");
-					}
+				try {
+					process.chdir(targetPath);
+					ctx.ui.notify(`Switched to new worktree: ${branch}`, "success");
+					ctx.ui.notify(`Pi cwd: ${targetPath}`, "info");
+				} catch {
+					ctx.ui.notify("Worktree created, but auto-switch failed. Use /wt cd to jump.", "warning");
 				}
 
 				ctx.ui.notify(`Created worktree: ${targetPath}`, "success");
@@ -366,8 +364,14 @@ export default function (pi: ExtensionAPI) {
 					return;
 				}
 
-				if (path.resolve(target) === path.resolve(repoRoot)) {
+				const mainWorktree = entries[0];
+				if (mainWorktree && path.resolve(target) === path.resolve(mainWorktree.worktree)) {
 					ctx.ui.notify("Cannot remove the main worktree.", "error");
+					return;
+				}
+
+				if (path.resolve(target) === path.resolve(repoRoot)) {
+					ctx.ui.notify("Cannot remove the current worktree. Switch to another with /wt cd first.", "error");
 					return;
 				}
 

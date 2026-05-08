@@ -4,8 +4,8 @@ devops: opencode/big-pickle
 documenter: opencode-go/minimax-m2.5
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
-planner: ocg2/deepseek-v4-pro
-reviewer: openai-codex/gpt-5.4
+planner: ocg1/kimi-k2.6
+reviewer: ocg1/qwen3.6-plus
 scout: ocg2/deepseek-v4-flash
 sparky: opencode/big-pickle
 subagents: ocg2/deepseek-v4-flash

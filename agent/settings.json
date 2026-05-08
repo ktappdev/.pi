@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.73.0",
+  "lastChangelogVersion": "0.73.1",
   "theme": "synthwave",
   "defaultThinkingLevel": "medium",
   "agentTeamViewMode": "grid",
@@ -8,7 +8,6 @@
     "npm:pi-web-access",
     "git:github.com/ktappdev/kilo-pi-provider",
     "git:github.com/jonjonrankin/pi-caveman",
-    "git:github.com/mikeyobrien/pi-provider-kiro",
     "npm:pi-context-cap",
     "npm:pi-free",
     "npm:pi-provider-kiro"
@@ -23,8 +22,8 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "ocg1",
-  "defaultModel": "qwen3.5-plus",
+  "defaultProvider": "ocg2",
+  "defaultModel": "deepseek-v4-flash",
   "hideThinkingBlock": false,
   "enabledModels": [
     "deepseek/*",
