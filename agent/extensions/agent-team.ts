@@ -934,21 +934,17 @@ export default function (pi: ExtensionAPI) {
 								liveTextBuffer = completed.pop() || "";
 								for (const completedLine of completed) {
 									appendAgentLog(key, completedLine);
-								}
-								
-								const nonWaitLines = completed.filter(l => l.trim() && !l.trim().startsWith("[wait]"));
-								if (nonWaitLines.length > 0) {
-									for (const line of nonWaitLines) {
-										const trimmed = line.trim();
-										if (state.lastWork[state.lastWork.length - 1] !== trimmed) {
+									
+									// Only track complete lines that aren't wait markers
+									const trimmed = completedLine.trim();
+									if (trimmed && !trimmed.startsWith("[wait]")) {
+										// Replace last entry if it was incomplete, otherwise add new
+										const lastIdx = state.lastWork.length - 1;
+										if (lastIdx >= 0 && !state.lastWork[lastIdx].includes("\n")) {
+											state.lastWork[lastIdx] = trimmed;
+										} else {
 											state.lastWork.push(trimmed);
-											if (state.lastWork.length > 10) state.lastWork.shift();
 										}
-									}
-								} else if (liveTextBuffer.trim() && !liveTextBuffer.trim().startsWith("[wait]")) {
-									const trimmed = liveTextBuffer.trim();
-									if (state.lastWork[state.lastWork.length - 1] !== trimmed) {
-										state.lastWork.push(trimmed);
 										if (state.lastWork.length > 10) state.lastWork.shift();
 									}
 								}

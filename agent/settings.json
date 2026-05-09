@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.73.1",
+  "lastChangelogVersion": "0.74.0",
   "theme": "synthwave",
   "defaultThinkingLevel": "medium",
-  "agentTeamViewMode": "grid",
+  "agentTeamViewMode": "tactical",
   "packages": [
     "git:github.com/ktappdev/pi-telegram",
     "npm:pi-web-access",
@@ -23,7 +23,7 @@
     "xhigh": 81920
   },
   "defaultProvider": "ocg2",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultModel": "deepseek-v4-pro",
   "hideThinkingBlock": false,
   "enabledModels": [
     "deepseek/*",
