@@ -23,7 +23,7 @@
     "xhigh": 81920
   },
   "defaultProvider": "ocg2",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultModel": "qwen3.5-plus",
   "hideThinkingBlock": false,
   "enabledModels": [
     "deepseek/*",
