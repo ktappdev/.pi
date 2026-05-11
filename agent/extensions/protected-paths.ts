@@ -9,12 +9,10 @@ import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
 	const protectedPaths = [
-		".env",
 		".git/",
 		"node_modules/",
 		".DS_Store",
 		"Thumbs.db",
-		".env.*",
 	];
 
 	pi.on("tool_call", async (event, ctx) => {

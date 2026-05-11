@@ -1,6 +1,10 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
-const messages = [
+// ─────────────────────────────────────────────────────────────
+// BUILT-IN CONTENT
+// ─────────────────────────────────────────────────────────────
+
+const guyaneseQuotes = [
   // Short
   "Liming...",
   "Reasoning...",
@@ -61,7 +65,7 @@ const messages = [
   "Waiting till everybody ready, which means waiting plenty longer...",
   "Moving just now, but first taking one last small sit-down...",
 
-  // Guyanese Proverbs
+  // Proverbs
   "All cassava get same skin but all nah taste same way...",
   "Baby who ah cry ah house and ah door ah same thing...",
   "Belly full behind drunk...",
@@ -159,16 +163,211 @@ const messages = [
   "All skin teeth nah laugh...",
 ];
 
-function pickRandom(): string {
-  return messages[Math.floor(Math.random() * messages.length)];
+const techTips = [
+  "sudo -i — Become root. Escape your user sandbox entirely.",
+  "htop > top — Better process viewer. Color, tree view, per-CPU breakdown.",
+  "watch -n 1 cmd — Repeat any command every second. Monitor live stats.",
+  "ctrl+r — Reverse search through bash history. Find old commands fast.",
+  "nohup cmd & — Run command that survives terminal close. Stdout to nohup.out.",
+  "tar -czvf archive.tar.gz dir/ — Compress directory to .tar.gz. -x to extract.",
+  "ssh -L 8080:localhost:80 — Local port forward. Tunnel remote service to your machine.",
+  "grep -r --include='*.py' 'TODO' . — Recursive search with file filter. Find things fast.",
+  "chmod +x script.sh — Add execute permission. Required before running scripts.",
+  "df -h — Disk usage in human-readable. Check storage before it fills up.",
+  "du -sh * — Size of each item in current directory. Find space hogs.",
+  "curl -I url — Show headers only. Check HTTP response without downloading body.",
+  "netstat -tulpn — Listening ports and processes. Find what's running where.",
+  "ss -tlnp — Modern replacement for netstat. Faster, shows socket state.",
+  "strace -p PID — Trace system calls of running process. Debug what's it doing.",
+  "lsof -i :8080 — Find process using port 8080. Kill by PID when needed.",
+  "rsync -avP src/ dest/ — Sync files preserving permissions. Resume interrupted transfers.",
+  "tmux — Terminal multiplexer. Multiple panes, sessions, persistent shells.",
+  "watchexec cmd — Run command when files change. Dev workflow essential.",
+  "jq '.key' file.json — Query JSON from CLI. Transform, filter, pretty-print.",
+  "awk '{print $2}' file — Extract column from text. Pattern scanning and processing.",
+  "sed -i 's/foo/bar/g' file — Replace text in-place. Global substitution across file.",
+  "xargs -I {} cmd {} — Pass input as argument to command. Build pipelines.",
+  "diff -u old new — Unified diff. Readable output for code review.",
+  "crontab -e — Edit scheduled tasks. Format: minute hour day month weekday command.",
+  "systemctl status svc — Check service status. journalctl -u svc for logs.",
+  "ln -s target link — Create symbolic link. Shortcut to deep paths.",
+  "find . -mtime -7 — Find files modified in last 7 days. Many -type, -size, -name variants.",
+  "wc -l file — Count lines. Quick way to gauge file size.",
+  "head -n 20 file — First 20 lines. Preview large files without loading all.",
+  "tail -f logfile — Follow file in real-time. Watch logs as they write.",
+  "md5sum file — Quick checksum. Verify file integrity after copy or download.",
+  "gpg -c file — Encrypt file with password. Simple symmetric encryption.",
+  "ssh-keygen -t ed25519 — Generate modern SSH key. More secure than RSA.",
+  "scp file user@host:/path — Secure copy over SSH. Network file transfer.",
+  "mount /dev/sdb1 /mnt/usb — Mount filesystem. Umount before unplugging.",
+  "lsblk — List block devices. See drives, partitions, mount points.",
+  "fdisk -l — View partition table. See all disks and sizes.",
+  "mkfs.ext4 /dev/sdb1 — Create ext4 filesystem. Choose FS type for your use case.",
+  "fsck /dev/sda1 — Filesystem check and repair. Unmount first.",
+  "tar -tf archive.tar — List contents without extracting. Preview before unpacking.",
+  "dd if=input of=output — Raw disk copy. Use bs=4M for speed. Caution: destructive.",
+  "iotop — I/O usage per process. Find what's hammering the disk.",
+  "iftop — Network bandwidth per connection. Real-time traffic monitor.",
+  "nethogs — Per-process network usage. Find which app is eating bandwidth.",
+  "tcpdump -i any port 80 — Capture packets. Protocol analysis, debugging connections.",
+  "wireshark — Deep packet inspection. GUI for tcpdump analysis.",
+  "dig domain — DNS lookup. More detail than nslookup, shows all records.",
+  "nslookup domain — Quick DNS query. Check how domain resolves.",
+  "route -n — Kernel routing table. See where traffic is going.",
+  "iptables -L — List firewall rules. Affects incoming/outgoing packets.",
+  "ufw allow 22/tcp — Simple firewall. Ubuntu's uncomplicated interface to iptables.",
+  "fail2ban — Ban IPs after failed login attempts. Brute force protection.",
+  "openssl req -new -x509 -nodes -days 365 -keyout key.pem -out cert.pem — Generate self-signed cert.",
+  "certbot — Let's Encrypt automation. Free HTTPS certificates.",
+  "systemd-analyze critical-chain — Boot time analysis. Find slow services.",
+  "journalctl --since '1 hour ago' — Logs since timestamp. Filter syslog.",
+  "dmesg | less — Kernel ring buffer. Boot messages, hardware detection.",
+  "lspci — List PCI devices. See graphics card, network adapters.",
+  "lsusb — List USB devices. Find connected hardware.",
+  "dmidecode — Hardware info. BIOS details, serial numbers, memory slots.",
+  "free -h — Memory usage. Total, used, free, swap.",
+  "uptime — System running time and load average. 1, 5, 15 minute averages.",
+  "uname -a — Kernel version and system info. Know what you're running.",
+  "hostname -I — Get IP addresses. All interfaces, no hostname lookup.",
+  "ping -c 4 host — Test connectivity. Measures latency, check if host reachable.",
+  "mtr host — Traceroute with ping. Combined latency and path analysis.",
+  "traceroute host — Show network path to host. Each hop and its latency.",
+  "nc -zv host port — Test port connectivity. Check if firewall blocking.",
+  "curl url — Fetch HTTP content. -X POST, -H headers, -d data for API work.",
+  "wget -r -l 2 url — Recursive download. Crawl site to local copy.",
+  "aria2c -x 4 url — Multi-threaded download. Faster than wget/curl single thread.",
+  "zip -r archive.zip dir/ — Create zip archive. -r for recursion.",
+  "tmux new -s name — Named session. Reattach with tmux attach -t name.",
+  "ssh-copy-id user@host — Copy SSH key to remote. Password-free login setup.",
+  "mosh user@host — Mobile-friendly SSH. Works through NAT, survives reconnection.",
+  "rsync -avz --delete src/ dest/ — Mirror directories. --delete removes extraneous files.",
+  "screen -S name — Named screen session. Like tmux but older.",
+  "fg, bg, jobs, ctrl+z — Job control. Suspend, background, foreground processes.",
+  "nohup ./script.sh > output.log 2>&1 & — Background job with output logging.",
+  "pkill -f processname — Kill by process name. Match against full command line.",
+  "nice -n 10 cmd — Run with lower priority. Higher nice = lower priority.",
+  "renice 10 -p PID — Change priority of running process. Resource sharing.",
+  "cgroups — Control groups. Limit CPU/memory per service. Container foundation.",
+  "docker stats — Container resource usage. CPU, memory, network, disk I/O.",
+  "docker exec -it container sh — Shell into running container. Debug live apps.",
+  "kubectl get pods — List Kubernetes pods. -o wide for more detail.",
+  "helm install chart — Deploy Kubernetes app from Helm chart. Package manager.",
+  "terraform plan — Preview infrastructure changes. Apply when satisfied.",
+  "ansible-playbook site.yml — Run playbook. Idempotent server configuration.",
+  "puppet agent --test — Pull configuration from puppet master. Agent-based.",
+  "tail -n 100 /var/log/syslog — Recent system logs. /var/log/auth.log for auth attempts.",
+  "last — Show last logged in users. lastb for failed attempts.",
+  "who — Who's logged in now. Shows terminal, time, origin.",
+  "w — Who's doing what. More detail than who.",
+  "wall 'message' — Broadcast to all terminals. Emergency announcements.",
+  "shutdown -h now — Halt and power off. -r for reboot.",
+  "init 0/3/5/6 — Change runlevel. 0 halt, 3 multiuser, 5 graphical, 6 reboot.",
+  "udevadm monitor — Monitor device events. Hardware hotplug debugging.",
+  "lvm — Logical Volume Manager. Flexible partition resizing, snapshots.",
+  "btrfs subvolume — Copy-on-write filesystem. Snapshots, compression, checksums.",
+  "zfs — Enterprise filesystem. Compression, replication, snapshots all built in.",
+  "strace -c cmd — Count syscalls. Profile which system calls program makes.",
+  "perf top — Real-time CPU profiler. Find hot code paths.",
+  "valgrind --leak-check=yes ./prog — Memory leak detector. Essential for C/C++.",
+  "gdb ./binary — GNU debugger. Step through code, inspect memory, breakpoints.",
+  "nm binary — List symbols. See functions and variables in compiled binary.",
+  "objdump -d binary — Disassemble. See assembly of compiled code.",
+  "strings file — Extract printable strings from binary. Often reveals embedded config.",
+  "xxd file — Hex dump. View binary file contents.",
+  "dd if=/dev/urandom of=file bs=1M count=100 — Create random file. For testing.",
+  "base64 file — Encode/decode base64. Encode for embedding, decode for reading.",
+  "shred -u file — Secure delete. Overwrite before removing.",
+  "trap 'cleanup' EXIT — Run cleanup on script exit. Ensure temp files removed.",
+  "set -e — Exit on error. Script stops if any command fails.",
+  "set -x — Debug mode. Print each command before execution.",
+  "${VAR:-default} — Use default if VAR unset. Parameter expansion.",
+  "VAR=$(command) — Command substitution. Capture output into variable.",
+  "read -p 'Prompt: ' var — Read user input. -s for silent (passwords).",
+  "select option in a b c; do echo $option; done — Interactive menu. Bash builtin.",
+  "getopts :ab:c — Parse short options. Handle -a -b arg -c style flags.",
+  "here document — cat <<EOF ... EOF. Inline multi-line input.",
+  "process substitution — diff <(cmd1) <(cmd2). Feed command output as file.",
+  "xargs -0 — Null-separated input. Handle filenames with spaces safely.",
+  "parallel cmd ::: list — Run commands in parallel. Much faster than loop.",
+];
+
+// ─────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────
+
+interface WhimsicalState {
+  messages: string[];
 }
 
+function buildState(): WhimsicalState {
+  return {
+    messages: [...guyaneseQuotes, ...techTips],
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────
+
+function pickRandom(state: WhimsicalState): string {
+  return state.messages[Math.floor(Math.random() * state.messages.length)];
+}
+
+// ─────────────────────────────────────────────────────────────
+// EXTENSION
+// ─────────────────────────────────────────────────────────────
+
+let state = buildState();
+
 export default function (pi: ExtensionAPI) {
+  async function refreshFromAPI() {
+    try {
+      const res = await fetch("https://api.datamuse.com/words?sp=*&md=d&max=100");
+      if (!res.ok) return;
+      
+      const words = await res.json() as Array<{ word: string; defs?: string[] }>;
+      
+      const freshWords = words
+        .filter(w => w.defs && w.defs.length > 0)
+        .slice(0, 30)
+        .map(w => {
+          const def = w.defs![0].replace(/^\w+\s+/, '');
+          return `${w.word} — ${def}`;
+        });
+
+      if (freshWords.length > 0) {
+        const shuffled = freshWords.sort(() => Math.random() - 0.5);
+        state.messages = [...guyaneseQuotes, ...techTips, ...shuffled];
+      }
+    } catch {
+      // Fall back to built-in content silently
+    }
+  }
+
+  async function refreshFromBuiltIn() {
+    state = buildState();
+  }
+
+  pi.registerCommand("refresh-whimsical", {
+    description: "Refresh whimsical messages. Use --api to fetch fresh words.",
+    handler: async (args: string, ctx) => {
+      if (args.includes("--api")) {
+        await refreshFromAPI();
+      } else {
+        await refreshFromBuiltIn();
+      }
+    },
+  });
+
+  // Load built-in content immediately, fetch API words in background
+  refreshFromBuiltIn();
+  refreshFromAPI();
+
   pi.on("turn_start", async (_event, ctx) => {
-    ctx.ui.setWorkingMessage(pickRandom());
+    ctx.ui.setWorkingMessage(pickRandom(state));
   });
 
   pi.on("turn_end", async (_event, ctx) => {
-    ctx.ui.setWorkingMessage(); // Reset for next time
+    ctx.ui.setWorkingMessage();
   });
 }
