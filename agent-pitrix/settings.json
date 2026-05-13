@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.63.1",
-  "defaultProvider": "ByteDanceCodingPlan",
-  "defaultModel": "bytedance-seed-code",
-  "defaultThinkingLevel": "medium",
+  "lastChangelogVersion": "0.74.0",
+  "defaultProvider": "ocg2",
+  "defaultModel": "qwen3.5-plus",
+  "defaultThinkingLevel": "low",
   "theme": "matrix",
   "quietStartup": true,
   "transport": "auto",
@@ -12,6 +12,20 @@
   "followUpMode": "one-at-a-time",
   "doubleEscapeAction": "tree",
   "agentTeamViewMode": "grid",
+  "thinkingBudgets": {
+    "minimal": 1024,
+    "low": 4096,
+    "medium": 10240,
+    "high": 32768,
+    "xhigh": 81920
+  },
+  "enabledModels": [
+    "deepseek/*",
+    "ocg1/*",
+    "ocg2/*",
+    "mimo/*",
+    "lugetech/*"
+  ],
   "compaction": {
     "enabled": true
   }

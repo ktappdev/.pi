@@ -1,6 +1,11 @@
-dozer: ByteDanceCodingPlan/bytedance-seed-code
-keymaker: ByteDanceCodingPlan/bytedance-seed-code
-link: ByteDanceCodingPlan/bytedance-seed-code
-merovingian: ByteDanceCodingPlan/bytedance-seed-code
-tank: QwenCodingPlan/MiniMax-M2.5
-trinity: ByteDanceCodingPlan/bytedance-seed-code
+tank: ocg2/deepseek-v4-flash
+trinity: ocg2/deepseek-v4-flash
+neo: ocg2/deepseek-v4-flash
+dozer: ocg2/deepseek-v4-flash
+switch: opencode/big-pickle
+cypher: ocg2/kimi-k2.6
+merovingian: ocg2/kimi-k2.6
+oracle: openai-codex/gpt-5.3-codex
+link: opencode/big-pickle
+keymaker: openai-codex/gpt-5.5
+morpheus: ocg2/qwen3.5-plus

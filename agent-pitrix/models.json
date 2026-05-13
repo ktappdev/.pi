@@ -1,78 +1,19 @@
 {
   "providers": {
-    "ByteDanceCodingPlan": {
-      "baseUrl": "https://ark.ap-southeast.bytepluses.com/api/coding",
-      "api": "anthropic-messages",
-      "apiKey": "BYTEDANCE_API_KEY",
-      "models": [
-        {
-          "id": "bytedance-seed-code",
-          "name": "ByteDance Seed Code",
-          "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
-          "contextWindow": 256000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "kimi-k2.5",
-          "name": "Bytedance Kimi-k2.5",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 256000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        }
-      ]
-    },
-    "inception": {
-      "baseUrl": "https://api.inceptionlabs.ai/v1",
-      "apiKey": "INCEPTION_API_KEY",
-      "api": "openai-completions",
-      "models": [
-        {
-          "id": "mercury-2",
-          "name": "Mercury 2",
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        }
-      ]
-    },
-    "DeepSeek": {
+    "deepseek": {
       "baseUrl": "https://api.deepseek.com",
       "api": "openai-completions",
       "apiKey": "DEEPSEEK_API_KEY",
       "models": [
         {
-          "id": "deepseek-chat",
-          "name": "DeepSeek Chat",
+          "id": "deepseek-v4-flash",
+          "name": "DeepSeek V4 Flash",
           "reasoning": false,
           "input": [
             "text"
           ],
-          "contextWindow": 163840,
-          "maxTokens": 8192,
+          "contextWindow": 1000000,
+          "maxTokens": 384000,
           "cost": {
             "input": 0,
             "output": 0,
@@ -81,14 +22,14 @@
           }
         },
         {
-          "id": "deepseek-reasoner",
-          "name": "DeepSeek Reasoner",
+          "id": "deepseek-v4-pro",
+          "name": "DeepSeek V4 Pro",
           "reasoning": true,
           "input": [
             "text"
           ],
-          "contextWindow": 163840,
-          "maxTokens": 8192,
+          "contextWindow": 1000000,
+          "maxTokens": 384000,
           "cost": {
             "input": 0,
             "output": 0,
@@ -98,8 +39,8 @@
         }
       ]
     },
-    "Lugetech": {
-      "baseUrl": "http://ubuntu:8080/v1",
+    "lugetech": {
+      "baseUrl": "http://llama.kentaylor.dev/v1",
       "api": "openai-completions",
       "apiKey": "none",
       "models": [
@@ -165,14 +106,14 @@
             "top_p": 0.9
           }
         },
-         {
-          "id": "qwen3.5-35b",
-          "name": "Qwen 3.5 35B Uncensored",
+        {
+          "id": "qwen3.6-35b",
+          "name": "Qwen 3.6 35B",
           "reasoning": true,
           "input": [
             "text"
           ],
-          "contextWindow": 32768,
+          "contextWindow": 256000,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -182,20 +123,64 @@
           },
           "options": {
             "temperature": 0.6,
-            "top_p": 0.9
+            "top_p": 0.95,
+            "top_k": 20
           }
         }
-
       ]
     },
-    "MiniMax-Coding-Plan": {
-      "baseUrl": "https://api.minimax.io/anthropic",
-      "api": "anthropic-messages",
-      "apiKey": "MINIMAX_API_KEY",
+    "ocg1": {
+      "baseUrl": "https://opencode.ai/zen/go/v1",
+      "api": "openai-completions",
+      "apiKey": "OPENCODE_API_KEY",
+      "authHeader": true,
+      "headers": {
+        "x-opencode-client": "cli"
+      },
       "models": [
         {
-          "id": "MiniMax-M2.7",
-          "name": "MiniMax M2.7",
+          "id": "deepseek-v4-pro",
+          "name": "DeepSeek V4 Pro (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 384000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true
+          }
+        },
+        {
+          "id": "deepseek-v4-flash",
+          "name": "DeepSeek V4 Flash (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 384000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true
+          }
+        },
+        {
+          "id": "minimax-m2.7",
+          "name": "MiniMax M2.7 (OCG1)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
           "input": [
             "text"
@@ -207,10 +192,513 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
+          }
+        },
+        {
+          "id": "minimax-m2.5",
+          "name": "MiniMax M2.5 (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 204800,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "glm-5.1",
+          "name": "GLM 5.1 (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "glm-5",
+          "name": "GLM 5 (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "kimi-k2.6",
+          "name": "Kimi K2.6 (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 64000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "kimi-k2.5",
+          "name": "Kimi K2.5 (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 64000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2.5-pro",
+          "name": "MiMo V2.5 Pro (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2.5",
+          "name": "MiMo V2.5 (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2-pro",
+          "name": "MiMo V2 Pro (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2-omni",
+          "name": "MiMo V2 Omni (OCG1)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "qwen3.6-plus",
+          "name": "Qwen 3.6 Plus (OCG1)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 81920,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "qwen3.5-plus",
+          "name": "Qwen 3.5 Plus (OCG1)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 81920,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
+    "ocg2": {
+      "baseUrl": "https://opencode.ai/zen/go/v1",
+      "api": "openai-completions",
+      "apiKey": "OPENCODE_API_KEY2",
+      "authHeader": true,
+      "headers": {
+        "x-opencode-client": "cli"
+      },
+      "models": [
+        {
+          "id": "deepseek-v4-pro",
+          "name": "DeepSeek V4 Pro (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 384000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
           },
-          "options": {
-            "temperature": 0.7,
-            "top_p": 0.95
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true
+          }
+        },
+        {
+          "id": "deepseek-v4-flash",
+          "name": "DeepSeek V4 Flash (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 384000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true
+          }
+        },
+        {
+          "id": "minimax-m2.7",
+          "name": "MiniMax M2.7 (OCG2)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 204800,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "minimax-m2.5",
+          "name": "MiniMax M2.5 (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 204800,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "glm-5.1",
+          "name": "GLM 5.1 (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "glm-5",
+          "name": "GLM 5 (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "kimi-k2.6",
+          "name": "Kimi K2.6 (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 64000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "kimi-k2.5",
+          "name": "Kimi K2.5 (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 64000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2.5-pro",
+          "name": "MiMo V2.5 Pro (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2.5",
+          "name": "MiMo V2.5 (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2-pro",
+          "name": "MiMo V2 Pro (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2-omni",
+          "name": "MiMo V2 Omni (OCG2)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "qwen3.6-plus",
+          "name": "Qwen 3.6 Plus (OCG2)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 81920,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "qwen3.5-plus",
+          "name": "Qwen 3.5 Plus (OCG2)",
+          "api": "anthropic-messages",
+          "baseUrl": "https://opencode.ai/zen/go",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 81920,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
+    "mimo": {
+      "baseUrl": "https://token-plan-sgp.xiaomimimo.com/v1",
+      "api": "openai-completions",
+      "apiKey": "MIMO_API_KEY",
+      "models": [
+        {
+          "id": "mimo-v2.5-pro",
+          "name": "MiMo V2.5 Pro",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2.5",
+          "name": "MiMo V2.5",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2-pro",
+          "name": "MiMo V2 Pro",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2-omni",
+          "name": "MiMo V2 Omni",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
           }
         }
       ]

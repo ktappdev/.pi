@@ -13,7 +13,7 @@ export interface AgentTeamViewState {
 	task: string;
 	toolCount: number;
 	elapsed: number;
-	lastWork: string;
+	lastWork: string[];
 	contextPct: number;
 	runCount: number;
 	model?: string;
@@ -39,12 +39,12 @@ function sortStates(statesRaw: AgentTeamViewState[]): AgentTeamViewState[] {
 
 function getModelThinkLabel(state: AgentTeamViewState): string {
 	const modelLabel = state.model || "default";
-	const thinkingLabel = state.thinking || state.def.thinking || "off";
-	return `${modelLabel}·${thinkingLabel}`;
+	const thinkingLevel = state.thinking || state.def.thinking || "off";
+	return `${modelLabel} [${thinkingLevel}]`;
 }
 
 function getLastWorkLabel(state: AgentTeamViewState): string {
-	return state.task ? (state.lastWork || state.task) : state.def.description;
+	return state.task ? (state.lastWork[state.lastWork.length - 1] || state.task) : state.def.description;
 }
 
 function getStatusDisplay(state: AgentTeamViewState): {
@@ -75,7 +75,8 @@ function renderCard(state: AgentTeamViewState, colWidth: number, theme: ThemeLik
 	const truncate = (s: string, max: number) => s.length > max ? s.slice(0, max - 3) + "..." : s;
 	const status = getStatusDisplay(state);
 	const name = displayName(state.def.name);
-	const nameWithModel = `${name} (${getModelThinkLabel(state)})`;
+	const modelLabel = getModelThinkLabel(state);
+	const nameWithModel = `${name} (${modelLabel})`;
 	const nameStr = theme.fg("accent", theme.bold(truncate(nameWithModel, w)));
 	const nameVisible = Math.min(nameWithModel.length, w);
 
@@ -238,30 +239,45 @@ export function renderTacticalView(
 
 	const status = getStatusDisplay(focus);
 	const focusName = displayName(focus.def.name);
+	const modelLabel = getModelThinkLabel(focus);
+	
 	const header = [
 		theme.fg("accent", `${status.icon} ${theme.bold(focusName)}`),
 		theme.fg(status.color, `${focus.status}`),
+		theme.fg("dim", `[${modelLabel}]`),
 		theme.fg("dim", `${Math.round(focus.elapsed / 1000)}s · ctx ${Math.ceil(focus.contextPct)}%`),
 	]
 		.filter(Boolean)
 		.join(" ");
 
 	const hiddenRunning = statesRaw.filter((state) => state.status === "running" && state !== focus).length;
-	const workPrefix = theme.fg("dim", "  └─ Doing: ");
-	const workBody = theme.fg("muted", getLastWorkLabel(focus));
-	const workLine = truncateToWidth(workPrefix + workBody, Math.max(8, width));
+	
+	const lines: string[] = [];
+	lines.push(truncateToWidth(header, Math.max(8, width)));
+	
+	// Activity lines (up to 5)
+	const workLines = focus.lastWork.length > 0 ? focus.lastWork : [focus.task || focus.def.description];
+	const displayLines = workLines.slice(-5);
+	
+	for (let i = 0; i < displayLines.length; i++) {
+		const isLast = i === displayLines.length - 1;
+		const prefix = theme.fg("dim", isLast ? "  └─ Doing: " : "  ├─ ");
+		const body = theme.fg("muted", displayLines[i]);
+		lines.push(truncateToWidth(prefix + body, Math.max(8, width)));
+	}
+
 	const contextLine = truncateToWidth(
 		theme.fg("dim", `     ${buildTeamContextSummary(statesRaw)}`),
 		Math.max(8, width),
 	);
-	const extraLine = hiddenRunning > 0
-		? truncateToWidth(
+	lines.push(contextLine);
+
+	if (hiddenRunning > 0) {
+		lines.push(truncateToWidth(
 			theme.fg("dim", `     ${hiddenRunning} other active agent${hiddenRunning === 1 ? "" : "s"} hidden`),
 			Math.max(8, width),
-		)
-		: null;
+		));
+	}
 
-	return [truncateToWidth(header, Math.max(8, width)), workLine, contextLine, extraLine]
-		.filter(Boolean)
-		.join("\n");
+	return lines.filter(Boolean).join("\n");
 }

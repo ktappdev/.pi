@@ -14,7 +14,12 @@
  *   /agents-list          — list loaded agents
  *   /agents-models        — configure models for agents
  *   /agents-reset         — reset agent context (clear session memory)
+ *   /agents-stateless     — mark agents as stateless (no context across dispatches)
+ *   /agents-stateless-off — remove agents from stateless set
+ *   /agents-stateless-list — show which agents are stateless
+ *   /agents-stateless-mode — global stateless toggle (on/off)
  *   /agents-grid N        — set column count (default 2)
+ *   /agents-context-cap N — set context window cap in tokens (0 = model default)
  *   /agents-view <mode>   — switch grid/table/tactical view
  *
  * Usage: pi -e extensions/agent-team.ts
@@ -54,6 +59,8 @@ import {
 	getProjectAgentModelsPath,
 	getGlobalAgentThinkingPath,
 	getProjectAgentThinkingPath,
+	getGlobalAgentStatelessPath,
+	getProjectAgentStatelessPath,
 	writeYamlMap,
 	displayName,
 	readTeamsFile,
@@ -69,7 +76,27 @@ import {
 	renderTacticalView,
 	type AgentTeamViewMode,
 } from "./lib/agent-team-views.ts";
+import {
+	isStateless,
+	markStateless,
+	unmarkStateless,
+	listStateless,
+	getStatelessMode,
+	setStatelessMode,
+	load as loadStatelessConfig,
+	save as saveStatelessConfig,
+} from "./lib/agent-team-stateless.ts";
 import { chooseAgentModelWithFuzzyPicker } from "./lib/agent-team-model-picker.ts";
+
+// ── Contexting Detection ────────────────────────────
+
+function detectContexting(cwd: string): "snapshot" | "memory" | "unavailable" {
+	// Check for live watch mode first (fastest, most current)
+	if (existsSync(join(cwd, ".contexting_runtime.json"))) return "memory";
+	// Check for snapshot index
+	if (existsSync(join(cwd, "context.json"))) return "snapshot";
+	return "unavailable";
+}
 
 // ── Helper: Find Pi Executable ───────────────────
 
@@ -102,11 +129,6 @@ function findPiExecutable(): string {
 		// macOS Homebrew
 		"/opt/homebrew/bin/pi",
 		"/usr/local/bin/pi",
-		// Linux mise
-		join(home, ".local", "share", "mise", "installs", "node", "25.2.1", "bin", "pi"),
-		// nvm (common versions)
-		join(home, ".nvm", "versions", "node", "v20.11.0", "bin", "pi"),
-		join(home, ".nvm", "versions", "node", "v18.19.0", "bin", "pi"),
 		// Global npm
 		"/usr/bin/pi",
 	];
@@ -165,7 +187,7 @@ interface AgentState {
 	task: string;
 	toolCount: number;
 	elapsed: number;
-	lastWork: string;
+	lastWork: string[];
 	contextPct: number;
 	sessionFile: string | null;
 	runCount: number;
@@ -181,31 +203,15 @@ interface DispatchResult {
 }
 
 const MAX_AGENT_LOG_LINES = 500;
-const BUILDER_ONLY_EXTENSIONS = ["multi-edit.ts", "fresh-read.ts"];
 const EXTENSIONS_DIR = fileURLToPath(new URL(".", import.meta.url));
-const PIHACK_PACKAGES_DIR = join(homedir(), ".pi", "agent-pitrix-packages", "node_modules", "pi-bash-live-view");
+// Package names that are likely providers (fallback if code scan fails)
+const PROVIDER_PACKAGE_PATTERNS = [
+	"provider",
+	"oauth",
+].map(p => p.toLowerCase());
 
-// Common instructions appended to ALL agent prompts
-const COMMON_AGENT_INSTRUCTIONS = `
-## Bash Tool Guidance
-
-Your bash tool supports an optional \`usePTY\` parameter for live terminal output.
-
-**Use \`usePTY: true\` when:**
-- Running long commands (30+ seconds): full nmap scans, masscan
-- Commands with progress bars: hydra, hashcat, AFL++, John
-- Colorful interactive output: linpeas, winpeas, nikto
-- You want the operator to watch progress live
-
-**Use normal bash (omit usePTY) when:**
-- Quick commands: ping, host, whoami, simple file ops
-- Output will be parsed programmatically  
-- Simple grep, cat, ls commands
-
-**Example:**
-- Long scan: \`{ command: "nmap -p- -sV target", usePTY: true }\`
-- Quick check: \`{ command: "ping -c 1 target" }\`
-`;
+// Cache for discovered provider extensions
+let cachedProviderExtensions: string[] | null = null;
 
 function hasEditCapabilities(tools: string): boolean {
 	return tools
@@ -214,25 +220,161 @@ function hasEditCapabilities(tools: string): boolean {
 		.some((tool) => tool === "edit" || tool === "write");
 }
 
-function getSubagentExtensionArgs(agentName: string, tools: string): string[] {
-	const args: string[] = [];
-	
-	// Always load pi-bash-live-view for live terminal output
-	if (existsSync(PIHACK_PACKAGES_DIR)) {
-		args.push("-e", PIHACK_PACKAGES_DIR);
+/**
+ * Discover provider extensions from installed packages
+ * Scans git and npm package directories for extensions that register providers
+ * Uses code analysis to detect registerProvider calls (most reliable)
+ * Falls back to package name patterns if code is unreadable
+ */
+function discoverProviderExtensions(): string[] {
+	if (cachedProviderExtensions) {
+		return cachedProviderExtensions;
 	}
-	
-	// If agent has no edit capabilities, don't load other extensions
-	if (!hasEditCapabilities(tools)) {
+
+	const providers: string[] = [];
+	const home = homedir();
+	const packageDirs = [
+		join(home, ".pi", "agent", "git"),
+		join(home, ".pi", "agent", "npm"),
+		join(home, ".pi", "agent", "extensions", "node_modules"),
+	];
+
+	// Common TypeScript/JavaScript entry points to check
+	const commonEntryPoints = ["index.ts", "index.js", "kilo.ts", "provider.ts", "main.ts", "main.js"];
+
+	for (const packageDir of packageDirs) {
+		if (!existsSync(packageDir)) continue;
+
+		try {
+			// Scan for packages
+			const packageNames = readdirSync(packageDir);
+			for (const packageName of packageNames) {
+				const packagePath = join(packageDir, packageName);
+				if (!existsSync(packagePath)) continue;
+
+				let isProviderPackage = false;
+				const foundExtensions: string[] = [];
+
+				// Method 1: Check package.json for pi.extensions manifest
+				const packageJsonPath = join(packagePath, "package.json");
+				if (existsSync(packageJsonPath)) {
+					try {
+						const pkg = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+						if (pkg.pi?.extensions) {
+							for (const extPath of pkg.pi.extensions) {
+								const fullPath = join(packagePath, extPath);
+								if (existsSync(fullPath)) {
+									foundExtensions.push(fullPath);
+									// Check if this extension registers a provider
+									try {
+										const content = readFileSync(fullPath, "utf-8");
+										if (content.includes("registerProvider")) {
+											isProviderPackage = true;
+										}
+									} catch {
+										// Can't read file, assume it's valid if in manifest
+										isProviderPackage = true;
+									}
+								}
+							}
+						}
+					} catch {
+						// Skip invalid package.json
+					}
+				}
+
+				// Method 2: Scan common entry points for registerProvider
+				if (!isProviderPackage) {
+					for (const entry of commonEntryPoints) {
+						const entryPath = join(packagePath, entry);
+						if (existsSync(entryPath)) {
+							try {
+								const content = readFileSync(entryPath, "utf-8");
+								if (content.includes("registerProvider")) {
+									isProviderPackage = true;
+									if (!foundExtensions.includes(entryPath)) {
+										foundExtensions.push(entryPath);
+									}
+								}
+							} catch {
+								// Skip unreadable files
+							}
+						}
+					}
+				}
+
+				// Method 3: Fallback to package name patterns
+				if (!isProviderPackage) {
+					isProviderPackage = PROVIDER_PACKAGE_PATTERNS.some(pattern => 
+						packageName.toLowerCase().includes(pattern)
+					);
+					
+					// If name matches, try to find entry points
+					if (isProviderPackage && foundExtensions.length === 0) {
+						for (const entry of commonEntryPoints) {
+							const entryPath = join(packagePath, entry);
+							if (existsSync(entryPath)) {
+								foundExtensions.push(entryPath);
+							}
+						}
+					}
+				}
+
+				// Add found extensions to providers list
+				if (isProviderPackage && foundExtensions.length > 0) {
+					providers.push(...foundExtensions);
+				}
+			}
+		} catch {
+			// Skip inaccessible directories
+		}
+	}
+
+	cachedProviderExtensions = providers;
+	return providers;
+}
+
+/**
+ * Get extension arguments for sub-agent spawning
+ * Includes provider extensions for model access plus agent-specific extensions
+ */
+function getSubagentExtensionArgs(agentName: string, tools: string, loadProviders: boolean = true): string[] {
+	const args: string[] = [];
+
+	// Special case: orchestrator/caveman gets pi-caveman extension
+	if (agentName.toLowerCase() === "orchestrator" || agentName.toLowerCase() === "caveman") {
+		args.push("-e", "pi-caveman");
+		// Still load providers for caveman if requested
+		if (loadProviders) {
+			const providers = discoverProviderExtensions();
+			for (const provider of providers) {
+				args.push("-e", provider);
+			}
+		}
 		return args;
 	}
 
-	// For builder agents, also load multi-edit and fresh-read
-	const extensionNames = agentName.toLowerCase() === "builder" ? BUILDER_ONLY_EXTENSIONS : [];
-	for (const extensionName of extensionNames) {
-		const extensionPath = join(EXTENSIONS_DIR, extensionName);
-		if (existsSync(extensionPath)) {
-			args.push("-e", extensionPath);
+	// Load provider extensions for model access (default: true for all agents)
+	if (loadProviders) {
+		const providers = discoverProviderExtensions();
+		for (const provider of providers) {
+			args.push("-e", provider);
+		}
+	}
+
+	// Add agent-specific extensions
+	if (hasEditCapabilities(tools)) {
+		const extensionNames: string[] = [];
+		for (const extensionName of extensionNames) {
+			const extensionPath = join(EXTENSIONS_DIR, extensionName);
+			if (existsSync(extensionPath)) {
+				args.push("-e", extensionPath);
+			}
+		}
+	} else {
+		// No edit capabilities - but if we have providers, keep them
+		if (args.length === 0) {
+			return ["--no-extensions"];
 		}
 	}
 
@@ -313,34 +455,17 @@ export default function (pi: ExtensionAPI) {
 	let viewMode: AgentTeamViewMode = "grid";
 	let watchAgentKey: string | null = null;
 	let widgetCtx: any;
+	let orchestratorTools: string[] = ["dispatch_agent", "read", "bash"];
 	let sessionDir = "";
+	let globalStatelessPath = "";
+	let projectStatelessPath = "";
 	let contextWindow = 0;
 	let footerMetrics = createFooterMetricsState();
-	let backgroundSubagents = {
-		reset: (_ctx?: any) => {},
-		toolNames: [] as string[],
-		promptGuidance: "",
-	};
-	const backgroundSubagentsLoader = import("./lib/agent-team-background-subagents.ts")
-		.then(({ registerBackgroundSubagentTools }) => {
-			backgroundSubagents = registerBackgroundSubagentTools(pi, {
-				getPiExecutable: findPiExecutable,
-				getModelOverride: () => agentModels["subagents"],
-			});
-		})
-		.catch(() => {
-			backgroundSubagents = {
-				reset: (_ctx?: any) => {},
-				toolNames: [],
-				promptGuidance: "",
-			};
-		});
-
+	let contextingStatus: "snapshot" | "memory" | "unavailable" = "unavailable";
 	const THINKING_LEVELS = ["off", "minimal", "low", "medium", "high", "xhigh"];
 
 	// Ensure sub-agents are terminated when Pi exits
 	pi.on("before_exit", async (_event, _ctx) => {
-		backgroundSubagents.reset();
 		for (const [key, proc] of runningProcs.entries()) {
 			try {
 				proc.kill("SIGKILL");
@@ -349,9 +474,11 @@ export default function (pi: ExtensionAPI) {
 		}
 	});
 
-	// Handle Ctrl+C (SIGINT) - stop running agent but keep Pi session alive
+	// Handle Ctrl+C (SIGINT) - stop all running agents but keep Pi session alive
 	process.on("SIGINT", () => {
-		// Find any running agent
+		const stoppedAgents: string[] = [];
+
+		// Stop ALL running agents, not just the first one
 		for (const [key, proc] of runningProcs.entries()) {
 			const state = agentStates.get(key);
 			if (state && state.status === "running") {
@@ -371,20 +498,30 @@ export default function (pi: ExtensionAPI) {
 				state.elapsed = Date.now() - (Date.now() - state.elapsed);
 				state.status = "idle";
 
-				// Keep session file intact for context preservation
-				// Don't delete state.sessionFile
-
-				// Update widget display
-				updateWidget();
-
-				// Notify user
-				if (widgetCtx) {
-					widgetCtx.ui.notify(`Stopped ${displayName(state.def.name)} (context preserved)`, "info");
+				// Keep session file intact for context preservation (unless stateless)
+				if (isStateless(key) && state.sessionFile && existsSync(state.sessionFile)) {
+					try { unlinkSync(state.sessionFile); } catch {}
+					state.sessionFile = null;
 				}
 
-				// Prevent default exit - stay in Pi session
-				return;
+				stoppedAgents.push(displayName(state.def.name));
 			}
+		}
+
+		// If we stopped any agents, update widget and notify, then prevent exit
+		if (stoppedAgents.length > 0) {
+			updateWidget();
+
+			// Notify user
+			if (widgetCtx) {
+				widgetCtx.ui.notify(
+					`Stopped ${stoppedAgents.join(", ")}`,
+					"info"
+				);
+			}
+
+			// Prevent default exit - stay in Pi session
+			return;
 		}
 
 		// No agent running - let default SIGINT behavior occur
@@ -452,6 +589,31 @@ export default function (pi: ExtensionAPI) {
 		return null;
 	}
 
+	function buildErrorOutput(
+		code: number,
+		fullLines: string[],
+		logs: string[],
+		model: string,
+		thinking: string | undefined,
+		defThinking: string | undefined,
+		tools: string,
+	): string {
+		const errorLines = fullLines.slice(-15).join("\n");
+		const stderrLines = logs.filter(l => l.startsWith("[stderr]")).slice(-10);
+		const errorEventLines = logs.filter(l => l.startsWith("[error]")).slice(-5);
+
+		let output = `❌ Agent failed with exit code ${code}\n\n`;
+		if (errorEventLines.length > 0) {
+			output += `🔴 LLM Error:\n${errorEventLines.join("\n")}\n\n`;
+		}
+		if (stderrLines.length > 0) {
+			output += `🟠 Stderr Output:\n${stderrLines.map(l => l.replace("[stderr] ", "")).join("\n")}\n\n`;
+		}
+		output += `⚪ Last Output:\n${errorLines}\n\n`;
+		output += `📋 Agent Config:\n  Model: ${model}\n  Thinking: ${thinking || defThinking || "off"}\n  Tools: ${tools}`;
+		return output;
+	}
+
 	function loadAgents(cwd: string) {
 		const projectRoot = getProjectBaseDir(cwd);
 		sessionDir = join(getProjectPiDir(cwd), "agent-sessions");
@@ -497,6 +659,11 @@ export default function (pi: ExtensionAPI) {
 			? readAgentYamlMap(projectThinkingPath)
 			: {};
 		agentThinking = mergeStringMaps(globalAgentThinking, projectAgentThinking);
+
+		// Load stateless config (global + project)
+		globalStatelessPath = getGlobalAgentStatelessPath();
+		projectStatelessPath = getProjectAgentStatelessPath(cwd);
+		loadStatelessConfig(globalStatelessPath, projectStatelessPath);
 	}
 
 	function activateTeam(teamName: string) {
@@ -506,7 +673,7 @@ export default function (pi: ExtensionAPI) {
 
 		agentStates.clear();
 		for (const member of members) {
-			if (member.toLowerCase() === "kyrie") continue;
+			if (member.toLowerCase() === "caveman") continue;
 			const def = defsByName.get(member.toLowerCase());
 			if (!def) continue;
 			const key = def.name.toLowerCase().replace(/\s+/g, "-");
@@ -522,7 +689,7 @@ export default function (pi: ExtensionAPI) {
 				task: "",
 				toolCount: 0,
 				elapsed: 0,
-				lastWork: "",
+				lastWork: [],
 				contextPct: 0,
 				sessionFile: existsSync(sessionFile) ? sessionFile : null,
 				runCount: 0,
@@ -538,6 +705,35 @@ export default function (pi: ExtensionAPI) {
 		if (watchAgentKey && !agentStates.has(watchAgentKey)) {
 			watchAgentKey = null;
 		}
+	}
+
+	function updateStatelessWidget() {
+		if (!widgetCtx) return;
+
+		const globalMode = getStatelessMode();
+		const allStateless = listStateless();
+
+		// Filter to only agents in current team
+		const teamKeys = new Set(Array.from(agentStates.keys()));
+		const teamStateless = allStateless.filter(k => teamKeys.has(k));
+
+		if (!globalMode && teamStateless.length === 0) {
+			widgetCtx.ui.setWidget("agent-team-stateless", undefined);
+			return;
+		}
+
+		widgetCtx.ui.setWidget("agent-team-stateless", (_tui: any, theme: any) => {
+			return {
+				render(_width: number): string[] {
+					if (globalMode) {
+						return [theme.fg("warning", "⚡ all agents stateless")];
+					}
+					const names = teamStateless.map(a => displayName(a)).join(", ");
+					return [theme.fg("warning", `⚡ stateless: ${names}`)];
+				},
+				invalidate() {},
+			};
+		});
 	}
 
 	function updateWidget() {
@@ -556,7 +752,10 @@ export default function (pi: ExtensionAPI) {
 					if (watchAgentKey) {
 						const watchState = agentStates.get(watchAgentKey);
 						if (!watchState) {
+							// Watched agent was removed or reset - notify user and return to team view
 							watchAgentKey = null;
+							text.setText(theme.fg("warning", "⚠ Watched agent no longer exists. Returning to team view."));
+							return text.render(width);
 						} else {
 							const title = theme.fg("accent", theme.bold(`Watching ${displayName(watchState.def.name)}`));
 							const statusColor = watchState.status === "running"
@@ -613,7 +812,11 @@ export default function (pi: ExtensionAPI) {
 		ctx: any,
 	): Promise<DispatchResult> {
 		// Strip Pi's "@" tag prefix from local file references so the model sees clean paths
-		const sanitizedTask = task.replace(/@(?=(\/|\.\/|~\/))/g, "");
+		let sanitizedTask = task.replace(/@(?=(\/|\.\/|~\/))/g, "");
+		// Inject contexting status for scout agent
+		if (agentName.toLowerCase() === "scout" && contextingStatus !== "unavailable") {
+			sanitizedTask = `Contexting: ${contextingStatus}\n${sanitizedTask}`;
+		}
 		const key = agentName.toLowerCase();
 		const state = agentStates.get(key);
 		if (!state) {
@@ -636,7 +839,7 @@ export default function (pi: ExtensionAPI) {
 		state.task = sanitizedTask;
 		state.toolCount = 0;
 		state.elapsed = 0;
-		state.lastWork = "";
+		state.lastWork = [];
 		state.runCount++;
 		appendAgentLog(key, `[run] ${new Date().toLocaleTimeString()} — ${task}`);
 		updateWidget();
@@ -661,15 +864,32 @@ export default function (pi: ExtensionAPI) {
 		const agentKey = state.def.name.toLowerCase().replace(/\s+/g, "-");
 		const agentSessionFile = join(sessionDir, `${agentKey}.json`);
 
+		// If stateless, delete any existing session so we start fresh
+		if (isStateless(key)) {
+			if (existsSync(agentSessionFile)) {
+				unlinkSync(agentSessionFile);
+			}
+			state.sessionFile = null;
+		}
+
+		// Load global APPEND_SYSTEM.md for sub-agents (exclude certain agents)
+		const globalAppendPath = join(homedir(), '.pi', 'agent', 'APPEND_SYSTEM.md');
+		const globalAppendRaw = existsSync(globalAppendPath) ? readFileSync(globalAppendPath, 'utf-8').trim() : '';
+		// Agents that should NOT get the global append (research/search/doc agents don't need coding guidelines)
+		const excludedAgents = ['scout', 'tavily', 'documenter', 'designer', 'devops', 'sparky'];
+		const shouldAppend = !excludedAgents.includes(state.def.name.toLowerCase());
+		const globalAppend = shouldAppend ? globalAppendRaw : '';
+
 		// Build args
 		const args = [
 			"--mode", "json",
 			"-p",
-			...getSubagentExtensionArgs(state.def.name, state.def.tools),
+			"--no-extensions",
+			...getSubagentExtensionArgs(state.def.name, state.def.tools, state.def.loadProviders ?? true),
 			"--model", model,
 			"--thinking", state.thinking || state.def.thinking || "off",
 			"--tools", state.def.tools,
-			"--append-system-prompt", `${mergeSystemPrompt(state.def.systemPrompt)}\n\n${COMMON_AGENT_INSTRUCTIONS}`,
+			"--append-system-prompt", mergeSystemPrompt(state.def.systemPrompt + (globalAppend ? "\n\n" + globalAppend : "")),
 			"--session", agentSessionFile,
 		];
 
@@ -714,12 +934,19 @@ export default function (pi: ExtensionAPI) {
 								liveTextBuffer = completed.pop() || "";
 								for (const completedLine of completed) {
 									appendAgentLog(key, completedLine);
-								}
-								const lastComplete = completed.slice().reverse().find((l: string) => l.trim());
-								if (lastComplete && lastComplete.trim()) {
-									state.lastWork = lastComplete;
-								} else if (liveTextBuffer.trim()) {
-									state.lastWork = liveTextBuffer.trim();
+									
+									// Only track complete lines that aren't wait markers
+									const trimmed = completedLine.trim();
+									if (trimmed && !trimmed.startsWith("[wait]")) {
+										// Replace last entry if it was incomplete, otherwise add new
+										const lastIdx = state.lastWork.length - 1;
+										if (lastIdx >= 0 && !state.lastWork[lastIdx].includes("\n")) {
+											state.lastWork[lastIdx] = trimmed;
+										} else {
+											state.lastWork.push(trimmed);
+										}
+										if (state.lastWork.length > 10) state.lastWork.shift();
+									}
 								}
 								updateWidget();
 							}
@@ -741,13 +968,23 @@ export default function (pi: ExtensionAPI) {
 								state.contextPct = ((last.usage.input || 0) / contextWindow) * 100;
 								updateWidget();
 							}
+							if (last?.stopReason === "error" || last?.errorMessage) {
+								appendAgentLog(key, `[error] ${last.errorMessage || last.stopReason || "Unknown error"}`);
+							}
 						}
 					} catch {}
 				}
 			});
 
 			proc.stderr!.setEncoding("utf-8");
-			proc.stderr!.on("data", () => { });
+			proc.stderr!.on("data", (chunk: string) => {
+				const lines = chunk.replace(/\r/g, "").split("\n");
+				for (const line of lines) {
+					if (line.trim()) {
+						appendAgentLog(key, `[stderr] ${line.trim()}`);
+					}
+				}
+			});
 
 			proc.on("close", (code) => {
 				runningProcs.delete(key);
@@ -767,15 +1004,21 @@ export default function (pi: ExtensionAPI) {
 					appendAgentLog(key, liveTextBuffer.trim());
 				}
 
-			clearInterval(state.timer);
-			isRunning = false;
-			state.elapsed = Date.now() - startTime;
+				clearInterval(state.timer);
+				isRunning = false;
+				state.elapsed = Date.now() - startTime;
 				const isSuccess = code === 0;
 				state.status = isSuccess ? "done" : "error";
 
-				// Mark session file as available for resume
-				if (isSuccess) {
+				// Mark session file as available for resume (skip if stateless)
+				if (isSuccess && !isStateless(key)) {
 					state.sessionFile = agentSessionFile;
+				} else if (isStateless(key)) {
+					// Delete session file so no context persists
+					state.sessionFile = null;
+					if (existsSync(agentSessionFile)) {
+						unlinkSync(agentSessionFile);
+					}
 				}
 
 				const full = textChunks.join("");
@@ -784,13 +1027,26 @@ export default function (pi: ExtensionAPI) {
 				// Build detailed output with error info if failed
 				let output = full;
 				if (!isSuccess) {
-					const errorLines = fullLines.slice(-10).join("\n");
-					output = `[Agent failed with exit code ${code}]\n\nLast output:\n${errorLines}\n\nModel: ${model}\nThinking: ${state.thinking || state.def.thinking || "off"}`;
+					const logs = agentLogs.get(key) || [];
+					output = buildErrorOutput(
+						code,
+						fullLines,
+						logs,
+						model,
+						state.thinking,
+						state.def.thinking,
+						state.def.tools,
+					);
 				}
 				
 				appendAgentLog(key, `[${isSuccess ? "done" : "error"}] exit=${code ?? 1} in ${Math.round(state.elapsed / 1000)}s`);
-				const lastWorkLine = fullLines[fullLines.length - 1] || (isSuccess ? "" : "Agent failed");
-				state.lastWork = lastWorkLine;
+				const nonWaitFullLines = fullLines.filter(l => l.trim() && !l.trim().startsWith("[wait]"));
+				if (nonWaitFullLines.length > 0) {
+					state.lastWork = nonWaitFullLines.slice(-10);
+				} else if (!isSuccess) {
+					state.lastWork = ["Agent failed"];
+				}
+				
 				if (fullLines.length > 0) {
 					appendAgentLog(key, `[summary] ${fullLines[fullLines.length - 1]}`);
 				}
@@ -827,8 +1083,25 @@ export default function (pi: ExtensionAPI) {
 		});
 	}
 
-	// ── dispatch_agent Tool (registered at top level) ──
+	// ── dispatch_agent Tool (orchestrator only) ──
 
+	// Determine if this is the orchestrator (main session) or a sub-agent.
+	// - Main orchestrator: no --tools arg (started directly by user)
+	// - Sub-agents: have --tools arg (spawned via dispatchAgent)
+	// Only orchestrator should have dispatch_agent capability.
+	const args = process.argv;
+	const toolsIdx = args.findIndex(arg => arg === '--tools');
+	const isMainSession = toolsIdx === -1; // No --tools = main orchestrator session
+	
+	// For sub-agents, check if they have dispatch_agent in their tools (shouldn't happen, but be safe)
+	let isOrchestrator = isMainSession;
+	if (!isMainSession && toolsIdx + 1 < args.length) {
+		const toolsList = args[toolsIdx + 1];
+		isOrchestrator = toolsList.split(',').map(t => t.trim()).includes('dispatch_agent');
+	}
+
+	// Only register dispatch_agent for orchestrator
+	if (isOrchestrator) {
 	pi.registerTool({
 		name: "dispatch_agent",
 		label: "Dispatch Agent",
@@ -911,6 +1184,12 @@ export default function (pi: ExtensionAPI) {
 			const header = theme.fg(color, `${icon} ${details.agent}`) +
 				theme.fg("dim", ` ${elapsed}s`);
 
+			// Always show error summary, even in collapsed view
+			if (details.status === "error") {
+				const preview = details.fullOutput?.split("\n").slice(0, 12).join("\n") || "Unknown error";
+				return new Text(header + "\n" + theme.fg("error", preview), 0, 0);
+			}
+
 			if (options.expanded && details.fullOutput) {
 				const output = details.fullOutput.length > 4000
 					? details.fullOutput.slice(0, 4000) + "\n... [truncated]"
@@ -921,6 +1200,7 @@ export default function (pi: ExtensionAPI) {
 			return new Text(header, 0, 0);
 		},
 	});
+	} // End orchestrator-only check
 
 	pi.registerCommand("agents-watch", {
 		description: "Watch one agent's live output: /agents-watch [agent]",
@@ -982,6 +1262,150 @@ export default function (pi: ExtensionAPI) {
 		},
 	});
 
+	pi.registerCommand("agents-error", {
+		description: "Show full error details for an agent",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const items = Array.from(agentStates.values())
+				.filter(s => s.status === "error")
+				.map(s => ({
+					value: s.def.name,
+					label: `${displayName(s.def.name)} (failed)`,
+				}));
+			const p = prefix.trim().toLowerCase();
+			if (!p) return items;
+			const filtered = items.filter(i => i.value.toLowerCase().includes(p) || i.label.toLowerCase().includes(p));
+			return filtered.length > 0 ? filtered : items;
+		},
+		handler: async (args, ctx) => {
+			widgetCtx = ctx;
+			if (agentStates.size === 0) {
+				ctx.ui.notify("No agents loaded. Load a team first.", "warning");
+				return;
+			}
+
+			let target: AgentState | null = null;
+			const fromArgs = args?.trim();
+			if (fromArgs) {
+				target = resolveAgentByInput(fromArgs);
+				if (!target) {
+					ctx.ui.notify(`Agent not found: ${fromArgs}`, "error");
+					return;
+				}
+			} else {
+				const errorAgents = Array.from(agentStates.values()).filter(s => s.status === "error");
+				if (errorAgents.length === 0) {
+					ctx.ui.notify("No failed agents to inspect.", "info");
+					return;
+				}
+				const options = errorAgents.map(s => displayName(s.def.name));
+				const choice = await ctx.ui.select("Which agent's error to inspect?", options);
+				if (choice === undefined) return;
+				const selectedIndex = options.indexOf(choice);
+				target = errorAgents[selectedIndex] || null;
+			}
+
+			if (!target) {
+				ctx.ui.notify("Could not resolve selected agent", "error");
+				return;
+			}
+
+			const key = target.def.name.toLowerCase();
+			const logs = agentLogs.get(key) || [];
+			const errorLogs = logs.filter(l => l.startsWith("[error]") || l.startsWith("[stderr]") || l.startsWith("[done] error"));
+			
+			if (errorLogs.length === 0) {
+				ctx.ui.notify(`No error details available for ${displayName(target.def.name)}`, "warning");
+				return;
+			}
+
+			const errorText = errorLogs.join("\n");
+			ctx.ui.notify(`Error details for ${displayName(target.def.name)}:\n\n${errorText}`, "error");
+		},
+	});
+
+	pi.registerCommand("agents-cancel", {
+		description: "Cancel a running agent (preserves context)",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const items = Array.from(agentStates.values())
+				.filter(s => s.status === "running")
+				.map(s => ({
+					value: s.def.name,
+					label: `${displayName(s.def.name)} (running)`,
+				}));
+			const p = prefix.trim().toLowerCase();
+			if (!p) return items;
+			const filtered = items.filter(i => i.value.toLowerCase().includes(p) || i.label.toLowerCase().includes(p));
+			return filtered.length > 0 ? filtered : items;
+		},
+		handler: async (args, ctx) => {
+			widgetCtx = ctx;
+			if (agentStates.size === 0) {
+				ctx.ui.notify("No agents loaded. Load a team first.", "warning");
+				return;
+			}
+
+			let target: AgentState | null = null;
+			const fromArgs = args?.trim();
+			if (fromArgs) {
+				target = resolveAgentByInput(fromArgs);
+				if (!target) {
+					ctx.ui.notify(`Agent not found: ${fromArgs}`, "error");
+					return;
+				}
+			} else {
+				const runningAgents = Array.from(agentStates.values()).filter(s => s.status === "running");
+				if (runningAgents.length === 0) {
+					ctx.ui.notify("No agents currently running.", "info");
+					return;
+				}
+				const options = runningAgents.map(s => displayName(s.def.name));
+				const choice = await ctx.ui.select("Which agent to cancel?", options);
+				if (choice === undefined) return;
+				const selectedIndex = options.indexOf(choice);
+				target = runningAgents[selectedIndex] || null;
+			}
+
+			if (!target) {
+				ctx.ui.notify("Could not resolve selected agent", "error");
+				return;
+			}
+
+			if (target.status !== "running") {
+				ctx.ui.notify(`${displayName(target.def.name)} is not running.`, "warning");
+				return;
+			}
+
+			const key = target.def.name.toLowerCase();
+			const proc = runningProcs.get(key);
+			if (proc) {
+				try {
+					proc.kill("SIGINT");
+				} catch {}
+				runningProcs.delete(key);
+			}
+
+			// Clear the timer
+			if (target.timer) {
+				clearInterval(target.timer);
+				target.timer = undefined;
+			}
+
+			// Update agent status to idle (not error - intentional stop)
+			target.elapsed = Date.now() - (Date.now() - target.elapsed);
+			target.status = "idle";
+
+			// Clean up session file for stateless agents
+			const cancelKey = target.def.name.toLowerCase();
+			if (isStateless(cancelKey) && target.sessionFile && existsSync(target.sessionFile)) {
+				try { unlinkSync(target.sessionFile); } catch {}
+				target.sessionFile = null;
+			}
+
+			updateWidget();
+			ctx.ui.notify(`Cancelled ${displayName(target.def.name)}`, "info");
+		},
+	});
+
 	// ── Commands ─────────────────────────────────
 
 	pi.registerCommand("agents-team", {
@@ -997,7 +1421,7 @@ export default function (pi: ExtensionAPI) {
 			const options = teamNames.map(name => {
 				const available = new Set(allAgentDefs.map(d => d.name.toLowerCase()));
 				const members = teams[name]
-					.filter(m => m.toLowerCase() !== "kyrie")
+					.filter(m => m.toLowerCase() !== "caveman")
 					.filter(m => available.has(m.toLowerCase()))
 					.map(m => displayName(m));
 				return `${name} — ${members.join(", ")}`;
@@ -1010,6 +1434,7 @@ export default function (pi: ExtensionAPI) {
 			const name = teamNames[idx];
 			activateTeam(name);
 			updateWidget();
+			updateStatelessWidget();
 			ctx.ui.setStatus("agent-team", `Team: ${name} (${agentStates.size}) [${viewMode}]`);
 			ctx.ui.notify(`Team: ${name} — ${Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ")}`, "info");
 		},
@@ -1093,6 +1518,41 @@ export default function (pi: ExtensionAPI) {
 		},
 	});
 
+	pi.registerCommand("agents-context-cap", {
+		description: "Set context window cap in tokens: /agents-context-cap <tokens> (0 = use model default)",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const presets = [
+				{ value: "0", label: "Reset to model default" },
+				{ value: "8192", label: "8K tokens" },
+				{ value: "16384", label: "16K tokens" },
+				{ value: "32768", label: "32K tokens" },
+				{ value: "65536", label: "64K tokens" },
+				{ value: "131072", label: "128K tokens" },
+				{ value: "262144", label: "256K tokens" },
+			];
+			const p = prefix.trim();
+			if (!p) return presets;
+			const filtered = presets.filter(i => i.value.startsWith(p) || i.label.toLowerCase().includes(p.toLowerCase()));
+			return filtered.length > 0 ? filtered : presets;
+		},
+		handler: async (args, _ctx) => {
+			widgetCtx = _ctx;
+			const n = parseInt(args?.trim() || "", 10);
+			if (isNaN(n) || n < 0) {
+				_ctx.ui.notify("Usage: /agents-context-cap <tokens> (0 = model default)", "error");
+				return;
+			}
+
+			if (n === 0) {
+				contextWindow = _ctx.model?.contextWindow || 0;
+				_ctx.ui.notify(`Context cap reset to model default: ${contextWindow} tokens`, "info");
+			} else {
+				contextWindow = n;
+				_ctx.ui.notify(`Context cap set to ${n} tokens`, "info");
+			}
+		},
+	});
+
 	pi.registerCommand("agents-reset", {
 		description: "Reset agent (kills running task, clears context, fresh start)",
 		handler: async (_args, ctx) => {
@@ -1170,7 +1630,7 @@ export default function (pi: ExtensionAPI) {
 				state.task = "";
 				state.toolCount = 0;
 				state.elapsed = 0;
-				state.lastWork = "";
+				state.lastWork = [];
 				state.contextPct = 0;
 				agentLogs.set(key, []);
 				resetCount++;
@@ -1183,6 +1643,161 @@ export default function (pi: ExtensionAPI) {
 				`Reset ${resetCount} agent(s): ${agentList}\nKilled running tasks, cleared timers, fresh context.`,
 				"info"
 			);
+		},
+	});
+
+	// ── Stateless Mode Commands ──────────────
+
+	pi.registerCommand("agents-stateless", {
+		description: "Mark agents as stateless (no context across dispatches): /agents-stateless <agent1> [agent2 ...]",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const items = Array.from(agentStates.values()).map(s => ({
+				value: s.def.name,
+				label: `${displayName(s.def.name)} (${s.status})`,
+			}));
+			const p = prefix.trim().toLowerCase();
+			if (!p) return items;
+			const filtered = items.filter(i => i.value.toLowerCase().includes(p) || i.label.toLowerCase().includes(p));
+			return filtered.length > 0 ? filtered : items;
+		},
+		handler: async (args, ctx) => {
+			widgetCtx = ctx;
+			const names = (args || "").trim().split(/\s+/).filter(Boolean);
+			if (names.length === 0) {
+				ctx.ui.notify("Usage: /agents-stateless <agent1> [agent2 ...]", "error");
+				return;
+			}
+
+			const scopeChoice = await ctx.ui.select(
+				"Save stateless setting where?",
+				["Project only", "Global defaults"]
+			);
+			if (scopeChoice === undefined) return;
+			const isGlobalScope = scopeChoice === "Global defaults";
+			const savePath = isGlobalScope ? globalStatelessPath : projectStatelessPath;
+
+			const marked: string[] = [];
+			for (const name of names) {
+				const state = resolveAgentByInput(name);
+				if (!state) {
+					ctx.ui.notify(`Agent not found: ${name}`, "warning");
+					continue;
+				}
+				const key = state.def.name.toLowerCase();
+				markStateless(key);
+				marked.push(displayName(state.def.name));
+			}
+			if (marked.length > 0) {
+				saveStatelessConfig(savePath);
+				updateStatelessWidget();
+				ctx.ui.notify(`Stateless: ${marked.join(", ")} → ${isGlobalScope ? "global" : "project"}`, "info");
+			}
+		},
+	});
+
+	pi.registerCommand("agents-stateless-off", {
+		description: "Remove agents from stateless set: /agents-stateless-off <agent1> [agent2 ...]",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const items = listStateless().map(key => {
+				const state = agentStates.get(key);
+				const label = state ? displayName(state.def.name) : key;
+				return { value: key, label };
+			});
+			const p = prefix.trim().toLowerCase();
+			if (!p) return items;
+			const filtered = items.filter(i => i.value.toLowerCase().includes(p) || i.label.toLowerCase().includes(p));
+			return filtered.length > 0 ? filtered : items;
+		},
+		handler: async (args, ctx) => {
+			widgetCtx = ctx;
+			const names = (args || "").trim().split(/\s+/).filter(Boolean);
+			if (names.length === 0) {
+				ctx.ui.notify("Usage: /agents-stateless-off <agent1> [agent2 ...]", "error");
+				return;
+			}
+
+			const scopeChoice = await ctx.ui.select(
+				"Remove from where?",
+				["Project only", "Global defaults"]
+			);
+			if (scopeChoice === undefined) return;
+			const isGlobalScope = scopeChoice === "Global defaults";
+			const savePath = isGlobalScope ? globalStatelessPath : projectStatelessPath;
+
+			const unmarked: string[] = [];
+			for (const name of names) {
+				const resolved = resolveAgentByInput(name);
+				if (!resolved) {
+					ctx.ui.notify(`Agent not found: ${name}`, "warning");
+					continue;
+				}
+				const key = resolved.def.name.toLowerCase();
+				if (!listStateless().includes(key)) {
+					ctx.ui.notify(`${displayName(resolved.def.name)} is not stateless`, "warning");
+					continue;
+				}
+				unmarkStateless(key);
+				unmarked.push(displayName(resolved.def.name));
+			}
+			if (unmarked.length > 0) {
+				saveStatelessConfig(savePath);
+				updateStatelessWidget();
+				ctx.ui.notify(`No longer stateless: ${unmarked.join(", ")} → ${isGlobalScope ? "global" : "project"}`, "info");
+			}
+		},
+	});
+
+	pi.registerCommand("agents-stateless-list", {
+		description: "Show which agents are stateless and where config is stored",
+		handler: async (_args, ctx) => {
+			widgetCtx = ctx;
+			const mode = getStatelessMode();
+			const agents = listStateless();
+			const modeLine = `Global mode: ${mode ? "ON (all agents stateless)" : "OFF"}`;
+			const agentsLine = agents.length > 0
+				? `Per-agent: ${agents.map(a => displayName(a)).join(", ")}`
+				: "No per-agent stateless overrides";
+			const configFileLine = `Project: ${projectStatelessPath}`;
+			ctx.ui.notify(`${modeLine}\n${agentsLine}\n\n${configFileLine}`, "info");
+		},
+	});
+
+	pi.registerCommand("agents-stateless-mode", {
+		description: "Toggle global stateless mode: /agents-stateless-mode <on|off>",
+		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
+			const items = [
+				{ value: "on", label: "All agents stateless" },
+				{ value: "off", label: "Use per-agent settings" },
+			];
+			const p = prefix.trim().toLowerCase();
+			if (!p) return items;
+			const filtered = items.filter(i => i.value.startsWith(p) || i.label.toLowerCase().includes(p));
+			return filtered.length > 0 ? filtered : items;
+		},
+		handler: async (args, ctx) => {
+			widgetCtx = ctx;
+			const raw = (args || "").trim().toLowerCase();
+			if (!raw) {
+				const current = getStatelessMode();
+				ctx.ui.notify(`Global stateless mode: ${current ? "ON" : "OFF"}`, "info");
+				return;
+			}
+			if (raw !== "on" && raw !== "off") {
+				ctx.ui.notify("Usage: /agents-stateless-mode on|off", "error");
+				return;
+			}
+			setStatelessMode(raw === "on");
+
+			const scopeChoice = await ctx.ui.select(
+				"Save where?",
+				["Project only", "Global defaults"]
+			);
+			if (scopeChoice === undefined) return;
+			const isGlobalScope = scopeChoice === "Global defaults";
+			saveStatelessConfig(isGlobalScope ? globalStatelessPath : projectStatelessPath);
+			updateStatelessWidget();
+
+			ctx.ui.notify(`Global stateless mode: ${raw.toUpperCase()} → ${isGlobalScope ? "global" : "project"}`, "info");
 		},
 	});
 
@@ -1337,12 +1952,24 @@ export default function (pi: ExtensionAPI) {
 			writeYamlMap(thinkingPath, newScopedThinking);
 
 			// Apply model and thinking changes in-place so session context is preserved
+			const runningAgents: string[] = [];
 			for (const state of agentStates.values()) {
 				const key = state.def.name.toLowerCase();
+				if (state.status === "running") {
+					runningAgents.push(displayName(state.def.name));
+				}
 				state.model = agentModels[key];
 				state.thinking = agentThinking[key];
 			}
 			updateWidget();
+
+			// Warn if any agents are currently running (they won't use new model until next dispatch)
+			if (runningAgents.length > 0) {
+				ctx.ui.notify(
+					`⚠ ${runningAgents.join(", ")} ${runningAgents.length === 1 ? "is" : "are"} currently running.\nNew model/thinking will apply on next dispatch.`,
+					"warning"
+				);
+			}
 
 			const modelSummary = agents
 				.map(s => {
@@ -1364,29 +1991,32 @@ export default function (pi: ExtensionAPI) {
 	// ── System Prompt Override ───────────────────
 
 	pi.on("before_agent_start", async (_event, _ctx) => {
-		await backgroundSubagentsLoader;
 		const agentCatalog = Array.from(agentStates.values())
 			.map(s => `### ${displayName(s.def.name)}\n**Dispatch as:** \`${s.def.name}\`\n${s.def.description}\n**Tools:** ${s.def.tools}`)
 			.join("\n\n");
 
 		const teamMembers = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
 
-		// Read the Morpheus prompt from the agents directory
-		const morpheusPromptPath = resolve(getPiCodingAgentDir(), "agents", "morpheus.md");
-		let morpheusPrompt = "";
-		if (existsSync(morpheusPromptPath)) {
+		// Read the Orchestrator prompt and tools from the agents directory
+		const orchestratorPromptPath = resolve(getPiCodingAgentDir(), "agents", "orchestrator.md");
+		let orchestratorPrompt = "";
+		if (existsSync(orchestratorPromptPath)) {
 			try {
-				const raw = readFileSync(morpheusPromptPath, "utf-8");
+				const raw = readFileSync(orchestratorPromptPath, "utf-8");
 				const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
 				if (match) {
-					morpheusPrompt = match[2].trim();
+					// Parse tools from front matter
+					const toolsMatch = match[1].match(/^tools:\s*(.+)$/m);
+					if (toolsMatch) {
+						orchestratorTools = toolsMatch[1].split(",").map((t: string) => t.trim()).filter(Boolean);
+					}
+					orchestratorPrompt = match[2].trim();
 				}
 			} catch {}
 		}
-
-		// Fallback to dispatcher prompt if Morpheus file not found
-		if (!morpheusPrompt) {
-			morpheusPrompt = `You are a dispatcher agent. You coordinate specialist agents to accomplish tasks.
+		// Fallback to dispatcher prompt if Caveman file not found
+		if (!orchestratorPrompt) {
+			orchestratorPrompt = `You are a dispatcher agent. You coordinate specialist agents to accomplish tasks.
 You do NOT have direct access to the codebase. You MUST delegate all work through
 agents using the dispatch_agent tool.
 
@@ -1410,23 +2040,24 @@ Members: ${teamMembers}
 ${agentCatalog}`;
 		}
 
-		// Inject dynamic content into the Morpheus prompt
-		const finalPrompt = mergeSystemPrompt(morpheusPrompt
+		// Inject dynamic content into the Orchestrator prompt
+		const finalPrompt = mergeSystemPrompt(orchestratorPrompt
 			.replace(/\${agentCatalog}/g, agentCatalog)
 			.replace(/\${teamMembers}/g, teamMembers)
 			.replace(/\${activeTeamName}/g, activeTeamName));
 
+		// Load global APPEND_SYSTEM.md and append to orchestrator prompt
+		const globalAppendPath = join(homedir(), '.pi', 'agent', 'APPEND_SYSTEM.md');
+		const globalAppend = existsSync(globalAppendPath) ? readFileSync(globalAppendPath, 'utf-8').trim() : '';
 		return {
-			systemPrompt: `${finalPrompt}\n\n---\n\n${backgroundSubagents.promptGuidance}`,
+			systemPrompt: `${finalPrompt}${globalAppend ? `\n\n---\n\n${globalAppend}` : ``}`,
 		};
 	});
 
 	// ── Session Start ────────────────────────────
 
 	pi.on("session_start", async (_event, _ctx) => {
-		await backgroundSubagentsLoader;
 		applyExtensionDefaults(import.meta.url, _ctx);
-		backgroundSubagents.reset(_ctx);
 
 		// Clear widgets from previous session
 		if (widgetCtx) {
@@ -1437,6 +2068,7 @@ ${agentCatalog}`;
 		viewMode = getAgentTeamViewMode(_ctx.cwd);
 
 		loadAgents(_ctx.cwd);
+		contextingStatus = detectContexting(_ctx.cwd);
 
 		// Default to first team — use /agents-team to switch
 		const teamNames = Object.keys(teams);
@@ -1444,17 +2076,14 @@ ${agentCatalog}`;
 			activateTeam(teamNames[0]);
 		}
 
-		// Lock down to dispatcher-only (tool already registered at top level)
-		pi.setActiveTools([
-			"dispatch_agent",
-			"questionnaire",
-			"read",
-			"bash",
-			...backgroundSubagents.toolNames,
-			"signal_loop_success",
-		]);
 
-		_ctx.ui.setStatus("agent-team", `Team: ${activeTeamName} (${agentStates.size}) [${viewMode}]`);
+		// Set active tools: merge existing registered tools + front matter + subagent tools
+		const existingTools = pi.getActiveTools();
+		const requestedTools = new Set([
+			...existingTools,
+			...orchestratorTools,
+		]);
+		pi.setActiveTools(Array.from(requestedTools));
 		const members = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
 		const teamSources = getTeamsSources(_ctx.cwd).loadedFrom;
 		const sourceText = teamSources.length > 0
@@ -1468,13 +2097,19 @@ ${agentCatalog}`;
 			`/agents-models        Configure models for agents\n` +
 			`/agents-reset         Reset agent context\n` +
 			`/agents-cancel        Cancel a running agent\n` +
+			`/agents-stateless     Mark agents stateless (no context)\n` +
+			`/agents-stateless-off Remove from stateless set\n` +
+			`/agents-stateless-list Show stateless agents\n` +
+			`/agents-stateless-mode Toggle global stateless\n` +
 			`/agents-grid <1-6>    Set grid column count\n` +
+			`/agents-context-cap N Set context window cap (tokens)\n` +
 			`/agents-view <mode>   Switch grid/table/tactical view\n` +
 			`/agents-watch [agent] Focus on one agent's live output\n` +
 			`/agents-watch-off     Return to team view`,
 			"info",
 		);
 		updateWidget();
+		updateStatelessWidget();
 
 		// Footer: model | team | context bar (+ local response speed metrics)
 		_ctx.ui.setFooter((tui, theme, _footerData) => {

@@ -10,6 +10,7 @@ export interface AgentDef {
 	file: string;
 	model?: string;
 	thinking?: string;
+	loadProviders?: boolean; // Whether to load provider extensions (default: true)
 }
 
 export function getProjectBaseDir(cwd: string): string {
@@ -140,6 +141,15 @@ export function getGlobalAgentThinkingPath(): string {
 export function getProjectAgentThinkingPath(cwd: string): string {
 	ensureDir(getProjectAgentsDir(cwd));
 	return join(getProjectAgentsDir(cwd), "agent-thinking.yaml");
+}
+
+export function getGlobalAgentStatelessPath(): string {
+	return join(getGlobalAgentsDir(), "agent-stateless.yaml");
+}
+
+export function getProjectAgentStatelessPath(cwd: string): string {
+	ensureDir(getProjectAgentsDir(cwd));
+	return join(getProjectAgentsDir(cwd), "agent-stateless.yaml");
 }
 
 export function writeYamlMap(path: string, values: Record<string, string>) {
