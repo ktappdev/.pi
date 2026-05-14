@@ -12,8 +12,8 @@
     "../../developer/context-monitor",
     "../../developer/pi-context-monitor"
   ],
-  "defaultProvider": "ocg2",
-  "defaultModel": "mimo-v2.5",
+  "defaultProvider": "deepseek",
+  "defaultModel": "deepseek-v4-pro",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",

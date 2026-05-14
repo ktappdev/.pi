@@ -1,11 +1,11 @@
+cypher: medium
 dozer: minimal
 keymaker: medium
 link: minimal
 merovingian: low
+morpheus: medium
+neo: low
+oracle: medium
+switch: minimal
 tank: medium
 trinity: medium
-neo: low
-switch: minimal
-cypher: low
-oracle: high
-morpheus: medium

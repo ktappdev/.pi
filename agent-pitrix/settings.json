@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "0.74.0",
   "defaultProvider": "ocg2",
-  "defaultModel": "qwen3.5-plus",
-  "defaultThinkingLevel": "low",
+  "defaultModel": "deepseek-v4-pro",
+  "defaultThinkingLevel": "medium",
   "theme": "matrix",
   "quietStartup": true,
   "transport": "auto",
