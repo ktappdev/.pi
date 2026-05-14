@@ -22,7 +22,6 @@ import { fileURLToPath } from "url";
 //
 export const THEME_MAP: Record<string, string> = {
 	"agent-chain":        "midnight-ocean",   // deep sequential pipeline
-	"agent-team": "matrix",          // rich orchestration palette
 	"cross-agent":        "ocean-breeze",     // cross-boundary, connecting
 	"damage-control":     "gruvbox",          // grounded, earthy safety
 	"minimal":            "synthwave",        // synthwave by default now!

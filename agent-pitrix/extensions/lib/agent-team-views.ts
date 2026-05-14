@@ -1,5 +1,5 @@
 import { truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
-import { displayName } from "./agent-team-config.ts";
+import { displayName, displayNameWithRole } from "./agent-team-config.ts";
 
 export type AgentTeamViewMode = "grid" | "table" | "tactical";
 
@@ -74,7 +74,7 @@ function renderCard(state: AgentTeamViewState, colWidth: number, theme: ThemeLik
 	const w = colWidth - 2;
 	const truncate = (s: string, max: number) => s.length > max ? s.slice(0, max - 3) + "..." : s;
 	const status = getStatusDisplay(state);
-	const name = displayName(state.def.name);
+	const name = displayNameWithRole(state.def);
 	const modelLabel = getModelThinkLabel(state);
 	const nameWithModel = `${name} (${modelLabel})`;
 	const nameStr = theme.fg("accent", theme.bold(truncate(nameWithModel, w)));
@@ -188,7 +188,7 @@ export function renderTableView(
 		const ctxText = state.contextPct > 0 ? `${Math.ceil(state.contextPct)}%` : "-";
 
 		return [
-			cell(theme.fg("accent", displayName(state.def.name)), agentW),
+			cell(theme.fg("accent", displayNameWithRole(state.def)), agentW),
 			cell(statusText, statusW),
 			cell(theme.fg("dim", timeText), timeW),
 			cell(theme.fg("dim", ctxText), ctxW),
@@ -238,7 +238,7 @@ export function renderTacticalView(
 	}
 
 	const status = getStatusDisplay(focus);
-	const focusName = displayName(focus.def.name);
+	const focusName = displayNameWithRole(focus.def);
 	const modelLabel = getModelThinkLabel(focus);
 	
 	const header = [

@@ -5,6 +5,7 @@ import { homedir } from "os";
 export interface AgentDef {
 	name: string;
 	description: string;
+	shortRole?: string;
 	tools: string;
 	systemPrompt: string;
 	file: string;
@@ -164,6 +165,11 @@ export function displayName(name: string): string {
 	return name.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 }
 
+export function displayNameWithRole(def: { name: string; shortRole?: string }): string {
+	const name = displayName(def.name);
+	return def.shortRole ? `${name} (${def.shortRole})` : name;
+}
+
 export function parseAgentModelsYaml(raw: string): Record<string, string> {
 	const models: Record<string, string> = {};
 	for (const line of raw.split("\n")) {
@@ -234,6 +240,7 @@ export function parseAgentFile(filePath: string): AgentDef | null {
 		return {
 			name: frontmatter.name,
 			description: frontmatter.description || "",
+			shortRole: frontmatter.short_role || undefined,
 			tools: frontmatter.tools || "read,grep,find,ls",
 			systemPrompt: match[2].trim(),
 			file: filePath,

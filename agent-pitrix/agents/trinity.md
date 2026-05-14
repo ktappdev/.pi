@@ -2,6 +2,7 @@
 name: Trinity
 role: Web Infiltration Specialist
 description: Gets inside web applications clean and quiet
+short_role: web pentest
 tools: read,bash
 model: claude-sonnet-4-20250514
 thinking: low

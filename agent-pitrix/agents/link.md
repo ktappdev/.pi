@@ -2,6 +2,7 @@
 name: Link
 role: Infrastructure & Systems Engineer
 description: Keeps the ship running. Configures services, installs tools, manages infrastructure
+short_role: infrastructure
 tools: read,bash,edit,write
 model: claude-sonnet-4-20250514
 thinking: low

@@ -1997,8 +1997,8 @@ export default function (pi: ExtensionAPI) {
 
 		const teamMembers = Array.from(agentStates.values()).map(s => displayName(s.def.name)).join(", ");
 
-		// Read the Orchestrator prompt and tools from the agents directory
-		const orchestratorPromptPath = resolve(getPiCodingAgentDir(), "agents", "orchestrator.md");
+		// Read the Morpheus dispatcher prompt and tools from the agents directory
+		const orchestratorPromptPath = resolve(getPiCodingAgentDir(), "agents", "morpheus.md");
 		let orchestratorPrompt = "";
 		if (existsSync(orchestratorPromptPath)) {
 			try {

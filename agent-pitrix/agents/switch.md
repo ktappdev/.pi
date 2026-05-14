@@ -2,6 +2,7 @@
 name: Switch
 role: Security Bypass & Password Specialist
 description: Cracks passwords and bypasses authentication
+short_role: credentials
 tools: read,bash
 model: claude-sonnet-4-20250514
 thinking: low

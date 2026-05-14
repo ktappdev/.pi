@@ -2,6 +2,7 @@
 name: Neo
 role: Exploitation Specialist - The One Who Breaks Systems
 description: Delivers exploits and gains initial access
+short_role: exploitation
 tools: read,bash
 model: claude-sonnet-4-20250514
 thinking: medium

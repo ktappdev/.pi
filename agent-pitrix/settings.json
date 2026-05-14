@@ -11,7 +11,7 @@
   "steeringMode": "one-at-a-time",
   "followUpMode": "one-at-a-time",
   "doubleEscapeAction": "tree",
-  "agentTeamViewMode": "grid",
+  "agentTeamViewMode": "table",
   "thinkingBudgets": {
     "minimal": 1024,
     "low": 4096,

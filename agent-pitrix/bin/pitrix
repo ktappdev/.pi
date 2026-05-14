@@ -20,4 +20,4 @@ if [ -d "$NODEMODULES_TARGET" ]; then
     fi
 fi
 
-exec pi "$@"
+exec pi --theme ~/.pi/agent-pitrix/themes/matrix.json "$@"

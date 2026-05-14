@@ -2,6 +2,7 @@
 name: Tank
 role: Operator - Reconnaissance & Mapping Specialist
 description: Maps the Matrix, finds the exits, shows you where the agents are
+short_role: scout
 tools: read,bash
 model: claude-sonnet-4-20250514
 thinking: low

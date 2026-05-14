@@ -1,11 +1,11 @@
 cypher: ocg2/deepseek-v4-flash
 dozer: ocg2/deepseek-v4-flash
 keymaker: ocg2/deepseek-v4-flash
-link: opencode/big-pickle
-merovingian: ocg2/kimi-k2.6
-morpheus: ocg2/qwen3.5-plus
+link: ocg2/deepseek-v4-flash
+merovingian: ocg2/deepseek-v4-flash
+morpheus: ocg2/deepseek-v4-flash
 neo: ocg2/deepseek-v4-flash
 oracle: ocg2/deepseek-v4-flash
-switch: opencode/big-pickle
+switch: ocg2/deepseek-v4-flash
 tank: ocg2/deepseek-v4-flash
 trinity: ocg2/deepseek-v4-flash
