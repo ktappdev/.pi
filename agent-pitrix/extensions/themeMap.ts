@@ -22,7 +22,7 @@ import { fileURLToPath } from "url";
 //
 export const THEME_MAP: Record<string, string> = {
 	"agent-chain":        "midnight-ocean",   // deep sequential pipeline
-	"agent-team": "matrix",          // rich orchestration palette
+	"agent-team": "matrix",
 	"cross-agent":        "ocean-breeze",     // cross-boundary, connecting
 	"damage-control":     "gruvbox",          // grounded, earthy safety
 	"minimal":            "synthwave",        // synthwave by default now!
@@ -138,7 +138,8 @@ function applyExtensionTitle(ctx: ExtensionContext): void {
  *   });
  */
 export function applyExtensionDefaults(fileUrl: string, ctx: ExtensionContext): void {
-	applyExtensionTheme(fileUrl, ctx);
+	// Defer theme to avoid pi's initial settings theme overwriting it
+	setTimeout(() => applyExtensionTheme(fileUrl, ctx), 150);
 	applyExtensionTitle(ctx);
 }
 
