@@ -1,4 +1,4 @@
-builder: ocg2/deepseek-v4-flash
+builder: ocg2/kimi-k2.6
 designer: ocg2/kimi-k2.6
 devops: opencode/big-pickle
 documenter: opencode-go/minimax-m2.5
