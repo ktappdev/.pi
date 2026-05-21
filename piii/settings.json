@@ -12,7 +12,7 @@
     "../../developer/context-monitor",
     "../../developer/pi-context-monitor"
   ],
-  "defaultProvider": "deepseek",
+  "defaultProvider": "ocg2",
   "defaultModel": "deepseek-v4-pro",
   "enabledModels": [
     "deepseek/*",

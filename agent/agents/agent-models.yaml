@@ -1,10 +1,10 @@
-builder: ocg2/kimi-k2.6
+builder: ocg2/deepseek-v4-flash
 designer: ocg2/kimi-k2.6
 devops: opencode/big-pickle
 documenter: opencode-go/minimax-m2.5
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
-planner: ocg1/kimi-k2.6
+planner: ocg2/qwen3.6-plus
 reviewer: openai-codex/gpt-5.5
 scout: ocg2/deepseek-v4-flash
 sparky: opencode/big-pickle

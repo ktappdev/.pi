@@ -62,7 +62,7 @@ const QuestionSchema = Type.Object({
 
 const QuestionnaireParams = Type.Object({
 	questions: Type.Array(QuestionSchema, { description: "Questions to ask the user" }),
-	timeoutSeconds: Type.Optional(Type.Number({ description: "Timeout in seconds (default: 60)" })),
+	timeoutSeconds: Type.Optional(Type.Number({ description: "Timeout in seconds (default: 180)" })),
 });
 
 function errorResult(
@@ -80,7 +80,7 @@ export default function questionnaire(pi: ExtensionAPI) {
 		name: "questionnaire",
 		label: "Questionnaire",
 		description:
-			"Ask the user one or more questions. Use for clarifying requirements, getting preferences, or confirming decisions. For single questions, shows a simple option list. For multiple questions, shows a tab-based interface. Times out after 60 seconds (configurable) and returns to allow Kyrie to proceed with sensible defaults.",
+			"Ask the user one or more questions. Use for clarifying requirements, getting preferences, or confirming decisions. For single questions, shows a simple option list. For multiple questions, shows a tab-based interface. Times out after 180 seconds (3 minutes, configurable) and returns to allow Kyrie to proceed with sensible defaults.",
 		parameters: QuestionnaireParams,
 
 		async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
@@ -100,7 +100,7 @@ export default function questionnaire(pi: ExtensionAPI) {
 
 			const isMulti = questions.length > 1;
 			const totalTabs = questions.length + 1; // questions + Submit
-			const timeoutSeconds = Math.max(1, params.timeoutSeconds ?? 60);
+			const timeoutSeconds = Math.max(1, params.timeoutSeconds ?? 180);
 
 			const result = await ctx.ui.custom<QuestionnaireResult>((tui, theme, _kb, done) => {
 				// State
