@@ -614,6 +614,50 @@ export default function (pi: ExtensionAPI) {
 		return output;
 	}
 
+	/** Build one-line summary of a tool call for activity display. */
+	function summarizeToolCall(toolName: string, toolArgs: any): string {
+		if (!toolArgs || typeof toolArgs !== "object" || Object.keys(toolArgs).length === 0) {
+			return `[${toolName}]`;
+		}
+
+		// Key parameter mappings per tool — first match wins
+		const keyParams: Record<string, string[]> = {
+			read: ["path"],
+			write: ["path"],
+			edit: ["path"],
+			bash: ["command"],
+			grep: ["pattern"],
+			find: ["path", "dir"],
+			ls: ["path", "dir"],
+			code_search: ["query"],
+			web_search: ["query", "queries"],
+			fetch_content: ["url", "urls"],
+			dispatch_agent: ["agent"],
+		};
+
+		const preferred = keyParams[toolName] || ["path", "query", "command", "url", "pattern"];
+
+		for (const key of preferred) {
+			const val = toolArgs[key];
+			if (val === undefined || val === null) continue;
+			let s: string;
+			if (typeof val === "string") {
+				s = val;
+			} else if (Array.isArray(val) && val.length > 0 && typeof val[0] === "string") {
+				// e.g. web_search queries: join up to 2, note remainder
+				s = val.slice(0, 2).join(", ") + (val.length > 2 ? ` +${val.length - 2}` : "");
+			} else {
+				s = JSON.stringify(val);
+			}
+			// Pack to one line, strip newlines/tabs
+			s = s.replace(/[\n\r\t]+/g, " ").replace(/\s{2,}/g, " ").trim();
+			if (s.length > 80) s = s.slice(0, 77) + "...";
+			return `[${toolName}] ${s}`;
+		}
+
+		return `[${toolName}]`;
+	}
+
 	function loadAgents(cwd: string) {
 		const projectRoot = getProjectBaseDir(cwd);
 		sessionDir = join(getProjectPiDir(cwd), "agent-sessions");
@@ -953,7 +997,12 @@ export default function (pi: ExtensionAPI) {
 						} else if (event.type === "tool_execution_start") {
 							state.toolCount++;
 							const toolName = event.toolCall?.name || event.toolName || "tool";
-							appendAgentLog(key, `[tool] ${toolName}`);
+							const toolArgs = event.args || event.toolCall?.arguments;
+							const summary = summarizeToolCall(toolName, toolArgs);
+							appendAgentLog(key, summary);
+							// Show tool calls in activity display (lastWork)
+							state.lastWork.push(summary);
+							if (state.lastWork.length > 10) state.lastWork.shift();
 							updateWidget();
 						} else if (event.type === "message_end") {
 							const msg = event.message;

@@ -1,9 +1,9 @@
-builder: high
+builder: medium
 designer: medium
 devops: medium
 documenter: medium
 oracle: off
 planner: medium
-reviewer: low
+reviewer: medium
 scout: medium
 sparky: medium

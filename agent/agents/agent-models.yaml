@@ -1,12 +1,12 @@
-builder: ocg2/deepseek-v4-flash
+builder: ocg1/minimax-m2.7
 designer: ocg2/kimi-k2.6
 devops: opencode/big-pickle
 documenter: opencode-go/minimax-m2.5
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: ocg2/qwen3.6-plus
-reviewer: openai-codex/gpt-5.5
-scout: ocg2/deepseek-v4-flash
+reviewer: ocg2/glm-5.1
+scout: ocg1/minimax-m2.7
 sparky: opencode/big-pickle
 subagents: ocg2/deepseek-v4-flash
 tavily: opencode/minimax-m2.5-free

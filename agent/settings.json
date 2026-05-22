@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.74.0",
   "theme": "synthwave",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "off",
   "agentTeamViewMode": "table",
   "packages": [
     "git:github.com/ktappdev/pi-telegram@4bb91bdcd900",
