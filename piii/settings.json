@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.74.0",
+  "lastChangelogVersion": "0.75.5",
   "defaultThinkingLevel": "high",
   "quietStartup": false,
   "hideThinkingBlock": false,
@@ -13,8 +13,8 @@
     "../../developer/pi-context-monitor",
     "npm:pi-windsurf"
   ],
-  "defaultProvider": "ocg2",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultProvider": "ocg1",
+  "defaultModel": "mimo-v2.5",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",
