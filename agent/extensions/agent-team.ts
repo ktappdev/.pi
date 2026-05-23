@@ -233,10 +233,22 @@ function discoverProviderExtensions(): string[] {
 
 	const providers: string[] = [];
 	const home = homedir();
+
+	// Get global npm prefix (covers pi install npm: which uses npm -g)
+	let npmGlobalPrefix = "";
+	try {
+		npmGlobalPrefix = execSync("npm prefix -g", { encoding: "utf-8", timeout: 3000 }).trim();
+	} catch {}
+	const globalNodeModules = npmGlobalPrefix
+		? join(npmGlobalPrefix, "node_modules")
+		: join("/opt/homebrew/lib", "node_modules");
+
 	const packageDirs = [
 		join(home, ".pi", "agent", "git"),
 		join(home, ".pi", "agent", "npm"),
+		join(home, ".pi", "agent", "npm", "node_modules"),
 		join(home, ".pi", "agent", "extensions", "node_modules"),
+		globalNodeModules,
 	];
 
 	// Common TypeScript/JavaScript entry points to check

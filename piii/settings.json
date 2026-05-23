@@ -10,7 +10,8 @@
     "git:github.com/jonjonrankin/pi-caveman",
     "git:github.com/mikeyobrien/pi-provider-kiro",
     "../../developer/context-monitor",
-    "../../developer/pi-context-monitor"
+    "../../developer/pi-context-monitor",
+    "npm:pi-windsurf"
   ],
   "defaultProvider": "ocg2",
   "defaultModel": "deepseek-v4-pro",
