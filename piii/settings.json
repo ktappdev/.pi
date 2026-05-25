@@ -14,12 +14,13 @@
     "npm:pi-windsurf"
   ],
   "defaultProvider": "ocg1",
-  "defaultModel": "mimo-v2.5",
+  "defaultModel": "deepseek-v4-pro",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",
     "ocg2/*",
     "kilo/*",
+    "windsurf/*",
     "openai-codex/*",
     "mimo/*"
   ]
