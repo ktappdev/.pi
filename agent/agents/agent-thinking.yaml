@@ -1,8 +1,13 @@
 builder: high
+crafter: medium
 designer: medium
 devops: medium
 documenter: medium
 oracle: off
 planner: medium
 reviewer: medium
+scout: high
+scout-alfa: medium
+scout-bravo: medium
 sparky: medium
+tavily: low

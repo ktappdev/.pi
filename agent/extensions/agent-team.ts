@@ -1261,6 +1261,125 @@ export default function (pi: ExtensionAPI) {
 			return new Text(header, 0, 0);
 		},
 	});
+
+	pi.registerTool({
+		name: "parallel_scout",
+		label: "Parallel Scout",
+		description: "Dispatch independent exploration tasks to Scout Alfa and Scout Bravo in parallel. Both run concurrently. Use for 2+ independent codebase exploration tasks that can happen simultaneously.",
+		parameters: Type.Object({
+			tasks: Type.Array(Type.String({ description: "Exploration tasks. Each task goes to Scout Alfa or Scout Bravo round-robin." })),
+		}),
+
+		async execute(_toolCallId, params, _signal, onUpdate, ctx) {
+			try {
+				const { tasks } = params as { tasks: string[] };
+				const scoutNames = ["scout-alfa", "scout-bravo"];
+
+				if (onUpdate) {
+					onUpdate({
+						content: [{ type: "text", text: `parallel_scout: ${tasks.length} tasks across ${scoutNames.length} scouts...` }],
+						details: { tasks, scoutNames, status: "dispatching" },
+					});
+				}
+
+				const dispatches = tasks.map((task, i) => {
+					const agent = scoutNames[i % scoutNames.length];
+					return dispatchAgent(agent, task, ctx);
+				});
+
+				const results = await Promise.allSettled(dispatches);
+
+				// Produce combined output with headers labelling which scout handled what
+				const combinedOutput = results.map((result, i) => {
+					const task = tasks[i];
+					const agent = scoutNames[i % scoutNames.length];
+					if (result.status === "fulfilled") {
+						const r = result.value;
+						const truncated = r.output.length > 6000
+							? r.output.slice(0, 6000) + "\n\n... [truncated]"
+							: r.output;
+						const meta = r.exitCode === 0
+							? `${Math.round(r.elapsed / 1000)}s`
+							: `ERR · ${Math.round(r.elapsed / 1000)}s`;
+						return `## ${agent}: ${task.substring(0, 80)}\n${meta}\n\n${truncated}`;
+					} else {
+						return `## ${agent}: ${task.substring(0, 80)}\nFailed: ${result.reason?.message || result.reason}`;
+					}
+				}).join("\n\n---\n\n");
+
+				const allOk = results.every(r => r.status === "fulfilled" && r.value.exitCode === 0);
+				const totalElapsed = results
+					.filter((r): r is PromiseFulfilledResult<DispatchResult> => r.status === "fulfilled")
+					.reduce((sum, r) => sum + r.value.elapsed, 0);
+
+				return {
+					content: [{ type: "text", text: combinedOutput }],
+					details: {
+						tasks,
+						scoutNames,
+						status: allOk ? "done" : "error",
+						elapsed: totalElapsed,
+						fullOutput: combinedOutput,
+					},
+				};
+			} catch (err: any) {
+				return {
+					content: [{ type: "text", text: `parallel_scout failed: ${err?.message || err}` }],
+					details: { status: "error", elapsed: 0, fullOutput: "" },
+				};
+			}
+		},
+
+		renderCall(args, theme) {
+			const tasks = (args as any).tasks || [];
+			const count = Array.isArray(tasks) ? tasks.length : 0;
+			return new Text(
+				theme.fg("toolTitle", theme.bold("parallel_scout ")) +
+				theme.fg("accent", `${count} tasks`) +
+				theme.fg("dim", " — ") +
+				theme.fg("muted", "alfa + bravo"),
+				0, 0,
+			);
+		},
+
+		renderResult(result, options, theme) {
+			const details = result.details as any;
+			if (!details) {
+				const text = result.content[0];
+				return new Text(text?.type === "text" ? text.text : "", 0, 0);
+			}
+
+			if (options.isPartial || details.status === "dispatching") {
+				const count = details.tasks?.length || 0;
+				return new Text(
+					theme.fg("accent", `● parallel_scout`) +
+					theme.fg("dim", ` ${count} tasks running...`),
+					0, 0,
+				);
+			}
+
+			const icon = details.status === "done" ? "✓" : "✗";
+			const color = details.status === "done" ? "success" : "error";
+			const elapsed = typeof details.elapsed === "number" ? Math.round(details.elapsed / 1000) : 0;
+			const header = theme.fg(color, `${icon} parallel_scout`) +
+				theme.fg("dim", ` ${elapsed}s`);
+
+			// Always show error summary
+			if (details.status === "error") {
+				const preview = details.fullOutput?.split("\n").slice(0, 12).join("\n") || "Unknown error";
+				return new Text(header + "\n" + theme.fg("error", preview), 0, 0);
+			}
+
+			if (options.expanded && details.fullOutput) {
+				const output = details.fullOutput.length > 4000
+					? details.fullOutput.slice(0, 4000) + "\n... [truncated]"
+					: details.fullOutput;
+				return new Text(header + "\n" + theme.fg("muted", output), 0, 0);
+			}
+
+			return new Text(header, 0, 0);
+		},
+	});
 	} // End orchestrator-only check
 
 	pi.registerCommand("agents-watch", {

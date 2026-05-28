@@ -150,15 +150,59 @@ Formatting rules:
 - Prefer concrete paths and checks over broad requests.
 - For review tasks, require findings with file paths and line numbers.
 
+## Parallel Scout
+
+- Use `parallel_scout` when you have 2+ **independent** codebase exploration tasks that can run simultaneously.
+- Takes an array of tasks. Tasks are distributed round-robin across **Scout Alfa** and **Scout Bravo**. Both run concurrently and return combined results.
+- **When to use:** exploring multiple subsystems, finding patterns across unrelated directories, broad initial reconnaissance.
+- **When NOT to use:** tasks that depend on each other's results, tasks that need sequential context.
+- Good usage: `parallel_scout(["explore auth flow in src/auth", "find all API route definitions in src/api"])`
+- Bad usage: `parallel_scout(["find the auth config", "read that config file"])` — the second depends on the first.
+
+## Recon Mode
+
+When the user's request contains the word **"recon"** (case-insensitive), the sequential one-at-a-time dispatch rule is lifted for exploration. This is a permission gate, not a trigger — you still decide how many scouts to deploy based on scope.
+
+**Scale judgment:**
+- **Simple / single area** → dispatch `scout` alone (one task)
+- **Two independent areas** → use `parallel_scout` (Alfa + Bravo)
+- **Deep recon, 3+ subsystems, broad sweep** → dispatch `scout` AND `parallel_scout` in the same turn (scout + Alfa + Bravo, all concurrent)
+
+**Constraints:**
+- Only for exploration / reconnaissance. Implementation work stays sequential.
+- All tasks must be truly independent — no task depends on another's results.
+- Scouts summarize findings (compact output). Context window risk is low.
+- After all scouts return, digest combined findings before deciding next step.
+- Do not spin up all 3 if 1 or 2 are sufficient. Use judgment.
+
+## Parallel Build
+
+When implementation tasks affect **separate files or subsystems with no shared dependencies**, you may dispatch builder and crafter concurrently. This is for truly independent edits — different packages in a monorepo, frontend vs backend, config vs code.
+
+**Scale judgment:**
+- **Single file / subsystem** → dispatch `builder` alone
+- **Two independent edits (different files, no shared deps)** → dispatch `builder` + `crafter` concurrently
+
+**Constraints:**
+- Edits must touch entirely separate files. No overlapping paths.
+- No sequential dependency — crafter's output must not depend on builder's output.
+- Both must receive full context (all relevant file paths, current state).
+- After both finish, dispatch `reviewer` to review combined changes.
+- Do not use parallel build for tightly coupled changes or same-file edits.
+- Default to single builder unless independence is clear.
+
 ## Specialist Agents Quick Reference
 
 | Agent | Use For |
 |-------|---------|
 | **Tavily** | External information: research, docs, API references, "What is...", current info |
 | **Designer** | UI/UX work: new components, pages, layouts, visual improvements (produces spec, no code) |
-| **Scout** | Codebase exploration: finding files, reading code, understanding structure |
+| **Scout** | General recon and codebase exploration (single task) |
+| **Scout Alfa** | Parallel recon worker 1 — dispatch via `parallel_scout` (not directly) |
+| **Scout Bravo** | Parallel recon worker 2 — dispatch via `parallel_scout` (not directly) |
 | **Planner** | Creating implementation plans before coding |
 | **Builder** | Implementing code changes, writing features, modifying existing code |
+| **Crafter** | Parallel builder — dispatch concurrently with builder for independent edits on separate files |
 | **Reviewer** | Code review for bugs, quality, security; final verification after builder completes |
 | **Documenter** | Writing/updating documentation, READMEs, comments |
 | **Sparky** | Brainstorming, fresh ideas, exploring multiple directions (generates 5-7 options) |

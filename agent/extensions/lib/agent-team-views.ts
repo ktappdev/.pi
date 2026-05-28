@@ -91,6 +91,12 @@ function renderCard(state: AgentTeamViewState, colWidth: number, theme: ThemeLik
 	const ctxLine = theme.fg("dim", ctxRaw);
 	const ctxVisible = ctxRaw.length;
 
+	const taskText = state.task
+		? truncate(state.task, Math.min(60, w - 1))
+		: "";
+	const taskLabel = theme.fg("dim", state.task ? taskText : state.status === "idle" ? "·" : "");
+	const taskVisible = Math.max(1, taskText.length || 1);
+
 	const workText = truncate(getLastWorkLabel(state), Math.min(50, w - 1));
 	const workLine = theme.fg("muted", workText);
 	const workVisible = workText.length;
@@ -104,6 +110,7 @@ function renderCard(state: AgentTeamViewState, colWidth: number, theme: ThemeLik
 		theme.fg("dim", top),
 		border(" " + nameStr, 1 + nameVisible),
 		border(" " + statusLine, 1 + statusVisible),
+		border(" " + taskLabel, 1 + taskVisible),
 		border(" " + ctxLine, 1 + ctxVisible),
 		border(" " + workLine, 1 + workVisible),
 		theme.fg("dim", bottom),
@@ -126,11 +133,10 @@ export function renderGridView(
 		const rowStates = states.slice(i, i + cols);
 		const cards = rowStates.map((state) => renderCard(state, colWidth, theme));
 
+		const cardHeight = cards[0]?.length ?? 7;
 		while (cards.length < cols) {
-			cards.push(Array(6).fill(" ".repeat(colWidth)));
+			cards.push(Array(cardHeight).fill(" ".repeat(colWidth)));
 		}
-
-		const cardHeight = cards[0]?.length ?? 0;
 		for (let line = 0; line < cardHeight; line++) {
 			rows.push(cards.map((card) => card[line] || ""));
 		}

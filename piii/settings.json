@@ -13,8 +13,8 @@
     "../../developer/pi-context-monitor",
     "npm:pi-windsurf"
   ],
-  "defaultProvider": "ocg1",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultProvider": "windsurf",
+  "defaultModel": "swe-1.6:base",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",
