@@ -1,8 +1,8 @@
-builder: medium
+builder: high
 crafter: medium
-designer: medium
-devops: medium
-documenter: medium
+designer: high
+devops: low
+documenter: low
 oracle: off
 planner: medium
 reviewer: medium

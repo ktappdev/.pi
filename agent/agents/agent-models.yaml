@@ -1,8 +1,8 @@
-builder: windsurf/kimi-k2.6
+builder: windsurf/swe-1.6:fast
 crafter: ocg2/deepseek-v4-flash
-designer: ocg2/kimi-k2.6
-devops: opencode/big-pickle
-documenter: opencode-go/minimax-m2.5
+designer: windsurf/kimi-k2.6
+devops: ocg1/deepseek-v4-flash
+documenter: windsurf/swe-1.6:fast
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: windsurf/gpt-5.4:medium

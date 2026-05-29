@@ -3,7 +3,7 @@
     "deepseek": {
       "baseUrl": "https://api.deepseek.com",
       "api": "openai-completions",
-      "apiKey": "DEEPSEEK_API_KEY",
+      "apiKey": "$DEEPSEEK_API_KEY",
       "models": [
         {
           "id": "deepseek-v4-flash",
@@ -132,7 +132,7 @@
     "ocg1": {
       "baseUrl": "https://opencode.ai/zen/go/v1",
       "api": "openai-completions",
-      "apiKey": "OPENCODE_API_KEY",
+      "apiKey": "$OPENCODE_API_KEY",
       "authHeader": true,
       "headers": {
         "x-opencode-client": "cli"
@@ -383,7 +383,7 @@
     "ocg2": {
       "baseUrl": "https://opencode.ai/zen/go/v1",
       "api": "openai-completions",
-      "apiKey": "OPENCODE_API_KEY2",
+      "apiKey": "$OPENCODE_API_KEY2",
       "authHeader": true,
       "headers": {
         "x-opencode-client": "cli"
@@ -634,7 +634,7 @@
     "mimo": {
       "baseUrl": "https://token-plan-sgp.xiaomimimo.com/v1",
       "api": "openai-completions",
-      "apiKey": "MIMO_API_KEY",
+      "apiKey": "$MIMO_API_KEY",
       "models": [
         {
           "id": "mimo-v2.5-pro",
