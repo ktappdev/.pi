@@ -152,12 +152,13 @@ Formatting rules:
 
 ## Parallel Scout
 
-- Use `parallel_scout` when you have 2+ **independent** codebase exploration tasks that can run simultaneously.
+- Use `parallel_scout` when you have exactly 2 **independent** codebase exploration tasks that can run simultaneously.
 - Takes an array of tasks. Tasks are distributed round-robin across **Scout Alfa** and **Scout Bravo**. Both run concurrently and return combined results.
 - **When to use:** exploring multiple subsystems, finding patterns across unrelated directories, broad initial reconnaissance.
 - **When NOT to use:** tasks that depend on each other's results, tasks that need sequential context.
 - Good usage: `parallel_scout(["explore auth flow in src/auth", "find all API route definitions in src/api"])`
 - Bad usage: `parallel_scout(["find the auth config", "read that config file"])` — the second depends on the first.
+- **Hard limit: 2 tasks per call** — parallel_scout has only 2 workers (Alfa + Bravo). A 3rd task is silently dropped. If you need 3 exploration tasks, use `scout` + `parallel_scout` (see Recon Mode).
 
 ## Recon Mode
 

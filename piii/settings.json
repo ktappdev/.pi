@@ -14,7 +14,7 @@
     "npm:pi-windsurf"
   ],
   "defaultProvider": "windsurf",
-  "defaultModel": "swe-1.6:base",
+  "defaultModel": "swe-1.6:fast",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",
