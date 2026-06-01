@@ -143,6 +143,10 @@ When calling `dispatch_agent`, structure the `task` text in this exact order:
 4. `Action Steps:` numbered list of what the specialist must do.
 5. `Deliverables:` exact output expected back (files changed, findings, line refs, validation notes).
 6. `Notes:` optional extra details that do not fit cleanly above (only when high-value).
+7. `Prerequisites:` mandatory first steps before acting — e.g., read every listed file, confirm paths exist, do not edit unseen code.
+8. `Uncertainty Protocol:` if requirements conflict, logic is unclear, or a path is missing, stop, state the exact blocker, and finish. Do not guess.
+9. `Verification Checklist:` lightweight sanity checks before responding (e.g., re-read changed lines, confirm no syntax errors). If a check fails, note it and finish — do not block or loop.
+10. `Anti-Hallucination Reminder:` The `Context:` section of this dispatch is your ground truth. Use prior session context only when explicitly relevant; never assume continuity or unstated facts from earlier work.
 
 Formatting rules:
 

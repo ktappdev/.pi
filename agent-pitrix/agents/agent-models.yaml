@@ -7,5 +7,5 @@ morpheus: ocg2/deepseek-v4-flash
 neo: ocg2/deepseek-v4-flash
 oracle: ocg2/deepseek-v4-flash
 switch: ocg2/deepseek-v4-flash
-tank: ocg1/minimax-m2.5
-trinity: ocg2/deepseek-v4-flash
+tank: ocg2/deepseek-v4-flash
+trinity: ocg2/deepseek-v4-pro

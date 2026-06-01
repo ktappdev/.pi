@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.75.5",
+  "lastChangelogVersion": "0.77.0",
   "defaultThinkingLevel": "high",
   "quietStartup": false,
   "hideThinkingBlock": false,
@@ -14,7 +14,7 @@
     "npm:pi-windsurf"
   ],
   "defaultProvider": "windsurf",
-  "defaultModel": "swe-1.6:fast",
+  "defaultModel": "kimi-k2.6",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",

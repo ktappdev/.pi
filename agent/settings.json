@@ -2,7 +2,7 @@
   "lastChangelogVersion": "0.77.0",
   "theme": "synthwave",
   "defaultThinkingLevel": "high",
-  "agentTeamViewMode": "tactical",
+  "agentTeamViewMode": "table",
   "packages": [
     "git:github.com/ktappdev/pi-telegram@4bb91bdcd900",
     "npm:pi-web-access@0.10.7",
@@ -24,7 +24,7 @@
     "xhigh": 81920
   },
   "defaultProvider": "opencode-go",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultModel": "qwen3.6-plus",
   "hideThinkingBlock": false,
   "enabledModels": [
     "windsurf/*",

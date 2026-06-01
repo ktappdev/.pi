@@ -1,6 +1,6 @@
 ---
 name: fromai
-description: While implementing code, when you encounter a self-contained function, bug fix, or refactor (15-60 min, scoped to one file), offload it as a real-code task for the human to write. Use when you spot isolated work inside a larger change — a single function, a validation block, a parsing routine. Do NOT use for vague epics, secrets, or pure questions.
+description: Keep the human in the loop with real-world code tasks, scoped to meaningful parts of the project. The agent works on actual code and sends small, scoped tasks for the human to write or review — real functions, fixes, and patterns from the codebase, not abstract puzzles. Tasks can be simple; the goal is practice and engagement with real code, not just hard problems.
 ---
 
 # fromai/fai — AI Agent Skill
