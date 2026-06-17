@@ -92,9 +92,11 @@ import { chooseAgentModelWithFuzzyPicker } from "./lib/agent-team-model-picker.t
 
 function detectContexting(cwd: string): "snapshot" | "memory" | "unavailable" {
 	// Check for live watch mode first (fastest, most current)
-	if (existsSync(join(cwd, ".contexting_runtime.json"))) return "memory";
+	// Runtime file path from contexting config: [search] runtime_file = "ctx_runtime.json"
+	if (existsSync(join(cwd, ".ctx", "ctx_runtime.json"))) return "memory";
 	// Check for snapshot index
-	if (existsSync(join(cwd, "context.json"))) return "snapshot";
+	// Index path from contexting config: [search] index = "ctx_index.json"
+	if (existsSync(join(cwd, ".ctx", "ctx_index.json"))) return "snapshot";
 	return "unavailable";
 }
 
@@ -2221,10 +2223,15 @@ ${agentCatalog}`;
 		}
 
 		// Inject dynamic content into the Orchestrator prompt
-		const finalPrompt = mergeSystemPrompt(orchestratorPrompt
+		let finalPrompt = mergeSystemPrompt(orchestratorPrompt
 			.replace(/\${agentCatalog}/g, agentCatalog)
 			.replace(/\${teamMembers}/g, teamMembers)
 			.replace(/\${activeTeamName}/g, activeTeamName));
+
+		// Inject contexting availability for orchestrator (helper, not scout replacement)
+		if (contextingStatus !== "unavailable") {
+			finalPrompt = `Contexting: ${contextingStatus}\nYou can use \`contexting search-hints\` via bash for quick path lookups (find a file, check a config, verify a path). For exploration tasks, dispatch scout instead.\n\n${finalPrompt}`;
+		}
 
 		// Load global APPEND_SYSTEM.md and append to orchestrator prompt
 		const globalAppendPath = join(homedir(), '.pi', 'agent', 'APPEND_SYSTEM.md');

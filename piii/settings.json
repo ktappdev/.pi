@@ -11,7 +11,9 @@
     "git:github.com/mikeyobrien/pi-provider-kiro",
     "../../developer/context-monitor",
     "../../developer/pi-context-monitor",
-    "npm:pi-windsurf"
+    "npm:pi-windsurf",
+    "npm:pi-free",
+    "git:github.com/ktappdev/pi-commandcode-provider"
   ],
   "defaultProvider": "windsurf",
   "defaultModel": "kimi-k2.6",
@@ -22,6 +24,7 @@
     "kilo/*",
     "windsurf/*",
     "openai-codex/*",
-    "mimo/*"
+    "mimo/*",
+    "opencode-zen/*"
   ]
 }

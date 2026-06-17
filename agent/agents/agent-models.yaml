@@ -1,4 +1,4 @@
-builder: windsurf/swe-1.6:fast
+builder: windsurf/kimi-k2.6
 crafter: ocg2/deepseek-v4-flash
 designer: windsurf/kimi-k2.6
 devops: ocg1/deepseek-v4-flash
@@ -6,8 +6,8 @@ documenter: windsurf/swe-1.6:fast
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: windsurf/gpt-5.4:medium
-reviewer: windsurf/gpt-5.4:medium
-scout: windsurf/swe-1.6:base
+reviewer: windsurf/gpt-5.5:medium
+scout: windsurf/swe-1.6:fast
 scout-alfa: ocg1/deepseek-v4-flash
 scout-bravo: ocg1/deepseek-v4-flash
 sparky: opencode/big-pickle
