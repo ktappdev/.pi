@@ -1,0 +1,27 @@
+{
+  "lastChangelogVersion": "0.77.0",
+  "defaultProvider": "ocg2",
+  "defaultModel": "deepseek-v4-pro",
+  "defaultThinkingLevel": "medium",
+  "quietStartup": true,
+  "transport": "auto",
+  "steeringMode": "one-at-a-time",
+  "followUpMode": "one-at-a-time",
+  "compaction": {
+    "enabled": true
+  },
+  "enabledModels": [
+    "deepseek/*",
+    "google/*",
+    "groq/*",
+    "kilo/*",
+    "windsurf/*"
+  ],
+  "thinkingBudgets": {
+    "minimal": 1024,
+    "low": 4096,
+    "medium": 10240,
+    "high": 32768,
+    "xhigh": 81920
+  }
+}

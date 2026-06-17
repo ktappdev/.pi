@@ -1,0 +1,5 @@
+{"type":"session","version":3,"id":"019ed762-370b-72d1-8c5a-450fddc0ba2b","timestamp":"2026-06-17T20:59:58.603Z","cwd":"/Users/kentaylor/.pi"}
+{"type":"model_change","id":"cd057517","parentId":null,"timestamp":"2026-06-17T20:59:58.661Z","provider":"deepseek","modelId":"deepseek-v4-flash"}
+{"type":"thinking_level_change","id":"22237a28","parentId":"cd057517","timestamp":"2026-06-17T20:59:58.661Z","thinkingLevel":"high"}
+{"type":"message","id":"a63bac7e","parentId":"22237a28","timestamp":"2026-06-17T20:59:58.959Z","message":{"role":"user","content":[{"type":"text","text":"help"}],"timestamp":1781729998953}}
+{"type":"message","id":"52ba5cd6","parentId":"a63bac7e","timestamp":"2026-06-17T21:00:00.220Z","message":{"role":"assistant","content":[],"api":"openai-completions","provider":"deepseek","model":"deepseek-v4-flash","usage":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"totalTokens":0,"cost":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"total":0}},"stopReason":"error","timestamp":1781729999014,"errorMessage":"402 Insufficient Balance"}}

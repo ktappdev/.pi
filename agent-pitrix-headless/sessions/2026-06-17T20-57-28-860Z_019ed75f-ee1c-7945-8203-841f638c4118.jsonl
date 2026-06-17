@@ -1,0 +1,5 @@
+{"type":"session","version":3,"id":"019ed75f-ee1c-7945-8203-841f638c4118","timestamp":"2026-06-17T20:57:28.860Z","cwd":"/Users/kentaylor/.pi"}
+{"type":"model_change","id":"51aaedec","parentId":null,"timestamp":"2026-06-17T20:57:28.918Z","provider":"deepseek","modelId":"deepseek-v4-flash"}
+{"type":"thinking_level_change","id":"e358793e","parentId":"51aaedec","timestamp":"2026-06-17T20:57:28.919Z","thinkingLevel":"high"}
+{"type":"message","id":"2939d9b3","parentId":"e358793e","timestamp":"2026-06-17T20:57:29.286Z","message":{"role":"user","content":[{"type":"text","text":"create a file called hello.txt in this dir"}],"timestamp":1781729849282}}
+{"type":"message","id":"71cec1f2","parentId":"2939d9b3","timestamp":"2026-06-17T20:57:30.385Z","message":{"role":"assistant","content":[],"api":"openai-completions","provider":"deepseek","model":"deepseek-v4-flash","usage":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"totalTokens":0,"cost":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"total":0}},"stopReason":"error","timestamp":1781729849337,"errorMessage":"402 Insufficient Balance"}}
