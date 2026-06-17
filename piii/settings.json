@@ -15,8 +15,8 @@
     "npm:pi-free",
     "git:github.com/ktappdev/pi-commandcode-provider"
   ],
-  "defaultProvider": "windsurf",
-  "defaultModel": "kimi-k2.6",
+  "defaultProvider": "ocg1",
+  "defaultModel": "deepseek-v4-pro",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",

@@ -2,7 +2,7 @@
 output = ".ctx/ctx_index.json"
 synonym_cache = ".ctx/ctx_cache.json"
 llm_model = "meta-llama/llama-3.1-8b-instruct"  # any OpenAI-compatible model name
-batch_size = 15             # names per batch; 15 works well for 8B models
+batch_size = 50             # names per batch; 15 works well for 8B models
 synonyms_min = 4            # min synonyms per name
 synonyms_max = 8            # max synonyms per name
 ignore = [".git", ".venv", "site-packages", "__pycache__", "node_modules", "vendor", "dist", "migrations", "pb_migrations", "alembic", "flyway"]

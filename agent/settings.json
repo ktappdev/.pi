@@ -24,8 +24,8 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "windsurf",
-  "defaultModel": "swe-1.6:fast",
+  "defaultProvider": "ocg1",
+  "defaultModel": "deepseek-v4-pro",
   "hideThinkingBlock": false,
   "enabledModels": [
     "windsurf/*",
