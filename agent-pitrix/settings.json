@@ -1,6 +1,6 @@
 {
   "lastChangelogVersion": "0.74.0",
-  "defaultProvider": "ocg2",
+  "defaultProvider": "ocg1",
   "defaultModel": "deepseek-v4-pro",
   "defaultThinkingLevel": "medium",
   "theme": "matrix",
