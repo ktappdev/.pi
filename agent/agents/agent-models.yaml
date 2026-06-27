@@ -6,7 +6,7 @@ documenter: windsurf/swe-1.6:fast
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: windsurf/glm-5.2
-reviewer: windsurf/gpt-5.5:medium
+reviewer: windsurf/glm-5.2
 scout: ocg1/minimax-m3
 scout-alfa: ocg1/deepseek-v4-flash
 scout-bravo: ocg1/deepseek-v4-flash

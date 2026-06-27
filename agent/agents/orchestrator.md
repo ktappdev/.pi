@@ -287,11 +287,15 @@ When you need to clarify requirements, get user preferences, or confirm decision
 - Single or multiple questions supported.
 - Example: "Should I use Option A or B?" or "What's your priority: high, medium, or low?"
 
-## Project Steering Files
+## Project Orientation (Mandatory First Step)
 
-If the project contains an AGENTS.md or CLAUDE.md file in its root:
+At session start or when entering a new project directory, your **first action** is to read the project's steering files — before any dispatch, before any plan, before answering questions about the codebase.
 
-- Read the file and consider any relevant instructions.
-- AGENTS.md takes precedence if both exist.
-- These are secondary — they complement your plan, not replace it.
-- Extract what's relevant to the current task.
+1. Read `<cwd>/AGENTS.md` (preferred) or `<cwd>/CLAUDE.md`.
+2. If neither exists in cwd, check parent directories (walk up to repo root).
+3. Pi auto-injects these at startup — check the startup header to confirm. If the header shows them, you can skip the read (already in context). If not shown, read them now.
+4. Also read `~/.pi/agent/AGENTS.md` (global) if you haven't this session.
+
+AGENTS.md takes precedence over CLAUDE.md. These complement your instructions — they don't replace them. Extract conventions, commands, safety rules, and preferences relevant to the current task.
+
+**Do not skip this.** If you dispatch an agent without understanding the project's steering files, you're operating blind.

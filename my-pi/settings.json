@@ -1,5 +1,4 @@
 {
-  "lastChangelogVersion": "0.77.0",
   "theme": "synthwave",
   "defaultThinkingLevel": "high",
   "agentTeamViewMode": "table",
@@ -24,8 +23,8 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "windsurf",
-  "defaultModel": "glm-5.2",
+  "defaultProvider": "ocg1",
+  "defaultModel": "deepseek-v4-pro",
   "hideThinkingBlock": false,
   "enabledModels": [
     "windsurf/*",
@@ -42,5 +41,6 @@
     "openrouter/*"
   ],
   "steeringMode": "all",
-  "followUpMode": "all"
+  "followUpMode": "all",
+  "lastChangelogVersion": "0.77.0"
 }

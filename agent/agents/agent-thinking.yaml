@@ -5,7 +5,7 @@ devops: low
 documenter: low
 oracle: off
 planner: high
-reviewer: medium
+reviewer: high
 scout: medium
 scout-alfa: medium
 scout-bravo: medium
