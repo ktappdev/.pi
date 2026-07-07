@@ -1,7 +1,14 @@
 import { truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
 import { displayName } from "./agent-team-config.ts";
 
-export type AgentTeamViewMode = "grid" | "table" | "tactical";
+export type AgentTeamViewMode = "grid" | "table" | "tactical" | "activity";
+
+export interface ToolHistoryViewEntry {
+	name: string;
+	summary: string;
+	durMs: number;
+	isError: boolean;
+}
 
 export interface AgentTeamViewState {
 	def: {
@@ -18,6 +25,9 @@ export interface AgentTeamViewState {
 	runCount: number;
 	model?: string;
 	thinking?: string;
+	toolHistory: ToolHistoryViewEntry[];
+	errorSummary: string | null;
+	stuckToolMs: number;
 }
 
 type ThemeLike = {
@@ -101,20 +111,33 @@ function renderCard(state: AgentTeamViewState, colWidth: number, theme: ThemeLik
 	const workLine = theme.fg("muted", workText);
 	const workVisible = workText.length;
 
+	// Error or stuck indicator line
+	let alertText = "";
+	let alertVisible = 0;
+	if (state.errorSummary) {
+		alertText = theme.fg("error", `\u26a0 ${truncate(state.errorSummary, Math.min(48, w - 1))}`);
+		alertVisible = Math.min(state.errorSummary.length + 2, w - 1);
+	} else if (state.stuckToolMs > 30000) {
+		alertText = theme.fg("warning", `\u23f1 stuck ${Math.round(state.stuckToolMs / 1000)}s`);
+		alertVisible = 10;
+	}
+
 	const top = "┌" + "─".repeat(w) + "┐";
 	const bottom = "└" + "─".repeat(w) + "┘";
 	const border = (content: string, visible: number) =>
 		theme.fg("dim", "│") + content + " ".repeat(Math.max(0, w - visible)) + theme.fg("dim", "│");
 
-	return [
+	const cardLines = [
 		theme.fg("dim", top),
 		border(" " + nameStr, 1 + nameVisible),
 		border(" " + statusLine, 1 + statusVisible),
 		border(" " + taskLabel, 1 + taskVisible),
 		border(" " + ctxLine, 1 + ctxVisible),
 		border(" " + workLine, 1 + workVisible),
-		theme.fg("dim", bottom),
 	];
+	if (alertText) cardLines.push(border(" " + alertText, 1 + alertVisible));
+	cardLines.push(theme.fg("dim", bottom));
+	return cardLines;
 }
 
 export function renderGridView(
@@ -193,13 +216,22 @@ export function renderTableView(
 		const timeText = state.status === "idle" ? "-" : `${Math.round(state.elapsed / 1000)}s`;
 		const ctxText = state.contextPct > 0 ? `${Math.ceil(state.contextPct)}%` : "-";
 
+		const lastBase = getLastWorkLabel(state);
+		let lastText = lastBase;
+		if (state.errorSummary) {
+			lastText = `\u26a0 ${state.errorSummary.slice(0, lastW - 4)}`;
+		} else if (state.stuckToolMs > 30000) {
+			lastText = `\u23f1 stuck ${Math.round(state.stuckToolMs / 1000)}s`;
+		}
+		const lastColor = state.errorSummary ? "error" : state.stuckToolMs > 30000 ? "warning" : "muted";
+
 		return [
 			cell(theme.fg("accent", displayName(state.def.name)), agentW),
 			cell(statusText, statusW),
 			cell(theme.fg("dim", timeText), timeW),
 			cell(theme.fg("dim", ctxText), ctxW),
 			cell(theme.fg("dim", getModelThinkLabel(state)), modelW),
-			cell(theme.fg("muted", getLastWorkLabel(state)), lastW),
+			cell(theme.fg(lastColor, lastText), lastW),
 		].join(gap);
 	};
 
@@ -233,6 +265,11 @@ function buildTeamContextSummary(statesRaw: AgentTeamViewState[]): string {
 		.join(" · ")}`;
 }
 
+function formatDur(ms: number): string {
+	if (ms < 1000) return `${ms}ms`;
+	return `${(ms / 1000).toFixed(1)}s`;
+}
+
 export function renderTacticalView(
 	statesRaw: AgentTeamViewState[],
 	width: number,
@@ -246,7 +283,7 @@ export function renderTacticalView(
 	const status = getStatusDisplay(focus);
 	const focusName = displayName(focus.def.name);
 	const modelLabel = getModelThinkLabel(focus);
-	
+
 	const header = [
 		theme.fg("accent", `${status.icon} ${theme.bold(focusName)}`),
 		theme.fg(status.color, `${focus.status}`),
@@ -257,19 +294,39 @@ export function renderTacticalView(
 		.join(" ");
 
 	const hiddenRunning = statesRaw.filter((state) => state.status === "running" && state !== focus).length;
-	
+
 	const lines: string[] = [];
 	lines.push(truncateToWidth(header, Math.max(8, width)));
-	
-	// Activity lines (up to 5)
-	const workLines = focus.lastWork.length > 0 ? focus.lastWork : [focus.task || focus.def.description];
-	const displayLines = workLines.slice(-5);
-	
+
+	// Show tool history with durations if available, otherwise fall back to lastWork
+	const toolLines = focus.toolHistory.length > 0
+		? focus.toolHistory.slice(-5).map(t =>
+			`${t.isError ? "\u26a0 " : ""}[${t.name}] ${t.summary} (${formatDur(t.durMs)})${t.isError ? " \u26a0" : ""}`
+		)
+		: (focus.lastWork.length > 0 ? focus.lastWork : [focus.task || focus.def.description]).slice(-5);
+	const displayLines = toolLines;
+
 	for (let i = 0; i < displayLines.length; i++) {
 		const isLast = i === displayLines.length - 1;
 		const prefix = theme.fg("dim", isLast ? "  └─ Doing: " : "  ├─ ");
 		const body = theme.fg("muted", displayLines[i]);
 		lines.push(truncateToWidth(prefix + body, Math.max(8, width)));
+	}
+
+	// Stuck indicator
+	if (focus.stuckToolMs > 30000) {
+		lines.push(truncateToWidth(
+			theme.fg("warning", `  \u23f1 pending tool stuck for ${Math.round(focus.stuckToolMs / 1000)}s`),
+			Math.max(8, width),
+		));
+	}
+
+	// Error summary
+	if (focus.errorSummary) {
+		lines.push(truncateToWidth(
+			theme.fg("error", `  \u26a0 ${focus.errorSummary.slice(0, 60)}`),
+			Math.max(8, width),
+		));
 	}
 
 	const contextLine = truncateToWidth(
@@ -286,4 +343,59 @@ export function renderTacticalView(
 	}
 
 	return lines.filter(Boolean).join("\n");
+}
+
+export function renderActivityView(
+	statesRaw: AgentTeamViewState[],
+	width: number,
+	theme: ThemeLike,
+): string {
+	const states = sortStates(statesRaw);
+	const running = states.filter(s => s.status === "running" || s.status === "error");
+	if (running.length === 0) {
+		return theme.fg("dim", "Activity · all idle");
+	}
+
+	const lines: string[] = [];
+	const agentW = Math.min(14, Math.max(8, Math.floor(width * 0.16)));
+	const timeW = 6;
+	const toolsW = 7;
+	const restW = Math.max(20, width - agentW - timeW - toolsW - 6);
+
+	for (const state of running) {
+		const status = getStatusDisplay(state);
+		const name = displayName(state.def.name);
+		const timeStr = `${Math.round(state.elapsed / 1000)}s`;
+
+		// Build tool chain from history (last 3)
+		let activity: string;
+		if (state.toolHistory.length > 0) {
+			const recent = state.toolHistory.slice(-3);
+			activity = recent.map(t =>
+				`${t.isError ? "\u26a0" : ""}[${t.name}] ${t.summary}${t.durMs > 0 ? ` (${formatDur(t.durMs)})` : ""}`
+			).join(" → ");
+		} else {
+			activity = state.lastWork.length > 0
+				? state.lastWork.slice(-3).join(" → ")
+				: (state.task || state.def.description);
+		}
+
+		// Stuck detection: pending tool > 30s
+		const stuckFlag = state.stuckToolMs > 30000 ? " \u23f1 stuck?" : "";
+
+		// Error summary
+		const errSuffix = state.errorSummary
+			? ` \u26a0 ${state.errorSummary.slice(0, 40)}`
+			: stuckFlag;
+
+		const line = [
+			theme.fg(status.color, `${status.icon} ${name}`),
+			theme.fg("dim", timeStr),
+			theme.fg("dim", `${state.toolCount}t`),
+			truncateToWidth(theme.fg("muted", activity) + theme.fg("warning", errSuffix), restW),
+		].join("  ");
+		lines.push(truncateToWidth(line, Math.max(8, width)));
+	}
+
+	return lines.join("\n");
 }

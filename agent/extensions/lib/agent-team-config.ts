@@ -100,12 +100,12 @@ export function getMergedSettings(cwd: string): Record<string, any> {
 	return { ...globalSettings, ...projectSettings };
 }
 
-export function getAgentTeamViewMode(cwd: string): "grid" | "table" | "tactical" {
+export function getAgentTeamViewMode(cwd: string): "grid" | "table" | "tactical" | "activity" {
 	const raw = getMergedSettings(cwd)?.agentTeamViewMode;
-	return raw === "grid" || raw === "table" || raw === "tactical" ? raw : "tactical";
+	return raw === "grid" || raw === "table" || raw === "tactical" || raw === "activity" ? raw : "tactical";
 }
 
-export function persistAgentTeamViewMode(cwd: string, mode: "grid" | "table" | "tactical") {
+export function persistAgentTeamViewMode(cwd: string, mode: "grid" | "table" | "tactical" | "activity") {
 	const globalPath = join(getPiCodingAgentDir(), "settings.json");
 	const globalSettings = readJsonObject(globalPath);
 	writeJsonObject(globalPath, { ...globalSettings, agentTeamViewMode: mode });

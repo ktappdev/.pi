@@ -1,6 +1,14 @@
 import type { AgentDef, AgentTeamViewMode } from "./agent-team-config.js";
 import type { FooterMetricsState } from "./agent-team-footer-metrics.js";
 
+export interface ToolHistoryEntry {
+	name: string;
+	summary: string;
+	ts: number;
+	durMs: number;
+	isError: boolean;
+}
+
 export interface AgentState {
 	def: AgentDef;
 	status: "idle" | "running" | "done" | "error";
@@ -14,6 +22,10 @@ export interface AgentState {
 	model?: string;
 	thinking?: string;
 	timer?: ReturnType<typeof setInterval>;
+	toolHistory: ToolHistoryEntry[];
+	errorSummary: string | null;
+	pendingToolStarts: Map<string, { name: string; summary: string; ts: number }>;
+	stuckToolMs: number;
 }
 
 export interface DispatchResult {

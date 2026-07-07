@@ -74,6 +74,7 @@ import {
 	renderGridView,
 	renderTableView,
 	renderTacticalView,
+	renderActivityView,
 	type AgentTeamViewMode,
 } from "./lib/agent-team-views.ts";
 import {
@@ -183,6 +184,14 @@ function findPiExecutable(): string {
 
 // ── Types ────────────────────────────────────────
 
+interface ToolHistoryEntry {
+	name: string;
+	summary: string;
+	ts: number;
+	durMs: number;
+	isError: boolean;
+}
+
 interface AgentState {
 	def: AgentDef;
 	status: "idle" | "running" | "done" | "error";
@@ -196,6 +205,10 @@ interface AgentState {
 	model?: string;
 	thinking?: string;
 	timer?: ReturnType<typeof setInterval>;
+	toolHistory: ToolHistoryEntry[];
+	errorSummary: string | null;
+	pendingToolStarts: Map<string, { name: string; summary: string; ts: number }>;
+	stuckToolMs: number;
 }
 
 interface DispatchResult {
@@ -374,6 +387,12 @@ function getSubagentExtensionArgs(agentName: string, tools: string, loadProvider
 		for (const provider of providers) {
 			args.push("-e", provider);
 		}
+	}
+
+	// Add MCP adapter extension for agents that request the mcp tool
+	const mcpAdapterPath = join(homedir(), ".pi", "agent", "npm", "node_modules", "pi-mcp-adapter", "index.ts");
+	if (tools.split(",").map(t => t.trim()).includes("mcp") && existsSync(mcpAdapterPath)) {
+		args.push("-e", mcpAdapterPath);
 	}
 
 	// Add agent-specific extensions
@@ -753,6 +772,10 @@ export default function (pi: ExtensionAPI) {
 				runCount: 0,
 				model: assignedModel,
 				thinking: assignedThinking,
+				toolHistory: [],
+				errorSummary: null,
+				pendingToolStarts: new Map(),
+				stuckToolMs: 0,
 			});
 		}
 
@@ -849,6 +872,10 @@ export default function (pi: ExtensionAPI) {
 						text.setText(renderTacticalView(agents, width, theme));
 						return text.render(width);
 					}
+					if (viewMode === "activity") {
+						text.setText(renderActivityView(agents, width, theme));
+						return text.render(width);
+					}
 
 					text.setText(renderGridView(agents, width, theme, gridCols));
 					return text.render(width);
@@ -898,6 +925,10 @@ export default function (pi: ExtensionAPI) {
 		state.toolCount = 0;
 		state.elapsed = 0;
 		state.lastWork = [];
+		state.toolHistory = [];
+		state.errorSummary = null;
+		state.pendingToolStarts.clear();
+		state.stuckToolMs = 0;
 		state.runCount++;
 		appendAgentLog(key, `[run] ${new Date().toLocaleTimeString()} — ${task}`);
 		updateWidget();
@@ -907,6 +938,18 @@ export default function (pi: ExtensionAPI) {
 		state.timer = setInterval(() => {
 			if (isRunning) {
 				state.elapsed = Date.now() - startTime;
+				// Compute stuck tool duration (oldest pending tool)
+				if (state.pendingToolStarts.size > 0) {
+					const now = Date.now();
+					let oldest = 0;
+					for (const [, pending] of state.pendingToolStarts) {
+						const age = now - pending.ts;
+						if (age > oldest) oldest = age;
+					}
+					state.stuckToolMs = oldest;
+				} else {
+					state.stuckToolMs = 0;
+				}
 				updateWidget();
 			}
 		}, 1000);
@@ -1017,7 +1060,33 @@ export default function (pi: ExtensionAPI) {
 							// Show tool calls in activity display (lastWork)
 							state.lastWork.push(summary);
 							if (state.lastWork.length > 10) state.lastWork.shift();
+							// Track pending tool start for duration calculation
+							const toolCallId = event.toolCallId || `${toolName}-${state.toolCount}`;
+							state.pendingToolStarts.set(toolCallId, { name: toolName, summary, ts: Date.now() });
 							updateWidget();
+						} else if (event.type === "tool_execution_end") {
+							const toolCallId = event.toolCallId;
+							const pending = toolCallId ? state.pendingToolStarts.get(toolCallId) : undefined;
+							if (pending) {
+								const durMs = Date.now() - pending.ts;
+								const isError = !!event.isError;
+								state.toolHistory.push({
+									name: pending.name,
+									summary: pending.summary,
+									ts: pending.ts,
+									durMs,
+									isError,
+								});
+								if (state.toolHistory.length > 20) state.toolHistory.shift();
+								if (isError) {
+									const errMsg = typeof event.result === "string"
+										? event.result.split("\n").filter((l: string) => l.trim()).pop() || "tool error"
+										: "tool error";
+									state.errorSummary = errMsg.slice(0, 80);
+								}
+								state.pendingToolStarts.delete(toolCallId);
+								updateWidget();
+							}
 						} else if (event.type === "message_end") {
 							const msg = event.message;
 							if (msg?.usage && contextWindow > 0) {
@@ -1072,6 +1141,13 @@ export default function (pi: ExtensionAPI) {
 				state.elapsed = Date.now() - startTime;
 				const isSuccess = code === 0;
 				state.status = isSuccess ? "done" : "error";
+
+				// Capture error summary from logs if agent failed and no tool error already set
+				if (!isSuccess && !state.errorSummary) {
+					const logs = agentLogs.get(key) || [];
+					const errLine = [...logs].reverse().find(l => l.includes("[error]") || l.includes("[stderr]"));
+					if (errLine) state.errorSummary = errLine.replace(/^\[(error|stderr)\] /, "").slice(0, 80);
+				}
 
 				// Mark session file as available for resume (skip if stateless)
 				if (isSuccess && !isStateless(key)) {
@@ -1650,12 +1726,13 @@ export default function (pi: ExtensionAPI) {
 	});
 
 	pi.registerCommand("agents-view", {
-		description: "Switch team widget view: /agents-view <grid|table|tactical>",
+		description: "Switch team widget view: /agents-view <grid|table|tactical|activity>",
 		getArgumentCompletions: (prefix: string): AutocompleteItem[] | null => {
 			const items: AutocompleteItem[] = [
 				{ value: "grid", label: "Grid view (cards)" },
 				{ value: "table", label: "Table view (dense)" },
 				{ value: "tactical", label: "Tactical view (active focus)" },
+				{ value: "activity", label: "Activity view (all running agents)" },
 			];
 			const p = prefix.trim().toLowerCase();
 			if (!p) return items;
@@ -1665,8 +1742,8 @@ export default function (pi: ExtensionAPI) {
 		handler: async (args, ctx) => {
 			widgetCtx = ctx;
 			const raw = (args || "").trim().toLowerCase();
-			if (raw !== "grid" && raw !== "table" && raw !== "tactical") {
-				ctx.ui.notify("Usage: /agents-view <grid|table|tactical>", "error");
+			if (raw !== "grid" && raw !== "table" && raw !== "tactical" && raw !== "activity") {
+				ctx.ui.notify("Usage: /agents-view <grid|table|tactical|activity>", "error");
 				return;
 			}
 			viewMode = raw;
