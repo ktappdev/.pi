@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.77.0",
+  "lastChangelogVersion": "0.80.2",
   "defaultThinkingLevel": "high",
   "quietStartup": false,
   "hideThinkingBlock": false,
@@ -15,8 +15,8 @@
     "npm:pi-free",
     "git:github.com/ktappdev/pi-commandcode-provider"
   ],
-  "defaultProvider": "ocg1",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultProvider": "streamlake",
+  "defaultModel": "ep-w928yx-1783704566689445974",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",
@@ -25,6 +25,8 @@
     "windsurf/*",
     "openai-codex/*",
     "mimo/*",
-    "opencode-zen/*"
-  ]
+    "opencode-zen/*",
+    "streamlake/*"
+  ],
+  "theme": "dark"
 }
