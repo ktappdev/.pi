@@ -49,7 +49,7 @@ Contexting bridges human language ("dark mode") to code artifacts (`ThemeToggle.
 #### Query construction
 1. **One dense domain query** with all concept variants: `"login signin signup forgot reset verify authentication"`
 2. **One symbol query** using expected identifiers: `"LoginPage AuthForm useAuth signIn CustomerLogin"` (PascalCase for types, camelCase for functions)
-3. **1–3 queries total**, space-separated, no quotes. Deduplicate paths across queries.
+3. **1–8 queries total**, space-separated, no quotes. Deduplicate paths across queries.
 
 ### Commands
 

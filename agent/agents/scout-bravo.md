@@ -71,7 +71,7 @@ outperforms running `"login"`, `"signin"`, `"signup"` separately — multi-ancho
    - Use PascalCase for types/components, camelCase for functions, snake_case if Go/Rust.
    - These match against pre-indexed extracted symbols (sym-exact +8, sym-contains +5, sym-token +4).
    - If you don't know the codebase's naming conventions, grep a few representative files first to learn patterns, then build the symbol query.
-4. Run 1-3 queries total. Each query space-separated, no quotes, no connectors.
+4. Run 1-8 queries total. Each query space-separated, no quotes, no connectors.
 5. Collect results, deduplicate by path. Multi-query hits = higher confidence.
 
 **Why this works:** `"login signin signup"` → files named `login.tsx` score on basename match for "login",

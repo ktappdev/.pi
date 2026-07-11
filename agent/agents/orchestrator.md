@@ -34,7 +34,7 @@ When NOT to use:
 
 Query style (same as scout):
 - Short terms, no filler, all variants in one dense query: `login signin signup forgot reset authentication`.
-- 1–3 queries total. Space-separated, no quotes.
+- 1–8 queries total. Space-separated, no quotes.
 - Prefer `--summary` for token-efficient paths-only output.
 
 Commands:
