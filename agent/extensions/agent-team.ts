@@ -182,6 +182,51 @@ function findPiExecutable(): string {
 	return cachedPiPath;
 }
 
+// ── Model Name Cache ─────────────────────────────
+// Maps model IDs (e.g. "streamlake/ep-w928yx-...") to friendly names (e.g. "streamlake/Kat Coder Pro V2")
+let modelNameCache: Map<string, string> | null = null;
+
+function buildModelNameCache(): Map<string, string> {
+	const cache = new Map<string, string>();
+	try {
+		const proc = spawnSync(findPiExecutable(), ["--list-models"], { encoding: "utf-8", timeout: 10000 });
+		const output = proc.stdout || "";
+		for (const line of output.split("\n")) {
+			if (!line.trim() || line.toLowerCase().startsWith("provider")) continue;
+			const parts = line.trim().split(/\s{2,}/);
+			if (parts.length >= 2) {
+				const rawModel = parts[1].trim();
+				const parenMatch = rawModel.match(/\(([^)]+)\)$/);
+				const modelId = parenMatch ? parenMatch[1] : rawModel;
+				const displayName = parenMatch ? rawModel.replace(/\s*\([^)]+\)$/, '') : rawModel;
+				// Store both the full ID and the provider/model variant
+				cache.set(modelId, displayName);
+			}
+		}
+	} catch {
+		// Cache build failed — will fall back to raw IDs
+	}
+	return cache;
+}
+
+function resolveModelName(modelId: string | undefined): string {
+	if (!modelId) return "default";
+	if (!modelNameCache) modelNameCache = buildModelNameCache();
+	// Try full ID first (e.g. "streamlake/ep-w928yx-...")
+	if (modelNameCache.has(modelId)) return modelNameCache.get(modelId)!;
+	// Try just the model part after the slash (e.g. "ep-w928yx-...")
+	const slashIdx = modelId.indexOf("/");
+	if (slashIdx >= 0) {
+		const justId = modelId.substring(slashIdx + 1);
+		if (modelNameCache.has(justId)) {
+			const provider = modelId.substring(0, slashIdx);
+			const name = modelNameCache.get(justId)!;
+			return name.startsWith(provider) ? name : `${provider}: ${name}`;
+		}
+	}
+	return modelId;
+}
+
 // ── Types ────────────────────────────────────────
 
 interface ToolHistoryEntry {
@@ -395,6 +440,12 @@ function getSubagentExtensionArgs(agentName: string, tools: string, loadProvider
 		args.push("-e", mcpAdapterPath);
 	}
 
+	// Add built-in-tool-renderer so sub-agent tool output is compact
+	const toolRendererPath = join(EXTENSIONS_DIR, "built-in-tool-renderer.ts");
+	if (existsSync(toolRendererPath)) {
+		args.push("-e", toolRendererPath);
+	}
+
 	// Add agent-specific extensions
 	if (hasEditCapabilities(tools)) {
 		const extensionNames: string[] = [];
@@ -404,11 +455,6 @@ function getSubagentExtensionArgs(agentName: string, tools: string, loadProvider
 				args.push("-e", extensionPath);
 			}
 		}
-	} else {
-		// No edit capabilities - but if we have providers, keep them
-		if (args.length === 0) {
-			return ["--no-extensions"];
-		}
 	}
 
 	return args.length > 0 ? args : ["--no-extensions"];
@@ -416,7 +462,7 @@ function getSubagentExtensionArgs(agentName: string, tools: string, loadProvider
 
 // ── Fetch Available Models ───────────────────────
 
-async function fetchAvailableModels(): Promise<string[]> {
+async function fetchAvailableModels(): Promise<{ label: string; value: string }[]> {
 	return new Promise((resolve) => {
 		const proc = spawn(findPiExecutable(), ["--list-models"], {
 			stdio: ["ignore", "pipe", "pipe"],
@@ -433,7 +479,7 @@ async function fetchAvailableModels(): Promise<string[]> {
 		proc.stderr!.on("data", collect);
 
 		proc.on("close", () => {
-			const models: string[] = [];
+			const models: { label: string; value: string }[] = [];
 			const lines = output.split("\n");
 			
 			for (const line of lines) {
@@ -444,18 +490,29 @@ async function fetchAvailableModels(): Promise<string[]> {
 				const parts = line.trim().split(/\s{2,}/);
 				if (parts.length >= 2) {
 					const provider = parts[0].trim();
-					const modelId = parts[1].trim();
+					const rawModel = parts[1].trim();
+					// Extract real ID from "Name (id)" format if present
+					const parenMatch = rawModel.match(/\(([^)]+)\)$/);
+					const modelId = parenMatch ? parenMatch[1] : rawModel;
 					// Always return a full `provider/model` identifier.
 					// Some model ids themselves contain `/` (e.g. OpenRouter uses `ai21/jamba...`),
 					// so we must not treat that as already provider-qualified.
 					if (provider && modelId) {
 						const full = modelId.startsWith(`${provider}/`) ? modelId : `${provider}/${modelId}`;
-						models.push(full);
+						const displayName = parenMatch ? rawModel.replace(/\s*\([^)]+\)$/, '') : rawModel;
+						models.push({ label: displayName, value: full });
 					}
 				}
 			}
 			
-			resolve(Array.from(new Set(models)));
+			// Deduplicate by value (model ID)
+			const seen = new Set<string>();
+			const unique = models.filter(m => {
+				if (seen.has(m.value)) return false;
+				seen.add(m.value);
+				return true;
+			});
+			resolve(unique);
 		});
 
 		proc.on("error", () => {
@@ -957,7 +1014,7 @@ export default function (pi: ExtensionAPI) {
 		// Use agent-specific model if assigned, otherwise use session default
 		// Priority: 1. agent-models.yaml (what you set via /agents-models), 2. agent frontmatter, 3. session default
 		const ctxModel = ctx.model as any;
-		const model = state.model || state.def.model || (ctxModel?.provider && ctxModel?.id
+		const modelId = state.model || state.def.model || (ctxModel?.provider && ctxModel?.id
 			? `${ctxModel.provider}/${ctxModel.id}`
 			: "openrouter/google/gemini-3-flash-preview");
 
@@ -987,7 +1044,7 @@ export default function (pi: ExtensionAPI) {
 			"-p",
 			"--no-extensions",
 			...getSubagentExtensionArgs(state.def.name, state.def.tools, state.def.loadProviders ?? true),
-			"--model", model,
+			"--model", modelId,
 			"--thinking", state.thinking || state.def.thinking || "off",
 			"--tools", state.def.tools,
 			"--append-system-prompt", mergeSystemPrompt(state.def.systemPrompt + (globalAppend ? "\n\n" + globalAppend : "")),
@@ -1048,6 +1105,7 @@ export default function (pi: ExtensionAPI) {
 										}
 										if (state.lastWork.length > 10) state.lastWork.shift();
 									}
+							state.errorSummary = null;
 								}
 								updateWidget();
 							}
@@ -1061,6 +1119,7 @@ export default function (pi: ExtensionAPI) {
 							state.lastWork.push(summary);
 							if (state.lastWork.length > 10) state.lastWork.shift();
 							// Track pending tool start for duration calculation
+							state.errorSummary = null;
 							const toolCallId = event.toolCallId || `${toolName}-${state.toolCount}`;
 							state.pendingToolStarts.set(toolCallId, { name: toolName, summary, ts: Date.now() });
 							updateWidget();
@@ -1083,7 +1142,9 @@ export default function (pi: ExtensionAPI) {
 										? event.result.split("\n").filter((l: string) => l.trim()).pop() || "tool error"
 										: "tool error";
 									state.errorSummary = errMsg.slice(0, 80);
-								}
+								} else {
+									state.errorSummary = null;
+							}
 								state.pendingToolStarts.delete(toolCallId);
 								updateWidget();
 							}
@@ -2119,7 +2180,7 @@ export default function (pi: ExtensionAPI) {
 			let targetsToConfig = configTargets;
 			if (modeChoice === "Select specific agent") {
 				const targetNames = configTargets.map((target) => {
-					const model = agentModels[target.key] || (target.kind === "agent" ? (target.state?.model || "default") : "default");
+					const model = resolveModelName(agentModels[target.key]) || (target.kind === "agent" ? (target.state?.model || "default") : "default");
 					return `${target.label} (${model})`;
 				});
 				
@@ -2233,11 +2294,11 @@ export default function (pi: ExtensionAPI) {
 			const modelSummary = agents
 				.map(s => {
 					const key = s.def.name.toLowerCase();
-					const model = agentModels[key] || "(default)";
+					const model = resolveModelName(agentModels[key]) || "(default)";
 					const thinking = agentThinking[key] || "(default)";
 					return `${displayName(s.def.name)}: ${model} · thinking:${thinking}`;
 				})
-				.concat([`Subagents: ${agentModels["subagents"] || "(default)"} · thinking:off`])
+				.concat([`Subagents: ${resolveModelName(agentModels["subagents"]) || "(default)"} · thinking:off`])
 				.join("\n");
 
 			ctx.ui.notify(

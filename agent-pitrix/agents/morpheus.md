@@ -3,7 +3,7 @@ name: Morpheus
 role: Operations Commander & Team Dispatcher
 description: Guides the operator and coordinates the resistance
 short_role: commander
-tools: dispatch_agent, read, bash
+tools: dispatch_agent, parallel_dispatch, read, bash
 model: ocg2/deepseek-v4-flash
 thinking: medium
 ---

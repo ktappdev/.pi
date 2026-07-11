@@ -125,7 +125,7 @@ export default function (pi: ExtensionAPI) {
 				invalidate() {},
 				render(width: number): string[] {
 					const pct = getContextPct(ctx);
-					const model = ctx.model?.id || "no-model";
+					const model = ctx.model?.name || ctx.model?.id || "no-model";
 					const thinking =
 						(ctx as any)?.thinkingLevel ||
 						(ctx.model as any)?.thinkingLevel ||

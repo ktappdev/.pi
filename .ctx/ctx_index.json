@@ -1,6 +1,6 @@
 {
   "root_path": "/Users/kentaylor/.pi",
-  "generated_at": "2026-06-23T17:21:52.089962Z",
+  "generated_at": "2026-07-02T13:48:32.264147Z",
   "model": "meta-llama/llama-3.1-8b-instruct",
   "tree": {
     "full_path": "/Users/kentaylor/.pi",
@@ -49,7 +49,7 @@
           "agentcode",
           "agent"
         ],
-        "mod_time": 1775169467000000000,
+        "mod_time": 1782957732288304546,
         "children": {
           "APPEND_SYSTEM.md": {
             "full_path": "/Users/kentaylor/.pi/agent/APPEND_SYSTEM.md",
@@ -58,9 +58,12 @@
               "appendingsystem",
               "appendingsystemguide",
               "appendingsystemmanual",
-              "appendingsystemreference"
+              "appendingsystemreference",
+              "append",
+              "system",
+              "md"
             ],
-            "mod_time": 1776058904000000000
+            "mod_time": 1782575672575495037
           },
           "agents": {
             "full_path": "/Users/kentaylor/.pi/agent/agents",
@@ -72,7 +75,7 @@
               "agentscode",
               "agents"
             ],
-            "mod_time": 1776960343184894545,
+            "mod_time": 1782957732288304546,
             "children": {
               "agent-models.yaml": {
                 "full_path": "/Users/kentaylor/.pi/agent/agents/agent-models.yaml",
@@ -81,9 +84,12 @@
                   "agentmodels",
                   "agentmodelsdocument",
                   "agentmodelsreference",
-                  "agentmodelsyaml"
+                  "agentmodelsyaml",
+                  "agent",
+                  "models",
+                  "yaml"
                 ],
-                "mod_time": 1782177268786470506
+                "mod_time": 1782963733477182521
               },
               "agent-stateless.yaml": {
                 "full_path": "/Users/kentaylor/.pi/agent/agents/agent-stateless.yaml",
@@ -92,9 +98,12 @@
                   "agentstateless",
                   "agentstatelessdocument",
                   "agentstatelessreference",
-                  "agentstatelessyaml"
+                  "agentstatelessyaml",
+                  "agent",
+                  "stateless",
+                  "yaml"
                 ],
-                "mod_time": 1782049685729000406
+                "mod_time": 1782496723114215742
               },
               "agent-thinking.yaml": {
                 "full_path": "/Users/kentaylor/.pi/agent/agents/agent-thinking.yaml",
@@ -103,9 +112,12 @@
                   "agentthinking",
                   "agentthinkingdocument",
                   "agentthinkingreference",
-                  "agentthinkingyaml"
+                  "agentthinkingyaml",
+                  "agent",
+                  "thinking",
+                  "yaml"
                 ],
-                "mod_time": 1782177268786585173
+                "mod_time": 1782963733478010223
               },
               "builder.md": {
                 "full_path": "/Users/kentaylor/.pi/agent/agents/builder.md",
@@ -114,9 +126,11 @@
                   "builder_guide",
                   "builder_documentation",
                   "builder_reference",
-                  "builder_manual"
+                  "builder_manual",
+                  "builder",
+                  "md"
                 ],
-                "mod_time": 1776037587000000000
+                "mod_time": 1782344007246219418
               },
               "crafter.md": {
                 "full_path": "/Users/kentaylor/.pi/agent/agents/crafter.md",
@@ -169,9 +183,11 @@
                   "tutorial",
                   "guide",
                   "reference-documentation",
-                  "user-manual"
+                  "user-manual",
+                  "orchestrator",
+                  "md"
                 ],
-                "mod_time": 1782235050421495505
+                "mod_time": 1782859859332088098
               },
               "planner.md": {
                 "full_path": "/Users/kentaylor/.pi/agent/agents/planner.md",
@@ -202,9 +218,12 @@
                   "tutorial",
                   "guide",
                   "reference-documentation",
-                  "user-manual"
+                  "user-manual",
+                  "scout",
+                  "alfa",
+                  "md"
                 ],
-                "mod_time": 1779721524687414768
+                "mod_time": 1782957732288304546
               },
               "scout-bravo.md": {
                 "full_path": "/Users/kentaylor/.pi/agent/agents/scout-bravo.md",
@@ -213,9 +232,12 @@
                   "tutorial",
                   "guide",
                   "reference-documentation",
-                  "user-manual"
+                  "user-manual",
+                  "scout",
+                  "bravo",
+                  "md"
                 ],
-                "mod_time": 1779721524687313142
+                "mod_time": 1782957732288301880
               },
               "scout.md": {
                 "full_path": "/Users/kentaylor/.pi/agent/agents/scout.md",
@@ -224,9 +246,11 @@
                   "tutorial",
                   "guide",
                   "reference-documentation",
-                  "user-manual"
+                  "user-manual",
+                  "scout",
+                  "md"
                 ],
-                "mod_time": 1781657860793436066
+                "mod_time": 1782957732284108382
               },
               "sparky.md": {
                 "full_path": "/Users/kentaylor/.pi/agent/agents/sparky.md",
@@ -284,7 +308,7 @@
               "modules",
               "extensions"
             ],
-            "mod_time": 1779470079440335170,
+            "mod_time": 1782341651241692448,
             "children": {
               "ENGRAM.md": {
                 "full_path": "/Users/kentaylor/.pi/agent/extensions/ENGRAM.md",
@@ -315,7 +339,10 @@
                   "agentteamfile",
                   "agentteamcode",
                   "agentteamreference",
-                  "agentteamdocument"
+                  "agentteamdocument",
+                  "agent",
+                  "team",
+                  "ts"
                 ],
                 "symbols": [
                   "detectContexting",
@@ -330,7 +357,7 @@
                   "AgentState",
                   "DispatchResult"
                 ],
-                "mod_time": 1781653020211339367
+                "mod_time": 1782957729703550061
               },
               "agent-team.ts.backup": {
                 "full_path": "/Users/kentaylor/.pi/agent/extensions/agent-team.ts.backup",
@@ -1061,7 +1088,7 @@
                   "utility",
                   "library"
                 ],
-                "mod_time": 1779470079440335170,
+                "mod_time": 1782341651241692448,
                 "children": {
                   "index.ts": {
                     "full_path": "/Users/kentaylor/.pi/agent/extensions/supacode/index.ts",
@@ -1070,18 +1097,23 @@
                       "entry-point",
                       "main",
                       "app",
-                      "application"
+                      "application",
+                      "index",
+                      "ts"
                     ],
                     "symbols": [
-                      "readSupacodeEnv",
-                      "sendToSocket",
-                      "sendNotification",
-                      "sendEvent",
+                      "isSupacodeSurface",
+                      "localPidSuffix",
+                      "writeToTerminal",
+                      "emitPresence",
+                      "notifyField",
+                      "emitNotification",
                       "lastAssistantText",
-                      "SupacodeEnv",
-                      "HookPayload"
+                      "AGENT",
+                      "WARN_INTERVAL_MS",
+                      "NotifyContent"
                     ],
-                    "mod_time": 1779470079440335170
+                    "mod_time": 1782341651241692448
                   }
                 }
               },
@@ -6114,6 +6146,16 @@
               }
             }
           },
+          "mcp-cache.json": {
+            "full_path": "/Users/kentaylor/.pi/agent/mcp-cache.json",
+            "type": "file",
+            "synonyms": [
+              "mcp",
+              "cache",
+              "json"
+            ],
+            "mod_time": 1782957292731265299
+          },
           "models.json": {
             "full_path": "/Users/kentaylor/.pi/agent/models.json",
             "type": "file",
@@ -6121,9 +6163,11 @@
               "data-models",
               "model-definition",
               "data-schema",
-              "model-structure"
+              "model-structure",
+              "models",
+              "json"
             ],
-            "mod_time": 1780720983785326124
+            "mod_time": 1782238225980938557
           },
           "npm": {
             "full_path": "/Users/kentaylor/.pi/agent/npm",
@@ -6135,7 +6179,7 @@
               "package-resolution",
               "npm"
             ],
-            "mod_time": 1780069749326472045,
+            "mod_time": 1782953781558766000,
             "children": {
               "package-lock.json": {
                 "full_path": "/Users/kentaylor/.pi/agent/npm/package-lock.json",
@@ -6144,9 +6188,12 @@
                   "dependency-management",
                   "dependency-resolution",
                   "package-lockfile",
-                  "package-installation"
+                  "package-installation",
+                  "package",
+                  "lock",
+                  "json"
                 ],
-                "mod_time": 1780069749326472045
+                "mod_time": 1782953781579366393
               },
               "package.json": {
                 "full_path": "/Users/kentaylor/.pi/agent/npm/package.json",
@@ -6155,9 +6202,11 @@
                   "package-management",
                   "package-definition",
                   "package-dependency",
-                  "package-installation"
+                  "package-installation",
+                  "package",
+                  "json"
                 ],
-                "mod_time": 1780069749325407978
+                "mod_time": 1782953781558766000
               }
             }
           },
@@ -6215,9 +6264,11 @@
               "config.json",
               "configuration",
               "preferences",
-              "options"
+              "options",
+              "settings",
+              "json"
             ],
-            "mod_time": 1782170717922431921
+            "mod_time": 1782965783073910596
           },
           "skills": {
             "full_path": "/Users/kentaylor/.pi/agent/skills",
@@ -6229,7 +6280,7 @@
               "competence",
               "skills"
             ],
-            "mod_time": 1776963783261351626,
+            "mod_time": 1782341651242096533,
             "children": {
               "fromai": {
                 "full_path": "/Users/kentaylor/.pi/agent/skills/fromai",
@@ -6291,7 +6342,7 @@
                   "command-line",
                   "interface"
                 ],
-                "mod_time": 1779470079441018882,
+                "mod_time": 1782341651242096533,
                 "children": {
                   "SKILL.md": {
                     "full_path": "/Users/kentaylor/.pi/agent/skills/supacode-cli/SKILL.md",
@@ -6300,9 +6351,11 @@
                       "skilldocument",
                       "skillguide",
                       "skillmanual",
-                      "skillreference"
+                      "skillreference",
+                      "skill",
+                      "md"
                     ],
-                    "mod_time": 1779470079441018882
+                    "mod_time": 1782341651242096533
                   }
                 }
               }
@@ -6451,7 +6504,7 @@
           "agent",
           "pitrix"
         ],
-        "mod_time": 1774998963477711255,
+        "mod_time": 1782847956322061774,
         "children": {
           "APPEND_SYSTEM.md": {
             "full_path": "/Users/kentaylor/.pi/agent-pitrix/APPEND_SYSTEM.md",
@@ -6518,7 +6571,7 @@
               "agentscode",
               "agents"
             ],
-            "mod_time": 1779203196633025584,
+            "mod_time": 1782847956322061774,
             "children": {
               "agent-models.yaml": {
                 "full_path": "/Users/kentaylor/.pi/agent-pitrix/agents/agent-models.yaml",
@@ -6615,9 +6668,11 @@
                   "tutorial",
                   "guide",
                   "reference-documentation",
-                  "user-manual"
+                  "user-manual",
+                  "morpheus",
+                  "md"
                 ],
-                "mod_time": 1780138496776131323
+                "mod_time": 1782847956322061774
               },
               "neo.md": {
                 "full_path": "/Users/kentaylor/.pi/agent-pitrix/agents/neo.md",
@@ -6744,7 +6799,7 @@
               "modules",
               "extensions"
             ],
-            "mod_time": 1774998963482072196,
+            "mod_time": 1782847916610014025,
             "children": {
               "agent-team.ts": {
                 "full_path": "/Users/kentaylor/.pi/agent-pitrix/extensions/agent-team.ts",
@@ -6753,7 +6808,10 @@
                   "agentteamfile",
                   "agentteamcode",
                   "agentteamreference",
-                  "agentteamdocument"
+                  "agentteamdocument",
+                  "agent",
+                  "team",
+                  "ts"
                 ],
                 "symbols": [
                   "detectContexting",
@@ -6768,7 +6826,7 @@
                   "AgentState",
                   "DispatchResult"
                 ],
-                "mod_time": 1778769988796092604
+                "mod_time": 1782852289284689438
               },
               "ask-mode.ts": {
                 "full_path": "/Users/kentaylor/.pi/agent-pitrix/extensions/ask-mode.ts",
@@ -7041,6 +7099,21 @@
                 ],
                 "mod_time": 1774998963482332404
               },
+              "subagent-widget.ts": {
+                "full_path": "/Users/kentaylor/.pi/agent-pitrix/extensions/subagent-widget.ts",
+                "type": "file",
+                "synonyms": [
+                  "subagent",
+                  "widget",
+                  "component",
+                  "module",
+                  "ts"
+                ],
+                "symbols": [
+                  "SubState"
+                ],
+                "mod_time": 1782847916610014025
+              },
               "themeMap.ts": {
                 "full_path": "/Users/kentaylor/.pi/agent-pitrix/extensions/themeMap.ts",
                 "type": "file",
@@ -7048,7 +7121,8 @@
                   "theme",
                   "map",
                   "typescript",
-                  "function"
+                  "function",
+                  "ts"
                 ],
                 "symbols": [
                   "extensionName",
@@ -7057,7 +7131,7 @@
                   "applyExtensionTitle",
                   "applyExtensionDefaults"
                 ],
-                "mod_time": 1778783637274563985
+                "mod_time": 1782852170142584028
               },
               "types": {
                 "full_path": "/Users/kentaylor/.pi/agent-pitrix/extensions/types",
@@ -7439,7 +7513,7 @@
           "agentscode",
           "agents"
         ],
-        "mod_time": 1779052812069537410,
+        "mod_time": 1782577743119093623,
         "children": {
           "agent-models.yaml": {
             "full_path": "/Users/kentaylor/.pi/agents/agent-models.yaml",
@@ -7448,9 +7522,12 @@
               "agentmodels",
               "agentmodelsdocument",
               "agentmodelsreference",
-              "agentmodelsyaml"
+              "agentmodelsyaml",
+              "agent",
+              "models",
+              "yaml"
             ],
-            "mod_time": 1779052812069537410
+            "mod_time": 1782577743119093623
           },
           "agent-stateless.yaml": {
             "full_path": "/Users/kentaylor/.pi/agents/agent-stateless.yaml",
@@ -7470,9 +7547,12 @@
               "agentthinking",
               "agentthinkingdocument",
               "agentthinkingreference",
-              "agentthinkingyaml"
+              "agentthinkingyaml",
+              "agent",
+              "thinking",
+              "yaml"
             ],
-            "mod_time": 1779052812070460967
+            "mod_time": 1782577743119245038
           }
         }
       },
@@ -7505,9 +7585,292 @@
           "config",
           "settings",
           "preferences",
-          "free"
+          "free",
+          "json"
         ],
-        "mod_time": 1782213659806759862
+        "mod_time": 1783000015769570842
+      },
+      "my-pi": {
+        "full_path": "/Users/kentaylor/.pi/my-pi",
+        "type": "directory",
+        "synonyms": [
+          "my",
+          "pi"
+        ],
+        "mod_time": 1782573760099517906,
+        "children": {
+          "APPEND_SYSTEM.md": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/APPEND_SYSTEM.md",
+            "type": "file",
+            "synonyms": [
+              "appendingsystem",
+              "appendingsystemguide",
+              "appendingsystemmanual",
+              "appendingsystemreference",
+              "append",
+              "system",
+              "md"
+            ],
+            "mod_time": 1782575706058024608
+          },
+          "agents": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/agents",
+            "type": "file",
+            "synonyms": [
+              "agentsnode",
+              "agentsfile",
+              "agentsreference",
+              "agentscode",
+              "agents"
+            ],
+            "mod_time": 1782573760096947530
+          },
+          "caveman.json": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/caveman.json",
+            "type": "file",
+            "synonyms": [
+              "caveman_data",
+              "caveman_settings",
+              "caveman_config",
+              "caveman_preferences",
+              "caveman",
+              "json"
+            ],
+            "mod_time": 1782573760107309782
+          },
+          "extensions": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/extensions",
+            "type": "file",
+            "synonyms": [
+              "plugins",
+              "addons",
+              "add-ons",
+              "modules",
+              "extensions"
+            ],
+            "mod_time": 1782573760083908278
+          },
+          "git": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/git",
+            "type": "file",
+            "synonyms": [
+              "version-control",
+              "vcs",
+              "source-control",
+              "scm",
+              "git"
+            ],
+            "mod_time": 1782573760102110240
+          },
+          "models.json": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/models.json",
+            "type": "file",
+            "synonyms": [
+              "data-models",
+              "model-definition",
+              "data-schema",
+              "model-structure",
+              "models",
+              "json"
+            ],
+            "mod_time": 1782573760080655694
+          },
+          "npm": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/npm",
+            "type": "file",
+            "synonyms": [
+              "package-manager",
+              "package-dependency",
+              "package-installation",
+              "package-resolution",
+              "npm"
+            ],
+            "mod_time": 1782573760099517906
+          },
+          "prompts": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/prompts",
+            "type": "file",
+            "synonyms": [
+              "prompt-service",
+              "prompt-module",
+              "prompt-provider",
+              "prompt-dependency",
+              "prompts"
+            ],
+            "mod_time": 1782573760090491862
+          },
+          "sessions": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/sessions",
+            "type": "directory",
+            "synonyms": [
+              "session",
+              "management",
+              "session management",
+              "login session",
+              "user session",
+              "sessions"
+            ],
+            "mod_time": 1782574865264462477,
+            "children": {
+              "--Users-kentaylor-.pi--": {
+                "full_path": "/Users/kentaylor/.pi/my-pi/sessions/--Users-kentaylor-.pi--",
+                "type": "directory",
+                "synonyms": [
+                  "users",
+                  "kentaylor",
+                  "pi"
+                ],
+                "mod_time": 1782573887865713526,
+                "children": {
+                  "2026-06-27T15-23-48-215Z_019f09ae-0877-73f5-a9e7-0a79bc8f6011.jsonl": {
+                    "full_path": "/Users/kentaylor/.pi/my-pi/sessions/--Users-kentaylor-.pi--/2026-06-27T15-23-48-215Z_019f09ae-0877-73f5-a9e7-0a79bc8f6011.jsonl",
+                    "type": "file",
+                    "synonyms": [
+                      "2026",
+                      "06",
+                      "27",
+                      "t15",
+                      "23",
+                      "48",
+                      "215",
+                      "019f09ae"
+                    ],
+                    "mod_time": 1782573887865713526
+                  }
+                }
+              },
+              "--Users-kentaylor-live-stuff--": {
+                "full_path": "/Users/kentaylor/.pi/my-pi/sessions/--Users-kentaylor-live-stuff--",
+                "type": "directory",
+                "synonyms": [
+                  "users",
+                  "kentaylor",
+                  "live"
+                ],
+                "mod_time": 1782574865264462477,
+                "children": {
+                  "2026-06-27T15-32-44-764Z_019f09b6-385b-7fa0-acbe-5f03ade662bd.jsonl": {
+                    "full_path": "/Users/kentaylor/.pi/my-pi/sessions/--Users-kentaylor-live-stuff--/2026-06-27T15-32-44-764Z_019f09b6-385b-7fa0-acbe-5f03ade662bd.jsonl",
+                    "type": "file",
+                    "synonyms": [
+                      "2026",
+                      "06",
+                      "27",
+                      "t15",
+                      "32",
+                      "44",
+                      "764",
+                      "019f09b6"
+                    ],
+                    "mod_time": 1782574754471766007
+                  },
+                  "2026-06-27T15-40-45-066Z_019f09bd-8c89-797d-b6b5-9a52f03f88c1.jsonl": {
+                    "full_path": "/Users/kentaylor/.pi/my-pi/sessions/--Users-kentaylor-live-stuff--/2026-06-27T15-40-45-066Z_019f09bd-8c89-797d-b6b5-9a52f03f88c1.jsonl",
+                    "type": "file",
+                    "synonyms": [
+                      "2026",
+                      "06",
+                      "27",
+                      "t15",
+                      "40",
+                      "45",
+                      "066",
+                      "019f09bd"
+                    ],
+                    "mod_time": 1782574865264462477
+                  },
+                  "2026-06-27T15-50-52-455Z_019f09c6-d127-7a7d-a3eb-275de8d4c0ab.jsonl": {
+                    "full_path": "/Users/kentaylor/.pi/my-pi/sessions/--Users-kentaylor-live-stuff--/2026-06-27T15-50-52-455Z_019f09c6-d127-7a7d-a3eb-275de8d4c0ab.jsonl",
+                    "type": "file",
+                    "synonyms": [
+                      "2026",
+                      "06",
+                      "27",
+                      "t15",
+                      "50",
+                      "52",
+                      "455",
+                      "019f09c6"
+                    ],
+                    "mod_time": 1782576067112934553
+                  },
+                  "2026-06-27T16-18-43-788Z_019f09e0-51cc-7180-8104-d5613c6b3c3d.jsonl": {
+                    "full_path": "/Users/kentaylor/.pi/my-pi/sessions/--Users-kentaylor-live-stuff--/2026-06-27T16-18-43-788Z_019f09e0-51cc-7180-8104-d5613c6b3c3d.jsonl",
+                    "type": "file",
+                    "synonyms": [
+                      "2026",
+                      "06",
+                      "27",
+                      "t16",
+                      "18",
+                      "43",
+                      "788",
+                      "019f09e0"
+                    ],
+                    "mod_time": 1782578772185366331
+                  }
+                }
+              }
+            }
+          },
+          "settings.json": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/settings.json",
+            "type": "file",
+            "synonyms": [
+              "config.json",
+              "configuration",
+              "preferences",
+              "options",
+              "settings",
+              "json"
+            ],
+            "mod_time": 1782579223133118682
+          },
+          "skills": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/skills",
+            "type": "file",
+            "synonyms": [
+              "ability",
+              "talent",
+              "skillset",
+              "competence",
+              "skills"
+            ],
+            "mod_time": 1782573760086733278
+          },
+          "telegram-locks.json": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/telegram-locks.json",
+            "type": "file",
+            "synonyms": [
+              "telegram",
+              "locks",
+              "json",
+              "config"
+            ],
+            "mod_time": 1782573760112316283
+          },
+          "telegram.json": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/telegram.json",
+            "type": "file",
+            "synonyms": [
+              "telegram",
+              "config",
+              "settings",
+              "json"
+            ],
+            "mod_time": 1782573760109797116
+          },
+          "themes": {
+            "full_path": "/Users/kentaylor/.pi/my-pi/themes",
+            "type": "file",
+            "synonyms": [
+              "themes",
+              "project",
+              "files"
+            ],
+            "mod_time": 1782573760094456863
+          }
+        }
       },
       "package-lock.json": {
         "full_path": "/Users/kentaylor/.pi/package-lock.json",
@@ -7527,9 +7890,13 @@
           "infobar cache",
           "cache file",
           "pi infobar data",
-          "infobar storage"
+          "infobar storage",
+          "pi",
+          "infobar",
+          "cache",
+          "json"
         ],
-        "mod_time": 1782092232839759445
+        "mod_time": 1782334657706573584
       },
       "piii": {
         "full_path": "/Users/kentaylor/.pi/piii",
@@ -7541,7 +7908,7 @@
           "pii-dependency",
           "piii"
         ],
-        "mod_time": 1776435325789936634,
+        "mod_time": 1782832023645942416,
         "children": {
           "APPEND_SYSTEM.md": {
             "full_path": "/Users/kentaylor/.pi/piii/APPEND_SYSTEM.md",
@@ -10072,9 +10439,11 @@
               "config.json",
               "configuration",
               "preferences",
-              "options"
+              "options",
+              "settings",
+              "json"
             ],
-            "mod_time": 1782213671341640534
+            "mod_time": 1782847797645599664
           },
           "skills": {
             "full_path": "/Users/kentaylor/.pi/piii/skills",
@@ -10162,6 +10531,15 @@
               "json"
             ],
             "mod_time": 1775748849125087749
+          },
+          "trust.json": {
+            "full_path": "/Users/kentaylor/.pi/piii/trust.json",
+            "type": "file",
+            "synonyms": [
+              "trust",
+              "json"
+            ],
+            "mod_time": 1782832023645942416
           }
         }
       },
@@ -10346,9 +10724,12 @@
           "cache-management",
           "cache-service",
           "cache-module",
-          "cache-dependency"
+          "cache-dependency",
+          "provider",
+          "cache",
+          "json"
         ],
-        "mod_time": 1782213661871176502
+        "mod_time": 1783000019214452669
       },
       "update_piii.md": {
         "full_path": "/Users/kentaylor/.pi/update_piii.md",

@@ -455,7 +455,7 @@ export default function (pi: ExtensionAPI) {
 	let viewMode: AgentTeamViewMode = "grid";
 	let watchAgentKey: string | null = null;
 	let widgetCtx: any;
-	let orchestratorTools: string[] = ["dispatch_agent", "read", "bash"];
+	let orchestratorTools: string[] = ["dispatch_agent", "parallel_dispatch", "read", "bash"];
 	let sessionDir = "";
 	let globalStatelessPath = "";
 	let projectStatelessPath = "";
@@ -827,20 +827,15 @@ export default function (pi: ExtensionAPI) {
 			});
 		}
 
-		if (state.status === "running") {
-			return Promise.resolve({
-				output: `Agent "${displayName(state.def.name)}" is already running. Wait for it to finish.`,
-				exitCode: 1,
-				elapsed: 0,
-			});
-		}
+		// Allow concurrent instances of the same agent (parallel dispatch).
+		// Each instance gets a unique proc key and session file.
+		const instanceId = ++state.runCount;
 
 		state.status = "running";
 		state.task = sanitizedTask;
 		state.toolCount = 0;
 		state.elapsed = 0;
 		state.lastWork = [];
-		state.runCount++;
 		appendAgentLog(key, `[run] ${new Date().toLocaleTimeString()} — ${task}`);
 		updateWidget();
 
@@ -862,7 +857,8 @@ export default function (pi: ExtensionAPI) {
 
 		// Session file for this agent
 		const agentKey = state.def.name.toLowerCase().replace(/\s+/g, "-");
-		const agentSessionFile = join(sessionDir, `${agentKey}.json`);
+		const procKey = `${key}-${instanceId}`;
+		const agentSessionFile = join(sessionDir, `${agentKey}-${instanceId}.json`);
 
 		// If stateless, delete any existing session so we start fresh
 		if (isStateless(key)) {
@@ -873,7 +869,7 @@ export default function (pi: ExtensionAPI) {
 		}
 
 		// Load global APPEND_SYSTEM.md for sub-agents (exclude certain agents)
-		const globalAppendPath = join(homedir(), '.pi', 'agent', 'APPEND_SYSTEM.md');
+		const globalAppendPath = join(getPiCodingAgentDir(), 'APPEND_SYSTEM.md');
 		const globalAppendRaw = existsSync(globalAppendPath) ? readFileSync(globalAppendPath, 'utf-8').trim() : '';
 		// Agents that should NOT get the global append (research/search/doc agents don't need coding guidelines)
 		const excludedAgents = ['scout', 'tavily', 'documenter', 'designer', 'devops', 'sparky'];
@@ -910,7 +906,7 @@ export default function (pi: ExtensionAPI) {
 				shell: false,
 			});
 
-			runningProcs.set(key, proc);
+			runningProcs.set(procKey, proc);
 
 			let buffer = "";
 			let liveTextBuffer = "";
@@ -987,7 +983,7 @@ export default function (pi: ExtensionAPI) {
 			});
 
 			proc.on("close", (code) => {
-				runningProcs.delete(key);
+				runningProcs.delete(procKey);
 				try {
 					const event = JSON.parse(buffer);
 					if (event.type === "message_update") {
@@ -1065,7 +1061,7 @@ export default function (pi: ExtensionAPI) {
 			});
 
 			proc.on("error", (err) => {
-				runningProcs.delete(key);
+				runningProcs.delete(procKey);
 				clearInterval(state.timer);
 				isRunning = false;
 				state.status = "error";
@@ -1106,6 +1102,10 @@ export default function (pi: ExtensionAPI) {
 		name: "dispatch_agent",
 		label: "Dispatch Agent",
 		description: "Dispatch a task to a specialist agent. The agent will execute the task and return the result. Use the system prompt to see available agent names.",
+		promptGuidelines: [
+			"For 2+ independent tasks, use parallel_dispatch instead of multiple dispatch_agent calls.",
+			"You may call dispatch_agent multiple times in one turn for different agents — they will run concurrently.",
+		],
 		parameters: Type.Object({
 			agent: Type.String({ description: "Agent name (case-insensitive)" }),
 			task: Type.String({ description: "Task description for the agent to execute" }),
@@ -1185,6 +1185,125 @@ export default function (pi: ExtensionAPI) {
 				theme.fg("dim", ` ${elapsed}s`);
 
 			// Always show error summary, even in collapsed view
+			if (details.status === "error") {
+				const preview = details.fullOutput?.split("\n").slice(0, 12).join("\n") || "Unknown error";
+				return new Text(header + "\n" + theme.fg("error", preview), 0, 0);
+			}
+
+			if (options.expanded && details.fullOutput) {
+				const output = details.fullOutput.length > 4000
+					? details.fullOutput.slice(0, 4000) + "\n... [truncated]"
+					: details.fullOutput;
+				return new Text(header + "\n" + theme.fg("muted", output), 0, 0);
+			}
+
+			return new Text(header, 0, 0);
+		},
+	});
+
+	pi.registerTool({
+		name: "parallel_dispatch",
+		label: "Parallel Dispatch",
+		description: "Dispatch multiple tasks to multiple agents in parallel. All agents run concurrently. Use when you have 2+ independent tasks that can be executed simultaneously by different specialists.",
+		promptGuidelines: [
+			"Use this tool when multiple agents can work independently — no shared state, no dependency on each other's output.",
+			"All dispatches run concurrently and results are combined. Prefer this over multiple sequential dispatch_agent calls.",
+		],
+		parameters: Type.Object({
+			dispatches: Type.Array(Type.Object({
+				agent: Type.String({ description: "Agent name (case-insensitive)" }),
+				task: Type.String({ description: "Task description for this agent" }),
+			})),
+		}),
+
+		async execute(_toolCallId, params, _signal, onUpdate, ctx) {
+			try {
+				const { dispatches } = params as { dispatches: { agent: string; task: string }[] };
+
+				if (onUpdate) {
+					const names = dispatches.map(d => d.agent).join(", ");
+					onUpdate({
+						content: [{ type: "text", text: `parallel_dispatch: ${dispatches.length} agents (${names})...` }],
+						details: { dispatches, status: "dispatching" },
+					});
+				}
+
+				const promises = dispatches.map(d => dispatchAgent(d.agent, d.task, ctx));
+				const results = await Promise.allSettled(promises);
+
+				const combinedOutput = results.map((result, i) => {
+					const d = dispatches[i];
+					if (result.status === "fulfilled") {
+						const r = result.value;
+						const truncated = r.output.length > 6000
+							? r.output.slice(0, 6000) + "\n\n... [truncated]"
+							: r.output;
+						const meta = r.exitCode === 0
+							? `${Math.round(r.elapsed / 1000)}s`
+							: `ERR · ${Math.round(r.elapsed / 1000)}s`;
+						return `## ${d.agent}: ${d.task.substring(0, 80)}\n${meta}\n\n${truncated}`;
+					} else {
+						return `## ${d.agent}: ${d.task.substring(0, 80)}\nFailed: ${result.reason?.message || result.reason}`;
+					}
+				}).join("\n\n---\n\n");
+
+				const allOk = results.every(r => r.status === "fulfilled" && r.value.exitCode === 0);
+				const totalElapsed = results
+					.filter((r): r is PromiseFulfilledResult<DispatchResult> => r.status === "fulfilled")
+					.reduce((sum, r) => sum + r.value.elapsed, 0);
+
+				return {
+					content: [{ type: "text", text: combinedOutput }],
+					details: {
+						dispatches,
+						status: allOk ? "done" : "error",
+						elapsed: totalElapsed,
+						fullOutput: combinedOutput,
+					},
+				};
+			} catch (err: any) {
+				return {
+					content: [{ type: "text", text: `parallel_dispatch failed: ${err?.message || err}` }],
+					details: { status: "error", elapsed: 0, fullOutput: "" },
+				};
+			}
+		},
+
+		renderCall(args, theme) {
+			const dispatches = (args as any).dispatches || [];
+			const count = Array.isArray(dispatches) ? dispatches.length : 0;
+			const names = Array.isArray(dispatches) ? dispatches.map((d: any) => d.agent).join(", ") : "";
+			return new Text(
+				theme.fg("toolTitle", theme.bold("parallel_dispatch ")) +
+				theme.fg("accent", `${count} agents`) +
+				theme.fg("dim", " — ") +
+				theme.fg("muted", names || "?"),
+				0, 0,
+			);
+		},
+
+		renderResult(result, options, theme) {
+			const details = result.details as any;
+			if (!details) {
+				const text = result.content[0];
+				return new Text(text?.type === "text" ? text.text : "", 0, 0);
+			}
+
+			if (options.isPartial || details.status === "dispatching") {
+				const count = details.dispatches?.length || 0;
+				return new Text(
+					theme.fg("accent", `● parallel_dispatch`) +
+					theme.fg("dim", ` ${count} agents running...`),
+					0, 0,
+				);
+			}
+
+			const icon = details.status === "done" ? "✓" : "✗";
+			const color = details.status === "done" ? "success" : "error";
+			const elapsed = typeof details.elapsed === "number" ? Math.round(details.elapsed / 1000) : 0;
+			const header = theme.fg(color, `${icon} parallel_dispatch`) +
+				theme.fg("dim", ` ${elapsed}s`);
+
 			if (details.status === "error") {
 				const preview = details.fullOutput?.split("\n").slice(0, 12).join("\n") || "Unknown error";
 				return new Text(header + "\n" + theme.fg("error", preview), 0, 0);
@@ -1376,12 +1495,12 @@ export default function (pi: ExtensionAPI) {
 			}
 
 			const key = target.def.name.toLowerCase();
-			const proc = runningProcs.get(key);
-			if (proc) {
-				try {
-					proc.kill("SIGINT");
-				} catch {}
-				runningProcs.delete(key);
+			// Kill all running instances of this agent (parallel dispatch support)
+			for (const [procKey, proc] of Array.from(runningProcs.entries())) {
+				if (procKey === key || procKey.startsWith(`${key}-`)) {
+					try { proc.kill("SIGINT"); } catch {}
+					runningProcs.delete(procKey);
+				}
 			}
 
 			// Clear the timer
@@ -1604,12 +1723,11 @@ export default function (pi: ExtensionAPI) {
 
 				// Kill running process if agent is running
 				if (state.status === "running") {
-					const proc = runningProcs.get(key);
-					if (proc) {
-						try {
-							proc.kill("SIGKILL");
-						} catch {}
-						runningProcs.delete(key);
+					for (const [procKey, proc] of Array.from(runningProcs.entries())) {
+						if (procKey === key || procKey.startsWith(`${key}-`)) {
+							try { proc.kill("SIGKILL"); } catch {}
+							runningProcs.delete(procKey);
+						}
 					}
 					// Clear the timer
 					if (state.timer) {
@@ -1618,10 +1736,18 @@ export default function (pi: ExtensionAPI) {
 					}
 				}
 
-				// Delete session file
+				// Delete session file(s) — including parallel dispatch instances
 				if (state.sessionFile && existsSync(state.sessionFile)) {
 					unlinkSync(state.sessionFile);
 				}
+				const agentKey = state.def.name.toLowerCase().replace(/\s+/g, "-");
+				try {
+					for (const f of readdirSync(sessionDir)) {
+						if (f.startsWith(`${agentKey}-`) && f.endsWith(".json")) {
+							unlinkSync(join(sessionDir, f));
+						}
+					}
+				} catch {}
 
 				// Full reset of agent state
 				state.sessionFile = null;
@@ -2018,7 +2144,7 @@ export default function (pi: ExtensionAPI) {
 		if (!orchestratorPrompt) {
 			orchestratorPrompt = `You are a dispatcher agent. You coordinate specialist agents to accomplish tasks.
 You do NOT have direct access to the codebase. You MUST delegate all work through
-agents using the dispatch_agent tool.
+agents using the dispatch_agent (single) or parallel_dispatch (multiple) tools.
 
 ## Active Team: ${activeTeamName}
 Members: ${teamMembers}
@@ -2026,7 +2152,7 @@ Members: ${teamMembers}
 ## How to Work
 - Analyze the user's request and break into sub-tasks
 - If there's an error, give a brief diagnosis first
-- Dispatch to the right specialist using dispatch_agent
+- Dispatch to the right specialist using dispatch_agent (single) or parallel_dispatch (2+ independent tasks)
 - Review results and dispatch follow-ups as needed
 
 ## Dispatch Format
@@ -2047,7 +2173,7 @@ ${agentCatalog}`;
 			.replace(/\${activeTeamName}/g, activeTeamName));
 
 		// Load global APPEND_SYSTEM.md and append to orchestrator prompt
-		const globalAppendPath = join(homedir(), '.pi', 'agent', 'APPEND_SYSTEM.md');
+		const globalAppendPath = join(getPiCodingAgentDir(), 'APPEND_SYSTEM.md');
 		const globalAppend = existsSync(globalAppendPath) ? readFileSync(globalAppendPath, 'utf-8').trim() : '';
 		return {
 			systemPrompt: `${finalPrompt}${globalAppend ? `\n\n---\n\n${globalAppend}` : ``}`,

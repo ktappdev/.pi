@@ -1,2 +1,2 @@
-builder: ocg2/minimax-m2.7
+builder: windsurf/swe-1.6:base
 planner: ocg2/minimax-m2.7

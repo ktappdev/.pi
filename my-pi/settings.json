@@ -13,7 +13,7 @@
     "npm:pi-windsurf",
     "git:github.com/ktappdev/pi-commandcode-provider"
   ],
-  "quietStartup": false,
+  "quietStartup": true,
   "treeFilterMode": "all",
   "transport": "auto",
   "thinkingBudgets": {
@@ -40,7 +40,11 @@
     "nvidia/*",
     "openrouter/*"
   ],
-  "steeringMode": "all",
-  "followUpMode": "all",
-  "lastChangelogVersion": "0.77.0"
+  "steeringMode": "one-at-a-time",
+  "followUpMode": "one-at-a-time",
+  "lastChangelogVersion": "0.80.2",
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "enableInstallTelemetry": false
 }

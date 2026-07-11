@@ -2,7 +2,7 @@
   "lastChangelogVersion": "0.80.2",
   "theme": "synthwave",
   "defaultThinkingLevel": "high",
-  "agentTeamViewMode": "activity",
+  "agentTeamViewMode": "table",
   "packages": [
     "git:github.com/ktappdev/pi-telegram@4bb91bdcd900",
     "npm:pi-web-access@0.10.7",
@@ -15,7 +15,7 @@
     "git:github.com/ktappdev/pi-commandcode-provider",
     "npm:pi-mcp-adapter"
   ],
-  "quietStartup": false,
+  "quietStartup": true,
   "treeFilterMode": "all",
   "transport": "auto",
   "thinkingBudgets": {
@@ -25,7 +25,7 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "deepseek",
+  "defaultProvider": "opencode-go",
   "defaultModel": "deepseek-v4-pro",
   "hideThinkingBlock": false,
   "enabledModels": [
@@ -40,7 +40,8 @@
     "opencode-zen/*",
     "cline/*",
     "nvidia/*",
-    "openrouter/*"
+    "openrouter/*",
+    "streamlake/*"
   ],
   "steeringMode": "all",
   "followUpMode": "all"

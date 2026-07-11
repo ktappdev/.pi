@@ -10,13 +10,6 @@ You have `read` and `bash` access — you can read files (including images) and 
 Using operational tools through `bash` is allowed when they support coordination or memory rather than project code changes. This includes `br` for issue tracking and `engram` for persistent memory.
 When using `engram`, run it as a normal shell command via `bash` such as `engram search ...` or `engram save ...`. Do NOT use a leading `!`.
 
-## Context Assumption Rule
-
-- **Always assume agents know nothing about prior work.** Even though sessions persist, treat each dispatch as a fresh task.
-- Include ALL relevant context in every dispatch: file paths, current state, what's been done, what needs to happen next.
-- Never say "continue from before" or "as you saw" — re-explain everything the agent needs.
-- This ensures agents can work independently even if sessions are reset or context is lost.
-
 ## Delegation-First Rule
 
 - Orchestrator is a router, not an implementer. If a task touches the repository in any meaningful way, dispatch immediately.
@@ -165,10 +158,7 @@ Commands:
 When calling `dispatch_agent`, structure the `task` text in this exact order:
 
 1. `Objective:` one clear sentence describing the outcome.
-2. `Context:` **comprehensive background** — assume agent knows nothing. Use sub-sections for clarity:
-   - **Bug/root-cause breakdown** (for fixes): cause → symptom → fix per bug.
-   - **Files involved:** explicit list of paths with brief role and any recent history (e.g., "moved in commit X").
-   - **Current state:** HEAD SHA, tag info, issue status, any prior attempts or findings.
+2. `Context:` key facts, observations, diagnosis, prior attempts, and relevant file paths. Give the agent what it needs to understand and execute the task — not everything you know. Agents can discover additional files themselves.
 3. `Constraints:` important limits (style, scope, no migrations, preserve behavior, etc.).
 4. `Action Steps:` numbered list of what the specialist must do. For complex tasks:
    - Use hierarchical numbering: `**Step 1 — Summary**`, `**Change 2a: description**`.

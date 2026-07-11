@@ -8,7 +8,7 @@ const CUSTOM_MODEL = "__custom_model__";
 export async function chooseAgentModelWithFuzzyPicker(
 	ui: ExtensionUIContext,
 	targetLabel: string,
-	availableModels: string[],
+	availableModels: Array<{ label: string; value: string }>,
 	currentModel: string,
 ): Promise<string | undefined> {
 	const items: SelectItem[] = [
@@ -17,9 +17,9 @@ export async function chooseAgentModelWithFuzzyPicker(
 			label: currentModel === SESSION_DEFAULT ? `${SESSION_DEFAULT} (current)` : SESSION_DEFAULT,
 			description: "Clear the project-local override for this agent.",
 		},
-		...availableModels.map((model) => ({
-			value: model,
-			label: model === currentModel ? `${model} (current)` : model,
+		...availableModels.map((m) => ({
+			value: m.value,
+			label: m.value === currentModel ? `${m.label} (current)` : m.label,
 			description: "",
 		})),
 		{

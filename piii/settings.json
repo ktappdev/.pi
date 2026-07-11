@@ -15,8 +15,8 @@
     "npm:pi-free",
     "git:github.com/ktappdev/pi-commandcode-provider"
   ],
-  "defaultProvider": "streamlake",
-  "defaultModel": "ep-w928yx-1783704566689445974",
+  "defaultProvider": "deepseek",
+  "defaultModel": "deepseek-v4-pro",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",

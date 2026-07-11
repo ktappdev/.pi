@@ -757,6 +757,74 @@
         }
       ]
     },
+    "streamlake": {
+      "baseUrl": "https://vanchin.streamlake.ai/api/gateway/coding/v1",
+      "api": "openai-completions",
+      "apiKey": "$KAT_CODER_API_KEY",
+      "authHeader": true,
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false
+      },
+      "models": [
+        {
+          "id": "ep-w928yx-1783704566689445974",
+          "name": "Kat Coder Pro V2",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 262144,
+          "maxTokens": 81920,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "ep-50uxl7-1783704717235709489",
+          "name": "Kat Coder Pro V2.5",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 262144,
+          "maxTokens": 81920,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "ep-nvf2zj-1783705071297868279",
+          "name": "Kat Coder Air V2.5",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 262144,
+          "maxTokens": 81920,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "kat-coder-air-v1",
+          "name": "Kat Coder Air V1 (Free)",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 131072,
+          "maxTokens": 32768,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
     "mimo": {
       "baseUrl": "https://token-plan-sgp.xiaomimimo.com/v1",
       "api": "openai-completions",

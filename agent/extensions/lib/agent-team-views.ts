@@ -1,5 +1,9 @@
 import { truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
 import { displayName } from "./agent-team-config.ts";
+import { spawnSync, execSync } from "child_process";
+import { existsSync } from "fs";
+import { join } from "path";
+import { homedir } from "os";
 
 export type AgentTeamViewMode = "grid" | "table" | "tactical" | "activity";
 
@@ -30,6 +34,58 @@ export interface AgentTeamViewState {
 	stuckToolMs: number;
 }
 
+// ── Model Name Cache ─────────────────────────────
+let modelNameCache: Map<string, string> | null = null;
+
+function findPiExecutable(): string {
+	const envPath = process.env.PI_PATH;
+	if (envPath && existsSync(envPath)) return envPath;
+	try {
+		const w = execSync("which pi", { encoding: "utf-8" }).trim();
+		if (w && existsSync(w)) return w;
+	} catch {}
+	return "/opt/homebrew/bin/pi";
+}
+
+function buildModelNameCache(): Map<string, string> {
+	const cache = new Map<string, string>();
+	try {
+		const proc = spawnSync(findPiExecutable(), ["--list-models"], { encoding: "utf-8", timeout: 10000 });
+		const output = proc.stdout || "";
+		for (const line of output.split("\n")) {
+			if (!line.trim() || line.toLowerCase().startsWith("provider")) continue;
+			const parts = line.trim().split(/\s{2,}/);
+			if (parts.length >= 2) {
+				const rawModel = parts[1].trim();
+				const parenMatch = rawModel.match(/\(([^)]+)\)$/);
+				const modelId = parenMatch ? parenMatch[1] : rawModel;
+				const dispName = parenMatch ? rawModel.replace(/\s*\([^)]+\)$/, '') : rawModel;
+				cache.set(modelId, dispName);
+			}
+		}
+	} catch {}
+	return cache;
+}
+
+function resolveModelName(modelId: string | undefined): string {
+	if (!modelId) return "default";
+	if (!modelNameCache) modelNameCache = buildModelNameCache();
+	// Try full ID first (e.g. "streamlake/ep-w928yx-...")
+	if (modelNameCache.has(modelId)) return modelNameCache.get(modelId)!;
+	// Try just the model part after the slash (e.g. "ep-w928yx-...")
+	const slashIdx = modelId.indexOf("/");
+	if (slashIdx >= 0) {
+		const justId = modelId.substring(slashIdx + 1);
+		if (modelNameCache.has(justId)) {
+			const provider = modelId.substring(0, slashIdx);
+			const name = modelNameCache.get(justId)!;
+			// If name already starts with provider, return as-is; otherwise prepend provider
+			return name.startsWith(provider) ? name : `${provider}: ${name}`;
+		}
+	}
+	return modelId;
+}
+
 type ThemeLike = {
 	bold(text: string): string;
 	fg(color: string, text: string): string;
@@ -48,7 +104,7 @@ function sortStates(statesRaw: AgentTeamViewState[]): AgentTeamViewState[] {
 }
 
 function getModelThinkLabel(state: AgentTeamViewState): string {
-	const modelLabel = state.model || "default";
+	const modelLabel = resolveModelName(state.model);
 	const thinkingLevel = state.thinking || state.def.thinking || "off";
 	return `${modelLabel} [${thinkingLevel}]`;
 }

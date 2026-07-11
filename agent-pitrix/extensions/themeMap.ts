@@ -30,7 +30,7 @@ export const THEME_MAP: Record<string, string> = {
 	"pure-focus":         "everforest",       // calm, distraction-free
 	"purpose-gate":       "tokyo-night",      // intentional, sharp focus
 	"session-replay":     "catppuccin-mocha", // soft, reflective history
-	"subagent-widget":    "cyberpunk",        // multi-agent futuristic
+	"subagent-widget":    "matrix",           // pitrix: matrix only
 	"system-select":      "catppuccin-mocha", // soft selection UI
 	"theme-cycler":       "synthwave",        // neon, it's a theme tool
 	"tilldone":           "everforest",       // task-focused calm
