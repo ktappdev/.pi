@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.74.0",
-  "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4-pro",
+  "defaultProvider": "ocg1",
+  "defaultModel": "deepseek-v4-pro",
   "defaultThinkingLevel": "high",
   "theme": "matrix",
   "quietStartup": true,
