@@ -155,6 +155,8 @@ Commands:
 
 ## Dispatch Task Format (Required)
 
+**Hard rule: code blocks in dispatch tasks are forbidden beyond one-liner Find/Replace pairs. If you catch yourself writing a multi-line code block, delete it and describe the change in plain English. The builder writes code — you describe intent.**
+
 When calling `dispatch_agent`, structure the `task` text in this exact order:
 
 1. `Objective:` one clear sentence describing the outcome.
@@ -168,13 +170,13 @@ When calling `dispatch_agent`, structure the `task` text in this exact order:
 5. `Deliverables:` exact output expected back (files changed, findings, line refs, validation notes). Include concrete expected values where possible (URL patterns, expected asset names, grep counts).
 6. `Notes:` optional extra details that do not fit cleanly above (only when high-value).
 7. `Prerequisites:` mandatory first steps before acting — e.g., read every listed file, confirm paths exist, do not edit unseen code. If you as orchestrator have already read the files, note it to save the agent redundant reads: "(already done by orchestrator — paths and findings noted above)".
-8. `Uncertainty Protocol:` list concrete failure modes and their exact response. Instead of generic "if unclear, stop", write specific conditions: "If X fails, report Y and stop — do not skip." Name the exact blocker per mode. **Never instruct the agent to proceed on assumptions.** If a listed file doesn't exist or has unexpected content, the agent must first attempt to realign — check adjacent directories, search for similarly named files, verify the correct path. Only if realignment fails, report the blocker and stop. Do not guess.
-9. `Verification Checklist:` lightweight sanity checks before responding (e.g., re-read changed lines, confirm no syntax errors). If a check fails, note it and finish — do not block or loop.
-10. `Anti-Hallucination Reminder:` list **concrete, task-specific facts** the specialist might misremember: API behaviors, platform quirks ("`runner.os` on macos = `macOS` with capital S"), case sensitivity rules, endpoint URLs, version constraints. Do NOT use generic meta-instructions — give the agent the actual facts it needs.
+8. `Uncertainty Protocol:` (complex or critical tasks only — omit otherwise) list concrete failure modes and their exact response. Instead of generic "if unclear, stop", write specific conditions: "If X fails, report Y and stop — do not skip." Name the exact blocker per mode. **Never instruct the agent to proceed on assumptions.** If a listed file doesn't exist or has unexpected content, the agent must first attempt to realign — check adjacent directories, search for similarly named files, verify the correct path. Only if realignment fails, report the blocker and stop. Do not guess.
+9. `Verification Checklist:` (complex or critical tasks only — omit otherwise) lightweight sanity checks before responding (e.g., re-read changed lines, confirm no syntax errors). If a check fails, note it and finish — do not block or loop.
+10. `Anti-Hallucination Reminder:` (complex or critical tasks only — omit otherwise) list **concrete, task-specific facts** the specialist might misremember: API behaviors, platform quirks ("`runner.os` on macos = `macOS` with capital S"), case sensitivity rules, endpoint URLs, version constraints. Do NOT use generic meta-instructions — give the agent the actual facts it needs.
 
 Formatting rules:
 
-- Dispatch length varies by task complexity. A 3-step config change may be 30 lines; a 10-step multi-file bug fix with inline code may be 300. Both are valid — prefer completeness over brevity.
+- Dispatch length varies by task complexity. A 3-step config change may be 30 lines; a 10-step multi-file bug fix may be 300. Both are valid — prefer completeness over brevity.
 - Prefer concrete paths and checks over broad requests.
 - For review tasks, require findings with file paths and line numbers.
 
