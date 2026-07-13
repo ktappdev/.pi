@@ -1,0 +1,14 @@
+{
+  "defaultThinkingLevel": "high",
+  "quietStartup": true,
+  "hideThinkingBlock": false,
+  "packages": [],
+  "defaultProvider": "lugetech",
+  "defaultModel": "gemma4-12b-uncensored-fast",
+  "enabledModels": [
+    "deepseek/*",
+    "lugetech/*"
+  ],
+  "theme": "dark",
+  "lastChangelogVersion": "0.80.2"
+}

@@ -1,0 +1,6 @@
+{"type":"session","version":3,"id":"019f5bc9-b493-7b14-b649-2aad08f1e847","timestamp":"2026-07-13T14:02:53.459Z","cwd":"/Users/kentaylor/.pi"}
+{"type":"model_change","id":"130f2dd8","parentId":null,"timestamp":"2026-07-13T14:02:53.473Z","provider":"deepseek","modelId":"deepseek-v4-flash"}
+{"type":"thinking_level_change","id":"782c39b4","parentId":"130f2dd8","timestamp":"2026-07-13T14:02:53.473Z","thinkingLevel":"off"}
+{"type":"model_change","id":"2081ce78","parentId":"782c39b4","timestamp":"2026-07-13T14:03:00.188Z","provider":"lugetech","modelId":"gemma4-12b-uncensored-fast"}
+{"type":"message","id":"5551dbf5","parentId":"2081ce78","timestamp":"2026-07-13T14:03:02.121Z","message":{"role":"user","content":[{"type":"text","text":"hello"}],"timestamp":1783951382117}}
+{"type":"message","id":"d7a5e42b","parentId":"5551dbf5","timestamp":"2026-07-13T14:03:35.511Z","message":{"role":"assistant","content":[{"type":"text","text":"Ready. Task?"}],"api":"openai-completions","provider":"lugetech","model":"gemma4-12b-uncensored-fast","usage":{"input":4490,"output":8,"cacheRead":0,"cacheWrite":0,"totalTokens":4498,"cost":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"total":0}},"stopReason":"stop","timestamp":1783951382170,"responseId":"chatcmpl-e9nNoVNcwnyvTMVYGKERIdF5xvb5WMar"}}

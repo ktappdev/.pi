@@ -6,7 +6,7 @@ documenter: medium
 oracle: off
 planner: high
 reviewer: off
-scout: medium
+scout: off
 scout-alfa: medium
 scout-bravo: medium
 sparky: medium

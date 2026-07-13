@@ -7,7 +7,7 @@ mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: deepseek/deepseek-v4-pro
 reviewer: streamlake/ep-w928yx-1783704566689445974
-scout: windsurf/swe-1.7:base
+scout: streamlake/ep-w928yx-1783704566689445974
 scout-alfa: ocg1/deepseek-v4-flash
 scout-bravo: ocg1/deepseek-v4-flash
 sparky: opencode/big-pickle
