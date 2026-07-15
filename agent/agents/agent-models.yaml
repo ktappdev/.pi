@@ -1,13 +1,13 @@
-builder: streamlake/ep-w928yx-1783704566689445974
-crafter: streamlake/ep-w928yx-1783704566689445974
-designer: streamlake/ep-w928yx-1783704566689445974
+builder: streamlake/KAT-Coder-Pro-v2.5
+crafter: streamlake/streamlake: KAT-Coder-Pro-v2.5
+designer: streamlake/streamlake: KAT-Coder-Pro-v2.5
 devops: ocg1/deepseek-v4-flash
 documenter: windsurf/swe-1.6:base
 mcp-specialist: QwenCodingPlan/qwen3-coder-next
 oracle: openai-codex/gpt-5.3-codex
 planner: deepseek/deepseek-v4-pro
-reviewer: streamlake/ep-w928yx-1783704566689445974
-scout: streamlake/ep-w928yx-1783704566689445974
+reviewer: streamlake/KAT-Coder-Pro-v2.5
+scout: streamlake/KAT-Coder-Pro-v2.5
 scout-alfa: ocg1/deepseek-v4-flash
 scout-bravo: ocg1/deepseek-v4-flash
 sparky: opencode/big-pickle

@@ -41,10 +41,11 @@
       "apiKey": "$LUGETECH_API_KEY",
       "models": [
         {
-          "id": "gemma4-12b",
-          "name": "Gemma 4 12B",
-          "input": ["text", "image"],
-          "contextWindow": 65536,
+          "id": "gemma4-12b-uncensored-fast",
+          "name": "Gemma 4 12B Uncensored (Fast)",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 49152,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -54,11 +55,25 @@
           }
         },
         {
-          "id": "qwen3.5-4b",
-          "name": "Qwen 3.5 4B",
+          "id": "gemma4-12b-qat-fast",
+          "name": "Gemma 4 12B QAT (Fast)",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 49152,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "gemma4-12b-uncensored",
+          "name": "Gemma 4 12B Uncensored",
           "reasoning": true,
           "input": ["text"],
-          "contextWindow": 128000,
+          "contextWindow": 49152,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -68,11 +83,11 @@
           }
         },
         {
-          "id": "qwen3.5-9b-uncensored",
-          "name": "Qwen 3.5 9B Uncensored",
+          "id": "gemma4-12b-qat",
+          "name": "Gemma 4 12B QAT",
           "reasoning": true,
-          "input": ["text", "image"],
-          "contextWindow": 131072,
+          "input": ["text"],
+          "contextWindow": 49152,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -86,7 +101,7 @@
           "name": "Qwen 3.5 9B MTP",
           "reasoning": true,
           "input": ["text"],
-          "contextWindow": 128000,
+          "contextWindow": 32768,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -96,11 +111,11 @@
           }
         },
         {
-          "id": "qwen3.6-35b",
-          "name": "Qwen 3.6 35B",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 8192,
+          "id": "qwen3.5-4b",
+          "name": "Qwen 3.5 4B VLM",
+          "reasoning": false,
+          "input": ["text", "image"],
+          "contextWindow": 65536,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -110,11 +125,11 @@
           }
         },
         {
-          "id": "qwen3.5-0.8b",
-          "name": "Qwen 3.5 0.8B",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 256000,
+          "id": "qwen3.5-9b",
+          "name": "Qwen 3.5 9B VLM",
+          "reasoning": false,
+          "input": ["text", "image"],
+          "contextWindow": 16384,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -124,11 +139,11 @@
           }
         },
         {
-          "id": "qwen3.5-2b",
-          "name": "Qwen 3.5 2B",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 256000,
+          "id": "ministral3-8b-vlm",
+          "name": "Ministral 3 8B VLM",
+          "reasoning": false,
+          "input": ["text", "image"],
+          "contextWindow": 32768,
           "maxTokens": 8192,
           "cost": {
             "input": 0,
@@ -782,8 +797,8 @@
           }
         },
         {
-          "id": "ep-50uxl7-1783704717235709489",
-          "name": "Kat Coder Pro V2.5",
+          "id": "KAT-Coder-Pro-v2.5",
+          "name": "KAT-Coder-Pro-v2.5",
           "reasoning": false,
           "input": ["text"],
           "contextWindow": 262144,
@@ -796,8 +811,8 @@
           }
         },
         {
-          "id": "ep-nvf2zj-1783705071297868279",
-          "name": "Kat Coder Air V2.5",
+          "id": "KAT-Coder-Air-V2.5",
+          "name": "KAT-Coder-Air-V2.5",
           "reasoning": false,
           "input": ["text"],
           "contextWindow": 262144,

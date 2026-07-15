@@ -15,8 +15,8 @@
     "npm:pi-free",
     "git:github.com/ktappdev/pi-commandcode-provider"
   ],
-  "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultProvider": "streamlake",
+  "defaultModel": "KAT-Coder-Pro-v2.5",
   "enabledModels": [
     "deepseek/*",
     "ocg1/*",
@@ -28,5 +28,8 @@
     "opencode-zen/*",
     "streamlake/*"
   ],
-  "theme": "dark"
+  "theme": "dark",
+  "extensions": [
+    "-extensions/questionnaire.ts"
+  ]
 }

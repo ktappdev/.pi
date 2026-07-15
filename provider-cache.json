@@ -4,8 +4,8 @@
       "provider": "ollama-cloud",
       "models": [
         {
-          "id": "glm-4.7",
-          "name": "glm 4.7 (357000000000, FP8)",
+          "id": "nemotron-3-ultra",
+          "name": "nemotron 3 ultra (550000000000)",
           "reasoning": true,
           "thinkingLevelMap": {
             "off": "none",
@@ -24,7 +24,7 @@
             "cacheRead": 0,
             "cacheWrite": 0
           },
-          "contextWindow": 202752,
+          "contextWindow": 262144,
           "maxTokens": 32768,
           "compat": {
             "supportsDeveloperRole": false,
@@ -32,36 +32,8 @@
           }
         },
         {
-          "id": "glm-5.1",
-          "name": "glm 5.1 (756162687872, FP8)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": "none",
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 202752,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "kimi-k2.7-code",
-          "name": "kimi k2.7 code (1042000000000, INT4)",
+          "id": "kimi-k2.6",
+          "name": "kimi k2.6 (1042000000000, INT4)",
           "reasoning": true,
           "thinkingLevelMap": {
             "off": "none",
@@ -82,153 +54,6 @@
             "cacheWrite": 0
           },
           "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "ministral-3:3b",
-          "name": "ministral 3 3b (3000000000, FP8)",
-          "reasoning": false,
-          "input": [
-            "text",
-            "image"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false
-          }
-        },
-        {
-          "id": "nemotron-3-super",
-          "name": "nemotron 3 super (120000000000, NVFP4)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": "none",
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "kimi-k2.5",
-          "name": "kimi k2.5 (1042000000000, INT4)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": "none",
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text",
-            "image"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "qwen3-coder:480b",
-          "name": "qwen3 coder 480b (480000000000, FP8)",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false
-          }
-        },
-        {
-          "id": "ministral-3:8b",
-          "name": "ministral 3 8b (8000000000, FP8)",
-          "reasoning": false,
-          "input": [
-            "text",
-            "image"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false
-          }
-        },
-        {
-          "id": "deepseek-v3.2",
-          "name": "deepseek v3.2 (671000000000, FP8)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": "none",
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 163840,
           "maxTokens": 32768,
           "compat": {
             "supportsDeveloperRole": false,
@@ -264,8 +89,8 @@
           }
         },
         {
-          "id": "deepseek-v3.1:671b",
-          "name": "deepseek v3.1 671b (671000000000, FP8)",
+          "id": "nemotron-3-super",
+          "name": "nemotron 3 super (120000000000, NVFP4)",
           "reasoning": true,
           "thinkingLevelMap": {
             "off": "none",
@@ -284,7 +109,35 @@
             "cacheRead": 0,
             "cacheWrite": 0
           },
-          "contextWindow": 163840,
+          "contextWindow": 262144,
+          "maxTokens": 32768,
+          "compat": {
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true
+          }
+        },
+        {
+          "id": "glm-5.2",
+          "name": "glm 5.2 (756162687872)",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "off": "none",
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "max"
+          },
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 1000000,
           "maxTokens": 32768,
           "compat": {
             "supportsDeveloperRole": false,
@@ -348,6 +201,84 @@
           }
         },
         {
+          "id": "minimax-m2.7",
+          "name": "minimax m2.7 (229000000000)",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "max"
+          },
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 196608,
+          "maxTokens": 32768,
+          "compat": {
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true
+          }
+        },
+        {
+          "id": "mistral-large-3:675b",
+          "name": "mistral large 3 675b (675000000000, FP8)",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 262144,
+          "maxTokens": 32768,
+          "compat": {
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": false
+          }
+        },
+        {
+          "id": "kimi-k2.7-code",
+          "name": "kimi k2.7 code (1042000000000, INT4)",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "off": "none",
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "max"
+          },
+          "input": [
+            "text",
+            "image"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 262144,
+          "maxTokens": 32768,
+          "compat": {
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true
+          }
+        },
+        {
           "id": "deepseek-v4-pro",
           "name": "deepseek v4 pro (1600000000000, FP8)",
           "reasoning": true,
@@ -376,9 +307,45 @@
           }
         },
         {
-          "id": "ministral-3:14b",
-          "name": "ministral 3 14b (14000000000, FP8)",
-          "reasoning": false,
+          "id": "gpt-oss:20b",
+          "name": "gpt oss 20b (20914757184, MXFP4)",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": null
+          },
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 131072,
+          "maxTokens": 32768,
+          "compat": {
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true
+          }
+        },
+        {
+          "id": "minimax-m3",
+          "name": "minimax m3 (0)",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "max"
+          },
           "input": [
             "text",
             "image"
@@ -389,37 +356,16 @@
             "cacheRead": 0,
             "cacheWrite": 0
           },
-          "contextWindow": 262144,
+          "contextWindow": 524288,
           "maxTokens": 32768,
           "compat": {
             "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false
+            "supportsReasoningEffort": true
           }
         },
         {
-          "id": "mistral-large-3:675b",
-          "name": "mistral large 3 675b (675000000000, FP8)",
-          "reasoning": false,
-          "input": [
-            "text",
-            "image"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false
-          }
-        },
-        {
-          "id": "gemini-3-flash-preview",
-          "name": "gemini 3 flash preview (0)",
+          "id": "kimi-k2.5",
+          "name": "kimi k2.5 (1042000000000, INT4)",
           "reasoning": true,
           "thinkingLevelMap": {
             "off": "none",
@@ -439,7 +385,63 @@
             "cacheRead": 0,
             "cacheWrite": 0
           },
-          "contextWindow": 1048576,
+          "contextWindow": 262144,
+          "maxTokens": 32768,
+          "compat": {
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true
+          }
+        },
+        {
+          "id": "minimax-m2.5",
+          "name": "minimax m2.5 (230000000000, FP8)",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "max"
+          },
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 196608,
+          "maxTokens": 32768,
+          "compat": {
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true
+          }
+        },
+        {
+          "id": "glm-5.1",
+          "name": "glm 5.1 (756162687872, FP8)",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "off": "none",
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "max"
+          },
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 202752,
           "maxTokens": 32768,
           "compat": {
             "supportsDeveloperRole": false,
@@ -476,265 +478,6 @@
           }
         },
         {
-          "id": "nemotron-3-ultra",
-          "name": "nemotron 3 ultra (550000000000)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": "none",
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "devstral-small-2:24b",
-          "name": "devstral small 2 24b (24000000000, FP8)",
-          "reasoning": false,
-          "input": [
-            "text",
-            "image"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false
-          }
-        },
-        {
-          "id": "glm-5.2",
-          "name": "glm 5.2 (756162687872)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": "none",
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 1000000,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "kimi-k2.6",
-          "name": "kimi k2.6 (1042000000000, INT4)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": "none",
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text",
-            "image"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "qwen3-coder-next",
-          "name": "qwen3 coder next (80000000000, FP8)",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false
-          }
-        },
-        {
-          "id": "minimax-m3",
-          "name": "minimax m3 (0)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": null,
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text",
-            "image"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 524288,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "devstral-2:123b",
-          "name": "devstral 2 123b (123000000000, FP8)",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false
-          }
-        },
-        {
-          "id": "gpt-oss:20b",
-          "name": "gpt oss 20b (20914757184, MXFP4)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": null,
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": null
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 131072,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "minimax-m2.1",
-          "name": "minimax m2.1 (230000000000, FP8)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": null,
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 204800,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "minimax-m2.5",
-          "name": "minimax m2.5 (230000000000, FP8)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": null,
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 196608,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
           "id": "qwen3.5:397b",
           "name": "qwen3.5 397b (397000000000, BF16)",
           "reasoning": true,
@@ -762,65 +505,9 @@
             "supportsDeveloperRole": false,
             "supportsReasoningEffort": true
           }
-        },
-        {
-          "id": "glm-5",
-          "name": "glm 5 (756162687872, FP8)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": "none",
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 202752,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
-        },
-        {
-          "id": "minimax-m2.7",
-          "name": "minimax m2.7 (229000000000)",
-          "reasoning": true,
-          "thinkingLevelMap": {
-            "off": null,
-            "minimal": null,
-            "low": "low",
-            "medium": "medium",
-            "high": "high",
-            "xhigh": "max"
-          },
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 196608,
-          "maxTokens": 32768,
-          "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": true
-          }
         }
       ],
-      "fetchedAt": "2026-07-13T13:55:35.718Z"
+      "fetchedAt": "2026-07-15T14:56:09.562Z"
     }
   }
 }
