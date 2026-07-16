@@ -1283,6 +1283,45 @@ export default function (pi: ExtensionAPI) {
 		});
 	}
 
+	// ── Decompose Task Helper ──────────────────────
+
+	async function decomposeTask(
+		task: string,
+		context: string | undefined,
+		ctx: any,
+	): Promise<string> {
+		const baseInstructions = `Decompose this task into a clear, concise plan. Follow these rules strictly:
+- If the task is simple and the next step is obvious, say "DIRECT DISPATCH: dispatch to <agent> with task: <summary>" and do NOT create steps.
+- If the task is complex, produce a short structured plan using the canonical planner output format below.
+- Do NOT over-decompose. Maximum 5-7 steps.
+- Only include parallel opportunities if tasks are truly independent.
+- Keep Risks to 1-3 bullets max.
+
+Output format (align with your canonical planner style):
+
+## Goal
+<one sentence>
+
+## Plan
+Numbered steps, each small and actionable. For each step include the assigned agent and any dependencies:
+1. [agent] Step one - specific action
+2. [agent] Step two - what to add/change
+3. ...
+
+## Parallel Opportunities
+- ... (omit if none — only list tasks that are truly independent)
+
+## Risks
+- ... (omit if none)`;
+
+		const plannerPrompt = context
+			? `Task to decompose:\n${task}\n\nAdditional context:\n${context}\n\n${baseInstructions}`
+			: `Task to decompose:\n${task}\n\n${baseInstructions}`;
+
+		const result = await dispatchAgent("planner", plannerPrompt, ctx);
+		return result.output;
+	}
+
 	// ── dispatch_agent Tool (orchestrator only) ──
 
 	// Determine if this is the orchestrator (main session) or a sub-agent.
@@ -1519,7 +1558,100 @@ export default function (pi: ExtensionAPI) {
 			return new Text(header, 0, 0);
 		},
 	});
+
+	pi.registerTool({
+		name: "decompose_task",
+		label: "Decompose Task",
+		description: "Decompose a complex task into a structured plan using the planner agent. Use only for multi-step or multi-subsystem tasks where ordering/dependencies are unclear. Does NOT execute the plan — returns planning output only. Counts as one planning pass.",
+		parameters: Type.Object({
+			task: Type.String({ description: "Task description to decompose" }),
+			context: Type.Optional(Type.String({ description: "Additional context or findings to inform the plan" })),
+		}),
+
+		async execute(_toolCallId, params, _signal, onUpdate, ctx) {
+			try {
+				const { task, context } = params as { task: string; context?: string };
+
+				if (onUpdate) {
+					onUpdate({
+						content: [{ type: "text", text: `Decomposing task...` }],
+						details: { task, context: context || "", status: "decomposing" },
+					});
+				}
+
+				const result = await decomposeTask(task, context, ctx);
+
+				return {
+					content: [{ type: "text", text: result }],
+					details: {
+						task,
+						context: context || "",
+						status: "done",
+						plan: result,
+					},
+				};
+			} catch (err: any) {
+				return {
+					content: [{ type: "text", text: `Decomposition failed: ${err?.message || err}` }],
+					details: { status: "error", plan: "" },
+				};
+			}
+		},
+
+		renderCall(args, theme) {
+			const task = (args as any).task || "";
+			const preview = task.length > 60 ? task.slice(0, 57) + "..." : task;
+			return new Text(
+				theme.fg("toolTitle", theme.bold("decompose_task ")) +
+				theme.fg("muted", preview),
+				0, 0,
+			);
+		},
+
+		renderResult(result, options, theme) {
+			const details = result.details as any;
+			if (!details) {
+				const text = result.content[0];
+				return new Text(text?.type === "text" ? text.text : "", 0, 0);
+			}
+
+			if (options.isPartial || details.status === "decomposing") {
+				return new Text(
+					theme.fg("accent", `● decompose_task`) +
+					theme.fg("dim", " planning..."),
+					0, 0,
+				);
+			}
+
+			const header = theme.fg("success", `✓ decompose_task`);
+
+			if (options.expanded && details.plan) {
+				return new Text(header + "\n" + theme.fg("muted", details.plan), 0, 0);
+			}
+
+			return new Text(header, 0, 0);
+		},
+	});
 	} // End orchestrator-only check
+
+	pi.registerCommand("decompose", {
+		description: "Decompose a task into a structured plan: /decompose <task description>",
+		handler: async (args, ctx) => {
+			const task = (args || "").trim();
+			if (!task) {
+				ctx.ui.notify("Usage: /decompose <task description>\n\nExample: /decompose Add user authentication with login, logout, and session management", "warning");
+				return;
+			}
+
+			try {
+				ctx.ui.notify(`Decomposing: ${task}`, "info");
+				const result = await decomposeTask(task, undefined, ctx);
+				ctx.ui.notify(result, "info");
+			} catch (err: any) {
+				ctx.ui.notify(`Decomposition failed: ${err?.message || err}`, "error");
+			}
+		},
+	});
 
 	pi.registerCommand("agents-watch", {
 		description: "Watch one agent's live output: /agents-watch [agent]",
