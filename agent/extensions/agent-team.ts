@@ -1857,6 +1857,51 @@ Numbered steps, each small and actionable. For each step include the assigned ag
 			return new Text(header, 0, 0);
 		},
 	});
+
+		pi.registerTool({
+			name: "reload_agent_config",
+			label: "Reload Agent Config",
+			description: "Reload agent model/thinking config from YAML files and refresh the widget. Call this after a builder edits agent-models.yaml or agent-thinking.yaml to apply changes instantly without manual slash command.",
+			parameters: Type.Object({}),
+
+			async execute(_toolCallId, _params, _signal, _onUpdate, ctx) {
+				try {
+					const result = await reloadAgentConfig(ctx);
+					return {
+						content: [{ type: "text", text: result }],
+						details: { status: "done", elapsed: 0 },
+					};
+				} catch (err: any) {
+					return {
+						content: [{ type: "text", text: `reload_agent_config failed: ${err?.message || err}` }],
+						details: { status: "error", elapsed: 0 },
+					};
+				}
+			},
+
+			renderCall(_args, theme) {
+				return new Text(theme.fg("toolTitle", theme.bold("reload_agent_config ")), 0, 0);
+			},
+
+			renderResult(result, options, theme) {
+				const details = result.details as any;
+				if (!details) {
+					const text = result.content[0];
+					return new Text(text?.type === "text" ? text.text : "", 0, 0);
+				}
+
+				const icon = details.status === "done" ? "✓" : "✗";
+				const color = details.status === "done" ? "success" : "error";
+				const header = theme.fg(color, `${icon} reload_agent_config`);
+
+				if (details.status === "error") {
+					const text = result.content[0]?.text || "Unknown error";
+					return new Text(header + "\n" + theme.fg("error", text), 0, 0);
+				}
+
+				return new Text(header, 0, 0);
+			},
+		});
 	} // End orchestrator-only check
 
 	pi.registerCommand("decompose", {
@@ -2662,6 +2707,59 @@ Numbered steps, each small and actionable. For each step include the assigned ag
 				`Updated ${isGlobalScope ? "global defaults" : "project-local overrides"} for active team:\n\n${modelSummary}\n\nSaved to:\n${modelsPath}\n${thinkingPath}`,
 				"info"
 			);
+		},
+	});
+
+	// ── Shared reload helper (used by tool + slash command) ──
+	async function reloadAgentConfig(ctx) {
+		if (agentStates.size === 0) {
+			return "No agents loaded. Load a team first.";
+		}
+
+		const globalModelsPath = getGlobalAgentModelsPath();
+		const projectModelsPath = getProjectAgentModelsPath(ctx.cwd);
+		const globalThinkingPath = getGlobalAgentThinkingPath();
+		const projectThinkingPath = getProjectAgentThinkingPath(ctx.cwd);
+
+		globalAgentModels = existsSync(globalModelsPath)
+			? readAgentYamlMap(globalModelsPath)
+			: {};
+		projectAgentModels = existsSync(projectModelsPath)
+			? readAgentYamlMap(projectModelsPath)
+			: {};
+		globalAgentThinking = existsSync(globalThinkingPath)
+			? readAgentYamlMap(globalThinkingPath)
+			: {};
+		projectAgentThinking = existsSync(projectThinkingPath)
+			? readAgentYamlMap(projectThinkingPath)
+			: {};
+
+		agentModels = mergeStringMaps(globalAgentModels, projectAgentModels);
+		agentThinking = mergeStringMaps(globalAgentThinking, projectAgentThinking);
+
+		for (const state of agentStates.values()) {
+			const key = state.def.name.toLowerCase();
+			state.model = agentModels[key];
+			state.thinking = agentThinking[key];
+		}
+		updateWidget();
+
+		return `Reloaded agent model/thinking config from:\n${globalModelsPath}\n${projectModelsPath}\n${globalThinkingPath}\n${projectThinkingPath}`;
+	}
+
+	pi.registerCommand("agents-reload-config", {
+		description: "Reload agent model/thinking config from YAML files and refresh the widget",
+		handler: async (_args, ctx) => {
+			try {
+				const result = await reloadAgentConfig(ctx);
+				if (result.startsWith("No agents loaded")) {
+					ctx.ui.notify(result, "warning");
+				} else {
+					ctx.ui.notify(result, "info");
+				}
+			} catch (err: any) {
+				ctx.ui.notify(`Reload failed: ${err?.message || err}`, "error");
+			}
 		},
 	});
 

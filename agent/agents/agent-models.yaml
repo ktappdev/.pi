@@ -1,4 +1,4 @@
-builder: streamlake/KAT-Coder-Pro-v2.5
+builder: openai/gpt-5.5
 crafter: ocg1/deepseek-v4-flash
 designer: streamlake/streamlake: KAT-Coder-Pro-v2.5
 devops: ocg1/deepseek-v4-flash
