@@ -2,7 +2,7 @@
   "lastChangelogVersion": "0.80.2",
   "theme": "synthwave",
   "defaultThinkingLevel": "high",
-  "agentTeamViewMode": "tactical",
+  "agentTeamViewMode": "table",
   "packages": [
     "git:github.com/ktappdev/pi-telegram@4bb91bdcd900",
     "npm:pi-web-access@0.10.7",
@@ -25,8 +25,8 @@
     "high": 32768,
     "xhigh": 81920
   },
-  "defaultProvider": "windsurf",
-  "defaultModel": "gpt-5.4:medium",
+  "defaultProvider": "ocg1",
+  "defaultModel": "deepseek-v4-pro",
   "hideThinkingBlock": false,
   "enabledModels": [
     "windsurf/*",

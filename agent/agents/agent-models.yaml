@@ -1,5 +1,5 @@
 builder: streamlake/KAT-Coder-Pro-v2.5
-crafter: streamlake/streamlake: KAT-Coder-Pro-v2.5
+crafter: ocg1/deepseek-v4-flash
 designer: streamlake/streamlake: KAT-Coder-Pro-v2.5
 devops: ocg1/deepseek-v4-flash
 documenter: windsurf/swe-1.6:base

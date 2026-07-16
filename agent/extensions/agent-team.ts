@@ -704,6 +704,53 @@ export default function (pi: ExtensionAPI) {
 		return output;
 	}
 
+	/** Generate a heuristic summary block from agent output text. */
+	function generateSummary(output: string, agentName: string, elapsedMs: number): string {
+		// Extract absolute paths (starting with /) with common file extensions
+		const filePaths = new Set<string>();
+		const pathRegex = /(?:^|\s)(\/[^\s]+?\.(?:ts|tsx|js|jsx|py|rb|go|rs|java|c|cpp|h|hpp|md|json|yaml|yml|toml|ini|cfg|sh|html|css|scss|vue|svelte))(?=\s|$|,|;|:)/gm;
+		let m: RegExpExecArray | null;
+		while ((m = pathRegex.exec(output)) !== null) {
+			const p = m[1].replace(/[:\d]+$/, "").trim();
+			if (p.length > 2 && p.length < 200) filePaths.add(p);
+		}
+		const files = Array.from(filePaths).slice(0, 10);
+
+		// Extract section headers (# to ###)
+		const headers: string[] = [];
+		const headerRegex = /^#{1,3}\s+(.+)/gm;
+		while ((m = headerRegex.exec(output)) !== null) {
+			const h = m[1].trim();
+			if (h && headers.length < 5) headers.push(h);
+		}
+
+		// Extract key finding lines with markers
+		const findings: string[] = [];
+		for (const line of output.split("\n")) {
+			const trimmed = line.trim();
+			if (!trimmed) continue;
+			const first = trimmed[0];
+			if (/[✓✅✗❌⚠️→➜•●·\-*/]/.test(first) && trimmed.length > 5) {
+				const cleaned = trimmed.replace(/^[\-•●·*\/\s]+|[✓✅✗❌⚠️→➜]\s*/, "").trim();
+				if (cleaned.length > 5 && findings.length < 8) {
+					findings.push(cleaned.length > 80 ? cleaned.slice(0, 77) + "..." : cleaned);
+				}
+			}
+		}
+
+		if (files.length === 0 && headers.length === 0 && findings.length === 0) return "";
+
+		const parts: string[] = [];
+		parts.push(`## Summary: ${agentName} (${Math.round(elapsedMs / 1000)}s)`);
+		if (files.length > 0) parts.push(`**Files:** ${files.join(", ")}`);
+		if (headers.length > 0) parts.push(`**Sections:** ${headers.join(" → ")}`);
+		if (findings.length > 0) {
+			parts.push("**Findings:**");
+			for (const f of findings) parts.push(`- ${f}`);
+		}
+		return parts.join("\n");
+	}
+
 	/** Build one-line summary of a tool call for activity display. */
 	function summarizeToolCall(toolName: string, toolArgs: any): string {
 		if (!toolArgs || typeof toolArgs !== "object" || Object.keys(toolArgs).length === 0) {
@@ -1257,8 +1304,18 @@ export default function (pi: ExtensionAPI) {
 					state.status === "done" ? "success" : "error"
 				);
 
+				const SUMMARIZE_THRESHOLD = 2000;
+				const summarizationDisabled = process.env.PI_AGENT_SUMMARIZE === 'false';
+				let finalOutput = output;
+				if (isSuccess && !summarizationDisabled && output.length > SUMMARIZE_THRESHOLD) {
+					const summary = generateSummary(output, displayName(state.def.name), state.elapsed);
+					if (summary) {
+						finalOutput = summary + "\n\n---\n\n" + output;
+					}
+				}
+
 				resolve({
-					output: output,
+					output: finalOutput,
 					exitCode: code ?? 1,
 					elapsed: state.elapsed,
 				});
@@ -1338,6 +1395,17 @@ Numbered steps, each small and actionable. For each step include the assigned ag
 		const toolsList = args[toolsIdx + 1];
 		isOrchestrator = toolsList.split(',').map(t => t.trim()).includes('dispatch_agent');
 	}
+
+	// ═══════════════════════════════════════════════════════════════
+	// ORCHESTRATOR TOOL REGISTRATION ZONE
+	// ═══════════════════════════════════════════════════════════════
+	// New orchestrator tool? Do BOTH:
+	//   1. pi.registerTool({...}) here inside this if(isOrchestrator) block
+	//   2. Add tool name to orchestrator.md frontmatter tools: line
+	// Code registration is the real gate. Frontmatter keeps prompt
+	// metadata aligned and survives session resets. Both required.
+	// See engram #1152 for full rationale.
+	// ═══════════════════════════════════════════════════════════════
 
 	// Only register dispatch_agent for orchestrator
 	if (isOrchestrator) {
@@ -1623,10 +1691,167 @@ Numbered steps, each small and actionable. For each step include the assigned ag
 				);
 			}
 
+			if (details.status === "error") {
+				const errorText = result.content[0]?.text || details.plan || "Decomposition failed";
+				const preview = errorText.split("\n").slice(0, 12).join("\n");
+				return new Text(
+					theme.fg("error", `✗ decompose_task`) + "\n" + theme.fg("error", preview),
+					0, 0,
+				);
+			}
+
 			const header = theme.fg("success", `✓ decompose_task`);
 
 			if (options.expanded && details.plan) {
 				return new Text(header + "\n" + theme.fg("muted", details.plan), 0, 0);
+			}
+			return new Text(header, 0, 0);
+		},
+	});
+
+	pi.registerTool({
+		name: "parallel_build",
+		label: "Parallel Build",
+		description: "Dispatch independent build tasks to builder and crafter concurrently. Validates no file overlap before dispatch. Use for editing separate files or subsystems with no shared dependencies.",
+		parameters: Type.Object({
+			tasks: Type.Array(Type.Object({
+				agent: Type.String({ description: "Agent name: builder or crafter" }),
+				task: Type.String({ description: "Task description to execute" }),
+				files: Type.Optional(Type.Array(Type.String({ description: "Files this task will modify (for overlap guard)" }))),
+			})),
+		}),
+
+		async execute(_toolCallId, params, _signal, onUpdate, ctx) {
+			try {
+				const { tasks } = params as { tasks: Array<{ agent: string; task: string; files?: string[] }> };
+
+				// Validate each agent is builder or crafter
+				for (const t of tasks) {
+					const normalized = (t.agent || "").toLowerCase();
+					if (normalized !== "builder" && normalized !== "crafter") {
+						return {
+							content: [{ type: "text", text: `parallel_build: invalid agent "${t.agent}". Only "builder" or "crafter" are allowed.` }],
+							details: { tasks, status: "error", elapsed: 0, fullOutput: "", error: `Invalid agent: ${t.agent}` },
+						};
+					}
+				}
+
+				// Check file overlap: build map from file -> agents touching it
+				const fileMap = new Map<string, string[]>();
+				for (const t of tasks) {
+					const agent = (t.agent || "").toLowerCase();
+					for (const f of (t.files || [])) {
+						const existing = fileMap.get(f);
+						if (existing) existing.push(agent);
+						else fileMap.set(f, [agent]);
+					}
+				}
+
+				const conflicts: Array<{ file: string; agents: string[] }> = [];
+				for (const [file, agents] of fileMap.entries()) {
+					if (agents.length > 1) {
+						conflicts.push({ file, agents });
+					}
+				}
+
+				if (conflicts.length > 0) {
+					const conflictLines = conflicts.map(c => `  ${c.file}: ${c.agents.join(", ")}`).join("\n");
+					return {
+						content: [{ type: "text", text: `parallel_build: file overlap detected — refusing to dispatch.\n\nConflicting files:\n${conflictLines}` }],
+						details: { tasks, status: "error", elapsed: 0, fullOutput: "", error: `File conflicts: ${conflicts.map(c => c.file).join(", ")}` },
+					};
+				}
+
+				if (onUpdate) {
+					onUpdate({
+						content: [{ type: "text", text: `parallel_build: ${tasks.length} tasks across builder + crafter...` }],
+						details: { tasks, status: "dispatching" },
+					});
+				}
+
+				const dispatches = tasks.map(t => dispatchAgent(t.agent, t.task, ctx));
+				const results = await Promise.allSettled(dispatches);
+
+				const combinedOutput = results.map((result, i) => {
+					const t = tasks[i];
+					const agentName = displayName(t.agent);
+					if (result.status === "fulfilled") {
+						const r = result.value;
+						const truncated = r.output.length > 6000
+							? r.output.slice(0, 6000) + "\n\n... [truncated]"
+							: r.output;
+						const meta = r.exitCode === 0
+							? `${Math.round(r.elapsed / 1000)}s`
+							: `ERR · ${Math.round(r.elapsed / 1000)}s`;
+						return `## ${agentName}: ${t.task.substring(0, 80)}\n${meta}\n\n${truncated}`;
+					} else {
+						return `## ${agentName}: ${t.task.substring(0, 80)}\nFailed: ${result.reason?.message || result.reason}`;
+					}
+				}).join("\n\n---\n\n");
+
+				const allOk = results.every(r => r.status === "fulfilled" && r.value.exitCode === 0);
+				const totalElapsed = results
+					.filter((r): r is PromiseFulfilledResult<DispatchResult> => r.status === "fulfilled")
+					.reduce((sum, r) => sum + r.value.elapsed, 0);
+
+				return {
+					content: [{ type: "text", text: combinedOutput }],
+					details: { tasks, status: allOk ? "done" : "error", elapsed: totalElapsed, fullOutput: combinedOutput },
+				};
+			} catch (err: any) {
+				return {
+					content: [{ type: "text", text: `parallel_build failed: ${err?.message || err}` }],
+					details: { status: "error", elapsed: 0, fullOutput: "" },
+				};
+			}
+		},
+
+		renderCall(args, theme) {
+			const tasks = (args as any).tasks || [];
+			const count = Array.isArray(tasks) ? tasks.length : 0;
+			const agents = [...new Set((args as any).tasks?.map((t: any) => t.agent) || [])].join(" + ");
+			return new Text(
+				theme.fg("toolTitle", theme.bold("parallel_build ")) +
+				theme.fg("accent", `${count} tasks`) +
+				theme.fg("dim", " — ") +
+				theme.fg("muted", agents || "builder + crafter"),
+				0, 0,
+			);
+		},
+
+		renderResult(result, options, theme) {
+			const details = result.details as any;
+			if (!details) {
+				const text = result.content[0];
+				return new Text(text?.type === "text" ? text.text : "", 0, 0);
+			}
+
+			if (options.isPartial || details.status === "dispatching") {
+				return new Text(
+					theme.fg("accent", `● parallel_build`) +
+					theme.fg("dim", ` ${details.tasks?.length || 0} tasks running...`),
+					0, 0,
+				);
+			}
+
+			const icon = details.status === "done" ? "✓" : "✗";
+			const color = details.status === "done" ? "success" : "error";
+			const elapsed = typeof details.elapsed === "number" ? Math.round(details.elapsed / 1000) : 0;
+			const header = theme.fg(color, `${icon} parallel_build`) +
+				theme.fg("dim", ` ${elapsed}s`);
+
+			// Always show error summary
+			if (details.status === "error") {
+				const errorText = details.fullOutput || result.content[0]?.text || "Unknown error";
+				const preview = errorText.split("\n").slice(0, 12).join("\n");
+				return new Text(header + "\n" + theme.fg("error", preview), 0, 0);
+			}
+
+			if (options.expanded && details.fullOutput) {
+				const output = details.fullOutput.length > 4000
+					? details.fullOutput.slice(0, 4000) + "\n... [truncated]"
+					: details.fullOutput;
+				return new Text(header + "\n" + theme.fg("muted", output), 0, 0);
 			}
 
 			return new Text(header, 0, 0);
