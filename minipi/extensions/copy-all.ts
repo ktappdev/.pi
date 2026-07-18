@@ -1,1 +1,0 @@
-/Users/kentaylor/.pi/agent/extensions/copy-all.ts

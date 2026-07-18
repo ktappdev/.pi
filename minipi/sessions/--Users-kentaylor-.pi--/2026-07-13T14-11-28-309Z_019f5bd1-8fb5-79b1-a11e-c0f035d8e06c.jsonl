@@ -1,6 +1,0 @@
-{"type":"session","version":3,"id":"019f5bd1-8fb5-79b1-a11e-c0f035d8e06c","timestamp":"2026-07-13T14:11:28.309Z","cwd":"/Users/kentaylor/.pi"}
-{"type":"model_change","id":"ec4e2f3b","parentId":null,"timestamp":"2026-07-13T14:11:28.326Z","provider":"lugetech","modelId":"gemma4-12b-uncensored-fast"}
-{"type":"thinking_level_change","id":"2232a80d","parentId":"ec4e2f3b","timestamp":"2026-07-13T14:11:28.326Z","thinkingLevel":"off"}
-{"type":"model_change","id":"cc660979","parentId":"2232a80d","timestamp":"2026-07-13T14:11:42.480Z","provider":"lugetech","modelId":"gemma4-12b-uncensored-fast"}
-{"type":"message","id":"7dea0222","parentId":"cc660979","timestamp":"2026-07-13T14:11:44.669Z","message":{"role":"user","content":[{"type":"text","text":"hi"}],"timestamp":1783951904665}}
-{"type":"message","id":"188b0ed1","parentId":"7dea0222","timestamp":"2026-07-13T14:11:45.569Z","message":{"role":"assistant","content":[{"type":"text","text":"Ready. Task?"}],"api":"openai-completions","provider":"lugetech","model":"gemma4-12b-uncensored-fast","usage":{"input":6,"output":8,"cacheRead":4484,"cacheWrite":0,"totalTokens":4498,"cost":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"total":0}},"stopReason":"stop","timestamp":1783951904722,"responseId":"chatcmpl-3JhyBaenuXZe9SSUmCp2JejkIA4lUOK8"}}

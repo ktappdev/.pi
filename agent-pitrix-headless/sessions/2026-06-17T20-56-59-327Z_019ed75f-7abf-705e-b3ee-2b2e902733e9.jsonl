@@ -1,5 +1,0 @@
-{"type":"session","version":3,"id":"019ed75f-7abf-705e-b3ee-2b2e902733e9","timestamp":"2026-06-17T20:56:59.327Z","cwd":"/Users/kentaylor/.pi"}
-{"type":"model_change","id":"020fd807","parentId":null,"timestamp":"2026-06-17T20:56:59.410Z","provider":"deepseek","modelId":"deepseek-v4-flash"}
-{"type":"thinking_level_change","id":"ebf163a7","parentId":"020fd807","timestamp":"2026-06-17T20:56:59.410Z","thinkingLevel":"high"}
-{"type":"message","id":"3c912da4","parentId":"ebf163a7","timestamp":"2026-06-17T20:56:59.572Z","message":{"role":"user","content":[{"type":"text","text":"hello"}],"timestamp":1781729819569}}
-{"type":"message","id":"a30cdfb6","parentId":"3c912da4","timestamp":"2026-06-17T20:57:01.014Z","message":{"role":"assistant","content":[],"api":"openai-completions","provider":"deepseek","model":"deepseek-v4-flash","usage":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"totalTokens":0,"cost":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"total":0}},"stopReason":"error","timestamp":1781729819613,"errorMessage":"402 Insufficient Balance"}}

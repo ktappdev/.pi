@@ -1,1 +1,0 @@
-/Users/kentaylor/.pi/agent/extensions/ask-mode.ts

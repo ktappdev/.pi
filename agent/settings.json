@@ -1,48 +1,36 @@
 {
-  "lastChangelogVersion": "0.80.2",
-  "theme": "synthwave",
   "defaultThinkingLevel": "high",
-  "agentTeamViewMode": "table",
+  "quietStartup": true,
+  "hideThinkingBlock": false,
   "packages": [
     "git:github.com/ktappdev/pi-telegram@4bb91bdcd900",
     "npm:pi-web-access@0.10.7",
     "git:github.com/ktappdev/kilo-pi-provider@42f8d3e62f7c",
-    "git:github.com/jonjonrankin/pi-caveman@2480692ffabd",
     "npm:pi-context-cap@0.1.2",
     "npm:pi-free@2.0.11",
     "npm:pi-provider-kiro@0.6.1",
     "npm:pi-windsurf",
     "git:github.com/ktappdev/pi-commandcode-provider",
-    "npm:pi-mcp-adapter"
+    "git:github.com/ktappdev/picode",
+    "git:github.com/ktappdev/",
+    "npm:pi-startup-header",
+    "npm:@firstpick/pi-extension-git-footer-status"
   ],
-  "quietStartup": true,
-  "treeFilterMode": "all",
-  "transport": "auto",
-  "thinkingBudgets": {
-    "minimal": 1024,
-    "low": 4096,
-    "medium": 10240,
-    "high": 32768,
-    "xhigh": 81920
-  },
-  "defaultProvider": "ocg1",
-  "defaultModel": "deepseek-v4-pro",
-  "hideThinkingBlock": false,
+  "defaultProvider": "mimo",
+  "defaultModel": "mimo-v2.5-pro",
   "enabledModels": [
-    "windsurf/*",
-    "deepseek/*",
-    "ocg1/*",
-    "ocg2/*",
-    "kilo/**",
-    "openai-codex/*",
-    "opencode/*",
-    "opencode-go/*",
-    "opencode-zen/*",
-    "cline/*",
-    "nvidia/*",
     "openrouter/*",
-    "streamlake/*"
+    "lugetech/*",
+    "windsurf/*",
+    "mimo/*"
   ],
-  "steeringMode": "all",
-  "followUpMode": "all"
+  "theme": "rose-pine",
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 4096,
+    "keepRecentTokens": 8000
+  },
+  "lastChangelogVersion": "0.80.2",
+  "followUpMode": "all",
+  "steeringMode": "all"
 }
