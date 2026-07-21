@@ -189,8 +189,8 @@ function sumSessionUsage(ctx: ExtensionCommandContext): {
 		if (!msg || msg.role !== "assistant") continue;
 		const usage = msg.usage;
 		if (!usage) continue;
-		input += Number(usage.inputTokens ?? 0) || 0;
-		output += Number(usage.outputTokens ?? 0) || 0;
+		input += Number(usage.input ?? 0) || 0;
+		output += Number(usage.output ?? 0) || 0;
 		cacheRead += Number(usage.cacheRead ?? 0) || 0;
 		cacheWrite += Number(usage.cacheWrite ?? 0) || 0;
 		totalCost += extractCostTotal(usage);
@@ -252,10 +252,10 @@ function joinCommaStyled(items: string[], renderItem: (item: string) => string, 
 type ContextViewData = {
 	usage:
 		| {
-			// message-based context usage estimate from ctx.getContextUsage()
+			// context tokens from ctx.getContextUsage() (includes system+tools+messages)
 			messageTokens: number;
 			contextWindow: number;
-			// effective usage incl. a rough tool-definition estimate
+			// same as messageTokens; kept for display compat
 			effectiveTokens: number;
 			percent: number;
 			remainingTokens: number;
@@ -326,7 +326,9 @@ class ContextView implements Component {
 			// bar width tries to fit within the viewport
 			const barWidth = Math.max(10, Math.min(36, width - 10));
 
-			// Prorate system prompt into current message context estimate, then add tools estimate.
+			// Split messageTokens into system vs convo for visualization.
+			// toolsTokens is display-only — already included in messageTokens
+			// (getContextUsage uses API totalTokens which covers system+tools+messages).
 			const sysInMessages = Math.min(u.systemPromptTokens, u.messageTokens);
 			const convoInMessages = Math.max(0, u.messageTokens - sysInMessages);
 			const bar =
@@ -334,7 +336,7 @@ class ContextView implements Component {
 					this.theme,
 					{
 						system: sysInMessages,
-						tools: u.toolsTokens,
+						tools: 0,
 						convo: convoInMessages,
 						remaining: u.remainingTokens,
 					},
@@ -344,9 +346,6 @@ class ContextView implements Component {
 				" " +
 				dim("sys") +
 				this.theme.fg("accent", "█") +
-				" " +
-				dim("tools") +
-				this.theme.fg("warning", "█") +
 				" " +
 				dim("convo") +
 				this.theme.fg("success", "█") +
@@ -500,12 +499,13 @@ export default function contextExtension(pi: ExtensionAPI) {
 			const systemPromptTokens = systemPrompt ? estimateTokens(systemPrompt) : 0;
 
 			const usage = ctx.getContextUsage();
-			const messageTokens = usage?.tokens ?? 0;
+			// tokens may be null after compaction (before next LLM response) — treat as unknown.
+			const messageTokens = usage?.tokens ?? null;
 			const ctxWindow = usage?.contextWindow ?? 0;
 
-			// Tool definitions are not part of ctx.getContextUsage() (it estimates message tokens).
-			// We approximate their token impact from tool name + description, and apply a fudge
-			// factor to account for parameters/schema/formatting.
+			// Tool definition token estimate — display only.
+			// getContextUsage().tokens already includes tool defs (API totalTokens covers
+			// system+tools+messages), so we do NOT add this to effectiveTokens.
 			const TOOL_FUDGE = 1.5;
 			const activeToolNames = pi.getActiveTools();
 			const toolInfoByName = new Map(pi.getAllTools().map((t) => [t.name, t] as const));
@@ -517,16 +517,16 @@ export default function contextExtension(pi: ExtensionAPI) {
 			}
 			toolsTokens = Math.round(toolsTokens * TOOL_FUDGE);
 
-			const effectiveTokens = messageTokens + toolsTokens;
-			const percent = ctxWindow > 0 ? (effectiveTokens / ctxWindow) * 100 : 0;
-			const remainingTokens = ctxWindow > 0 ? Math.max(0, ctxWindow - effectiveTokens) : 0;
+			const effectiveTokens = messageTokens ?? 0;
+			const percent = ctxWindow > 0 && messageTokens != null ? (messageTokens / ctxWindow) * 100 : 0;
+			const remainingTokens = ctxWindow > 0 && messageTokens != null ? Math.max(0, ctxWindow - messageTokens) : 0;
 
 			const sessionUsage = sumSessionUsage(ctx);
 
 			const makePlainText = () => {
 				const lines: string[] = [];
 				lines.push("Context");
-				if (usage) {
+				if (messageTokens != null) {
 					lines.push(
 						`Window: ~${effectiveTokens.toLocaleString()} / ${ctxWindow.toLocaleString()} (${percent.toFixed(1)}% used, ~${remainingTokens.toLocaleString()} left)`,
 					);
@@ -550,7 +550,7 @@ export default function contextExtension(pi: ExtensionAPI) {
 			const loadedSkills = Array.from(getLoadedSkillsFromSession(ctx)).sort((a, b) => a.localeCompare(b));
 
 			const viewData: ContextViewData = {
-				usage: usage
+				usage: messageTokens != null
 					? {
 						messageTokens,
 						contextWindow: ctxWindow,

@@ -9,7 +9,9 @@
           "id": "deepseek-v4-flash",
           "name": "DeepSeek V4 Flash",
           "reasoning": false,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 384000,
           "cost": {
@@ -23,7 +25,9 @@
           "id": "deepseek-v4-pro",
           "name": "DeepSeek V4 Pro",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 384000,
           "cost": {
@@ -44,7 +48,9 @@
           "id": "gemma4-12b-uncensored-fast",
           "name": "Gemma 4 12B Uncensored (Fast)",
           "reasoning": false,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 49152,
           "maxTokens": 8192,
           "cost": {
@@ -58,7 +64,9 @@
           "id": "gemma4-12b-qat-fast",
           "name": "Gemma 4 12B QAT (Fast)",
           "reasoning": false,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 49152,
           "maxTokens": 8192,
           "cost": {
@@ -72,7 +80,9 @@
           "id": "gemma4-12b-uncensored",
           "name": "Gemma 4 12B Uncensored",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 49152,
           "maxTokens": 8192,
           "cost": {
@@ -86,7 +96,9 @@
           "id": "gemma4-12b-qat",
           "name": "Gemma 4 12B QAT",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 49152,
           "maxTokens": 8192,
           "cost": {
@@ -100,7 +112,9 @@
           "id": "qwen3.5-9b-mtp",
           "name": "Qwen 3.5 9B MTP",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 32768,
           "maxTokens": 8192,
           "cost": {
@@ -114,7 +128,10 @@
           "id": "qwen3.5-4b",
           "name": "Qwen 3.5 4B VLM",
           "reasoning": false,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 65536,
           "maxTokens": 8192,
           "cost": {
@@ -128,7 +145,10 @@
           "id": "qwen3.5-9b",
           "name": "Qwen 3.5 9B VLM",
           "reasoning": false,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 16384,
           "maxTokens": 8192,
           "cost": {
@@ -142,7 +162,10 @@
           "id": "ministral3-8b-vlm",
           "name": "Ministral 3 8B VLM",
           "reasoning": false,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 32768,
           "maxTokens": 8192,
           "cost": {
@@ -167,7 +190,9 @@
           "id": "deepseek-v4-pro",
           "name": "DeepSeek V4 Pro (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 384000,
           "cost": {
@@ -184,7 +209,9 @@
           "id": "deepseek-v4-flash",
           "name": "DeepSeek V4 Flash (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 384000,
           "cost": {
@@ -203,7 +230,9 @@
           "api": "anthropic-messages",
           "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 204800,
           "maxTokens": 32000,
           "cost": {
@@ -217,7 +246,9 @@
           "id": "minimax-m2.5",
           "name": "MiniMax M2.5 (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 204800,
           "maxTokens": 32000,
           "cost": {
@@ -231,7 +262,9 @@
           "id": "glm-5.1",
           "name": "GLM 5.1 (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 200000,
           "maxTokens": 32000,
           "cost": {
@@ -245,7 +278,9 @@
           "id": "glm-5",
           "name": "GLM 5 (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 200000,
           "maxTokens": 32000,
           "cost": {
@@ -259,7 +294,9 @@
           "id": "kimi-k2.6",
           "name": "Kimi K2.6 (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 256000,
           "maxTokens": 64000,
           "cost": {
@@ -273,7 +310,9 @@
           "id": "kimi-k2.5",
           "name": "Kimi K2.5 (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 256000,
           "maxTokens": 64000,
           "cost": {
@@ -287,7 +326,9 @@
           "id": "mimo-v2.5-pro",
           "name": "MiMo V2.5 Pro (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 32000,
           "cost": {
@@ -301,7 +342,10 @@
           "id": "mimo-v2.5",
           "name": "MiMo V2.5 (OCG1)",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 256000,
           "maxTokens": 32000,
           "cost": {
@@ -315,7 +359,9 @@
           "id": "mimo-v2-pro",
           "name": "MiMo V2 Pro (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 32000,
           "cost": {
@@ -329,7 +375,10 @@
           "id": "mimo-v2-omni",
           "name": "MiMo V2 Omni (OCG1)",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 256000,
           "maxTokens": 32000,
           "cost": {
@@ -345,7 +394,10 @@
           "api": "anthropic-messages",
           "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 81920,
           "cost": {
@@ -361,7 +413,10 @@
           "api": "anthropic-messages",
           "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 81920,
           "cost": {
@@ -377,7 +432,10 @@
           "api": "anthropic-messages",
           "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 81920,
           "cost": {
@@ -393,7 +451,10 @@
           "api": "anthropic-messages",
           "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 512000,
           "maxTokens": 32000,
           "cost": {
@@ -409,7 +470,10 @@
           "api": "anthropic-messages",
           "baseUrl": "https://opencode.ai/zen/go",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 81920,
           "cost": {
@@ -423,7 +487,9 @@
           "id": "glm-5.2[1m]",
           "name": "GLM 5.2 1M (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 131072,
           "cost": {
@@ -437,7 +503,9 @@
           "id": "kimi-k2.7-code",
           "name": "Kimi K2.7 Code (OCG1)",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 262144,
           "maxTokens": 32768,
           "cost": {
@@ -451,316 +519,9 @@
           "id": "hy3-preview",
           "name": "Hy3 Preview (OCG1)",
           "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 256000,
-          "maxTokens": 32768,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        }
-      ]
-    },
-    "ocg2": {
-      "baseUrl": "https://opencode.ai/zen/go/v1",
-      "api": "openai-completions",
-      "apiKey": "$OPENCODE_API_KEY2",
-      "authHeader": true,
-      "headers": {
-        "x-opencode-client": "cli"
-      },
-      "models": [
-        {
-          "id": "deepseek-v4-pro",
-          "name": "DeepSeek V4 Pro (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 1000000,
-          "maxTokens": 384000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "compat": {
-            "requiresReasoningContentOnAssistantMessages": true
-          }
-        },
-        {
-          "id": "deepseek-v4-flash",
-          "name": "DeepSeek V4 Flash (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 1000000,
-          "maxTokens": 384000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "compat": {
-            "requiresReasoningContentOnAssistantMessages": true
-          }
-        },
-        {
-          "id": "minimax-m2.7",
-          "name": "MiniMax M2.7 (OCG2)",
-          "api": "anthropic-messages",
-          "baseUrl": "https://opencode.ai/zen/go",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 204800,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "minimax-m2.5",
-          "name": "MiniMax M2.5 (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 204800,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "glm-5.1",
-          "name": "GLM 5.1 (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 200000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "glm-5",
-          "name": "GLM 5 (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 200000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "kimi-k2.6",
-          "name": "Kimi K2.6 (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 256000,
-          "maxTokens": 64000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "kimi-k2.5",
-          "name": "Kimi K2.5 (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 256000,
-          "maxTokens": 64000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "mimo-v2.5-pro",
-          "name": "MiMo V2.5 Pro (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 1000000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "mimo-v2.5",
-          "name": "MiMo V2.5 (OCG2)",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "contextWindow": 256000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "mimo-v2-pro",
-          "name": "MiMo V2 Pro (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 1000000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "mimo-v2-omni",
-          "name": "MiMo V2 Omni (OCG2)",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "contextWindow": 256000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3.7-max",
-          "name": "Qwen 3.7 Max (OCG2)",
-          "api": "anthropic-messages",
-          "baseUrl": "https://opencode.ai/zen/go",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "contextWindow": 1000000,
-          "maxTokens": 81920,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3.7-plus",
-          "name": "Qwen 3.7 Plus (OCG2)",
-          "api": "anthropic-messages",
-          "baseUrl": "https://opencode.ai/zen/go",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "contextWindow": 1000000,
-          "maxTokens": 81920,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3.6-plus",
-          "name": "Qwen 3.6 Plus (OCG2)",
-          "api": "anthropic-messages",
-          "baseUrl": "https://opencode.ai/zen/go",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "contextWindow": 1000000,
-          "maxTokens": 81920,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "minimax-m3",
-          "name": "MiniMax M3 (OCG2)",
-          "api": "anthropic-messages",
-          "baseUrl": "https://opencode.ai/zen/go",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "contextWindow": 512000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3.5-plus",
-          "name": "Qwen 3.5 Plus (OCG2)",
-          "api": "anthropic-messages",
-          "baseUrl": "https://opencode.ai/zen/go",
-          "reasoning": true,
-          "input": ["text", "image"],
-          "contextWindow": 1000000,
-          "maxTokens": 81920,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "glm-5.2[1m]",
-          "name": "GLM 5.2 1M (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 1000000,
-          "maxTokens": 131072,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "kimi-k2.7-code",
-          "name": "Kimi K2.7 Code (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "hy3-preview",
-          "name": "Hy3 Preview (OCG2)",
-          "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 256000,
           "maxTokens": 32768,
           "cost": {
@@ -786,7 +547,9 @@
           "id": "ep-w928yx-1783704566689445974",
           "name": "Kat Coder Pro V2",
           "reasoning": false,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 262144,
           "maxTokens": 81920,
           "cost": {
@@ -800,7 +563,9 @@
           "id": "KAT-Coder-Pro-v2.5",
           "name": "KAT-Coder-Pro-v2.5",
           "reasoning": false,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 262144,
           "maxTokens": 81920,
           "cost": {
@@ -814,7 +579,9 @@
           "id": "KAT-Coder-Air-V2.5",
           "name": "KAT-Coder-Air-V2.5",
           "reasoning": false,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 262144,
           "maxTokens": 81920,
           "cost": {
@@ -828,7 +595,9 @@
           "id": "kat-coder-air-v1",
           "name": "Kat Coder Air V1 (Free)",
           "reasoning": false,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 131072,
           "maxTokens": 32768,
           "cost": {
@@ -849,7 +618,9 @@
           "id": "mimo-v2.5-pro",
           "name": "MiMo V2.5 Pro",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 32000,
           "cost": {
@@ -863,7 +634,9 @@
           "id": "mimo-v2.5",
           "name": "MiMo V2.5",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 32000,
           "cost": {
@@ -877,7 +650,9 @@
           "id": "mimo-v2-pro",
           "name": "MiMo V2 Pro",
           "reasoning": true,
-          "input": ["text"],
+          "input": [
+            "text"
+          ],
           "contextWindow": 1000000,
           "maxTokens": 32000,
           "cost": {
@@ -891,7 +666,10 @@
           "id": "mimo-v2-omni",
           "name": "MiMo V2 Omni",
           "reasoning": true,
-          "input": ["text", "image"],
+          "input": [
+            "text",
+            "image"
+          ],
           "contextWindow": 256000,
           "maxTokens": 32000,
           "cost": {
