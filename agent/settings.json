@@ -17,16 +17,11 @@
     "npm:@firstpick/pi-extension-git-footer-status",
     "npm:@juicesharp/rpiv-todo",
     "npm:pi-subagents",
-    "git:github.com/ktappdev/pi-fusion"
+    "git:github.com/ktappdev/pi-fusion",
+    "npm:pi-opencode-go-cache"
   ],
-  "defaultProvider": "windsurf",
-  "defaultModel": "gpt-5.4:medium",
-  "enabledModels": [
-    "openrouter/*",
-    "lugetech/*",
-    "windsurf/*",
-    "mimo/*"
-  ],
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4-flash",
   "theme": "rose-pine",
   "compaction": {
     "enabled": true,
@@ -38,3 +33,4 @@
   "steeringMode": "all",
   "defaultProjectTrust": "always"
 }
+
