@@ -1,0 +1,122 @@
+{
+  "runId": "981d76c1",
+  "agent": "scout",
+  "task": "Recon the current working directory /Users/kentaylor/.pi. Report: top-level structure, any config files, agent/skill/custom directories, and anything notable. Keep it brief.\n\n---\n**Output:**\nWrite your findings to exactly this path: /Users/kentaylor/.pi/.pi-subagents/artifacts/outputs/981d76c1/context.md\nThis path is authoritative for this run.\nIgnore any other output filename or output path mentioned elsewhere, including output destinations in the base agent prompt, system prompt, or task instructions.",
+  "exitCode": 0,
+  "usage": {
+    "input": 7146,
+    "output": 2522,
+    "cacheRead": 0,
+    "cacheWrite": 0,
+    "cost": 0,
+    "turns": 7
+  },
+  "model": "windsurf/glm-5-2:low",
+  "attemptedModels": [
+    "windsurf/glm-5-2:low"
+  ],
+  "modelAttempts": [
+    {
+      "model": "windsurf/glm-5-2:low",
+      "success": true,
+      "exitCode": 0,
+      "usage": {
+        "input": 7146,
+        "output": 2522,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "cost": 0,
+        "turns": 7
+      }
+    }
+  ],
+  "durationMs": 54662,
+  "toolCount": 25,
+  "launchContractDigest": "f89374c0553262b3b0c56b26ff9028c33bd45a7244312d80f70ac8bfacb5f3cb",
+  "acceptance": {
+    "status": "attested",
+    "evidenceStatus": "attested",
+    "explicit": false,
+    "effectiveAcceptance": {
+      "level": "attested",
+      "explicit": false,
+      "inferredReason": [
+        "read-only/reviewer-style agent"
+      ],
+      "criteria": [
+        {
+          "id": "criterion-1",
+          "must": "Return concrete findings with file paths and severity when applicable",
+          "evidence": [
+            "review-findings",
+            "residual-risks"
+          ],
+          "severity": "required"
+        }
+      ],
+      "evidence": [
+        "review-findings",
+        "residual-risks"
+      ],
+      "verify": [],
+      "stopRules": []
+    },
+    "inferredReason": [
+      "read-only/reviewer-style agent"
+    ],
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "must": "Return concrete findings with file paths and severity when applicable",
+        "evidence": [
+          "review-findings",
+          "residual-risks"
+        ],
+        "severity": "required"
+      }
+    ],
+    "runtimeChecks": [],
+    "verifyRuns": [],
+    "childReport": {
+      "criteriaSatisfied": [
+        {
+          "id": "criterion-1",
+          "status": "satisfied",
+          "evidence": "Concrete findings with file paths written to context.md: top-level structure, config files (agent/settings.json, piii/settings.json, context.toml, agent/models.json), skill/ext/prompt dirs enumerated, notable items (migration plan, disabled AGENTS.md, dual runtime configs, .picode/.thread layers)"
+        }
+      ],
+      "changedFiles": [],
+      "testsAddedOrUpdated": [],
+      "commandsRun": [
+        {
+          "command": "ls /Users/kentaylor/.pi + find * + ls agent/ piii/ minipi/ .picode/ .lavish/ + read key configs",
+          "result": "passed",
+          "summary": "Mapped full directory structure, read settings/models/gitignore/AGENTS.md/context.toml/migration-plan"
+        }
+      ],
+      "validationOutput": [
+        "Output file written: /Users/kentaylor/.pi/.pi-subagents/artifacts/outputs/981d76c1/context.md (5154 bytes)"
+      ],
+      "residualRisks": [
+        "AGENTS.md.disabled not auto-loaded by Pi — conventions may be stale or unenforced",
+        "Migration plan unexecuted — agent/ vs minipi/ split may cause config drift",
+        "agent/extensions/ has 2 disabled files (.disable) — may indicate incomplete features"
+      ],
+      "noStagedFiles": true,
+      "diffSummary": "No files changed — recon only, output written to artifacts path",
+      "reviewFindings": [
+        "no blockers — read-only recon task complete"
+      ],
+      "manualNotes": "Two active runtime configs (agent/ vs piii/) with different providers/models. .picode/ and .thread/ are separate orchestration layers worth deeper investigation if relevant to future tasks."
+    }
+  },
+  "effects": {
+    "fileMutation": {
+      "status": "not-applicable",
+      "expected": false,
+      "attempted": true
+    }
+  },
+  "transcriptPath": "/Users/kentaylor/.pi/.pi-subagents/artifacts/981d76c1_scout_0_transcript.jsonl",
+  "timestamp": 1785441369359
+}

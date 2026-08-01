@@ -1,0 +1,95 @@
+{
+  "entries": [
+    {
+      "digest_sha256": "24a70c1ac40909b51f4876c6c04c6a1e6d3a3d5121eb9f9eaee56b4889a38ba9",
+      "identity": "npm:@firstpick/pi-extension-git-footer-status",
+      "resolved": {
+        "installed_version": "0.4.3",
+        "kind": "npm",
+        "name": "@firstpick/pi-extension-git-footer-status",
+        "pinned": false,
+        "requested_spec": "@firstpick/pi-extension-git-footer-status",
+        "requested_version": null
+      },
+      "source": "npm:@firstpick/pi-extension-git-footer-status",
+      "source_kind": "npm",
+      "trust_state": "trusted"
+    },
+    {
+      "digest_sha256": "c48462f88beb7c0e69010f0f07bcbc901be55304e6de97488777e3e4959f7767",
+      "identity": "npm:@juicesharp/rpiv-todo",
+      "resolved": {
+        "installed_version": "2.1.0",
+        "kind": "npm",
+        "name": "@juicesharp/rpiv-todo",
+        "pinned": false,
+        "requested_spec": "@juicesharp/rpiv-todo",
+        "requested_version": null
+      },
+      "source": "npm:@juicesharp/rpiv-todo",
+      "source_kind": "npm",
+      "trust_state": "trusted"
+    },
+    {
+      "digest_sha256": "4bab64376ebc7112a804764010ea5b60f36c2345f0748077abe7f2f89b6ee75e",
+      "identity": "npm:pi-opencode-go-cache",
+      "resolved": {
+        "installed_version": "0.3.1",
+        "kind": "npm",
+        "name": "pi-opencode-go-cache",
+        "pinned": false,
+        "requested_spec": "pi-opencode-go-cache",
+        "requested_version": null
+      },
+      "source": "npm:pi-opencode-go-cache",
+      "source_kind": "npm",
+      "trust_state": "trusted"
+    },
+    {
+      "digest_sha256": "184159272d3454fa98ee38d803f16216add0a1b71b3958e07576773e6d4bab86",
+      "identity": "npm:pi-startup-header",
+      "resolved": {
+        "installed_version": "0.1.2",
+        "kind": "npm",
+        "name": "pi-startup-header",
+        "pinned": false,
+        "requested_spec": "pi-startup-header",
+        "requested_version": null
+      },
+      "source": "npm:pi-startup-header",
+      "source_kind": "npm",
+      "trust_state": "trusted"
+    },
+    {
+      "digest_sha256": "5e3c1ccb4444be176faac5f3c71263227a323a27505ba7d97c99ec8048daffee",
+      "identity": "npm:pi-subagents",
+      "resolved": {
+        "installed_version": "0.37.0",
+        "kind": "npm",
+        "name": "pi-subagents",
+        "pinned": false,
+        "requested_spec": "pi-subagents",
+        "requested_version": null
+      },
+      "source": "npm:pi-subagents",
+      "source_kind": "npm",
+      "trust_state": "trusted"
+    },
+    {
+      "digest_sha256": "db937c83e7623cfbf0dd378110292c4ab78b27d62042cb49e65011ee87f4ce0e",
+      "identity": "npm:pi-windsurf",
+      "resolved": {
+        "installed_version": "0.1.5",
+        "kind": "npm",
+        "name": "pi-windsurf",
+        "pinned": false,
+        "requested_spec": "pi-windsurf",
+        "requested_version": null
+      },
+      "source": "npm:pi-windsurf",
+      "source_kind": "npm",
+      "trust_state": "trusted"
+    }
+  ],
+  "schema": "pi.package_lock.v1"
+}

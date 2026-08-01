@@ -45,14 +45,14 @@
       "apiKey": "$LUGETECH_API_KEY",
       "models": [
         {
-          "id": "gemma4-12b-uncensored-fast",
-          "name": "Gemma 4 12B Uncensored (Fast)",
-          "reasoning": false,
+          "id": "gemma4-12b-qat",
+          "name": "Gemma 4 12B QAT",
+          "reasoning": true,
           "input": [
             "text"
           ],
+          "stream": true,
           "contextWindow": 49152,
-          "maxTokens": 8192,
           "cost": {
             "input": 0,
             "output": 0,
@@ -67,8 +67,8 @@
           "input": [
             "text"
           ],
+          "stream": true,
           "contextWindow": 49152,
-          "maxTokens": 8192,
           "cost": {
             "input": 0,
             "output": 0,
@@ -83,8 +83,8 @@
           "input": [
             "text"
           ],
+          "stream": true,
           "contextWindow": 49152,
-          "maxTokens": 8192,
           "cost": {
             "input": 0,
             "output": 0,
@@ -93,14 +93,14 @@
           }
         },
         {
-          "id": "gemma4-12b-qat",
-          "name": "Gemma 4 12B QAT",
-          "reasoning": true,
+          "id": "gemma4-12b-uncensored-fast",
+          "name": "Gemma 4 12B Uncensored (Fast)",
+          "reasoning": false,
           "input": [
             "text"
           ],
+          "stream": true,
           "contextWindow": 49152,
-          "maxTokens": 8192,
           "cost": {
             "input": 0,
             "output": 0,
@@ -115,8 +115,8 @@
           "input": [
             "text"
           ],
+          "stream": true,
           "contextWindow": 32768,
-          "maxTokens": 8192,
           "cost": {
             "input": 0,
             "output": 0,
@@ -132,8 +132,8 @@
             "text",
             "image"
           ],
+          "stream": true,
           "contextWindow": 65536,
-          "maxTokens": 8192,
           "cost": {
             "input": 0,
             "output": 0,
@@ -149,8 +149,24 @@
             "text",
             "image"
           ],
+          "stream": true,
           "contextWindow": 16384,
-          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "ministral3-8b",
+          "name": "Ministral 3 8B",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "stream": true,
+          "contextWindow": 49152,
           "cost": {
             "input": 0,
             "output": 0,
@@ -166,8 +182,89 @@
             "text",
             "image"
           ],
+          "stream": true,
           "contextWindow": 32768,
-          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "ornith-9b",
+          "name": "Ornith 9B",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "stream": true,
+          "contextWindow": 65536,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "ornith-35b",
+          "name": "Ornith 35B",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "stream": true,
+          "contextWindow": 65536,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "bonsai-27b",
+          "name": "Bonsai 27B",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "stream": true,
+          "contextWindow": 65536,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "qwen3.6-14b-fablevibes",
+          "name": "Qwen 3.6 14B Fablevibes",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "stream": true,
+          "contextWindow": 65536,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "nanbeige-3b-heretic",
+          "name": "Nanbeige 3B Heretic",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "stream": true,
+          "contextWindow": 49152,
           "cost": {
             "input": 0,
             "output": 0,

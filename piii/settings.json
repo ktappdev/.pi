@@ -1,4 +1,6 @@
 {
   "lastChangelogVersion": "0.80.2",
-  "theme": "dark"
+  "theme": "dark",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "minimax-m3"
 }

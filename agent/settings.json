@@ -16,12 +16,14 @@
     "npm:pi-startup-header",
     "npm:@firstpick/pi-extension-git-footer-status",
     "npm:@juicesharp/rpiv-todo",
-    "npm:pi-subagents",
     "git:github.com/ktappdev/pi-fusion",
-    "npm:pi-opencode-go-cache"
+    "npm:pi-opencode-go-cache",
+    "npm:@hypabolic/pi-hypa",
+    "git:github.com/ktappdev/pi-chrome",
+    "git:github.com/ktappdev/pitrix"
   ],
-  "defaultProvider": "opencode-go",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultProvider": "windsurf",
+  "defaultModel": "glm-5-2",
   "theme": "rose-pine",
   "compaction": {
     "enabled": true,
@@ -33,4 +35,3 @@
   "steeringMode": "all",
   "defaultProjectTrust": "always"
 }
-
