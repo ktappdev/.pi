@@ -18,6 +18,21 @@ agent/tmp/
 *.tmp
 .DS_Store
 
+# Runtime caches & state (regenerate)
+context.json
+context.toml
+.contexting_synonyms_cache.json
+provider-cache.json
+free.json
+web-search.json
+agent/cache/
+
+# Tool state dirs
+.lavish/
+.pi-subagents/
+.picode/
+.thread/
+
 # Dependencies
 node_modules/
 
