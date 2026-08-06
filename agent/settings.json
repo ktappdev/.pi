@@ -7,7 +7,6 @@
     "npm:pi-web-access@0.10.7",
     "git:github.com/ktappdev/kilo-pi-provider@42f8d3e62f7c",
     "npm:pi-context-cap",
-    "npm:pi-free@2.0.11",
     "npm:pi-provider-kiro@0.6.1",
     "npm:pi-windsurf",
     "git:github.com/ktappdev/pi-commandcode-provider",
@@ -20,7 +19,10 @@
     "npm:pi-opencode-go-cache",
     "npm:@hypabolic/pi-hypa",
     "git:github.com/ktappdev/pi-chrome",
-    "git:github.com/ktappdev/pitrix"
+    "git:github.com/ktappdev/pitrix",
+    "npm:@narumitw/pi-chrome-devtools",
+    "npm:pi-hashline-edit-pro",
+    "git:github.com/ktappdev/pi-subagent-orchestration"
   ],
   "defaultProvider": "windsurf",
   "defaultModel": "glm-5-2",
@@ -30,7 +32,7 @@
     "reserveTokens": 4096,
     "keepRecentTokens": 8000
   },
-  "lastChangelogVersion": "0.80.2",
+  "lastChangelogVersion": "0.84.0",
   "followUpMode": "all",
   "steeringMode": "all",
   "defaultProjectTrust": "always"

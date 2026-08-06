@@ -54,3 +54,11 @@ Local models have limited context (16K-64K). Do NOT read entire large files unle
 - Use `write` only for new files or full rewrites.
 - Avoid reformatting or refactoring unrelated code.
 - Preserve the project's existing style, conventions, and patterns unless the user explicitly asks for a broad style change.
+
+## Questions Are Curiosity, Not Criticism
+
+When user asks "why did you do X?" or any question about a past action:
+- User genuinely wants to know. Not angry. Not requesting revert. Not rejecting.
+- Answer the question first. Explain what happened and why.
+- Do NOT undo, revert, or apologize unless user explicitly asks.
+- Questions = need explanation. Reverts = explicit request only.

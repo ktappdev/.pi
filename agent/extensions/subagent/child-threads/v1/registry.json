@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "sessions": {
+    "019fd7eb-3cd0-78f1-bc1d-ff3b30783f35": {
+      "records": {
+        "a23c404a:0": {
+          "originalTarget": "a23c404a:0",
+          "parentSessionId": "019fd7eb-3cd0-78f1-bc1d-ff3b30783f35",
+          "latestRunId": "a23c404a",
+          "latestIndex": 0,
+          "state": "failed",
+          "cwd": "/Users/kentaylor/developer/test5",
+          "agent": "scout",
+          "createdAt": 1786034199923,
+          "updatedAt": 1786034199926,
+          "turn": 0,
+          "handle": "scout-1",
+          "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-test5--/2026-08-06T16-32-25-808Z_019fd7eb-3cd0-78f1-bc1d-ff3b30783f35/a23c404a/run-0/session.jsonl",
+          "trustedSessionRoot": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-test5--/2026-08-06T16-32-25-808Z_019fd7eb-3cd0-78f1-bc1d-ff3b30783f35/a23c404a",
+          "sessionOwnershipToken": "5ab9e7da-0a53-412e-a8fd-01e180f4995f",
+          "startedAt": 1786034199925,
+          "endedAt": 1786034199925
+        },
+        "a23c404a:1": {
+          "originalTarget": "a23c404a:1",
+          "parentSessionId": "019fd7eb-3cd0-78f1-bc1d-ff3b30783f35",
+          "latestRunId": "a23c404a",
+          "latestIndex": 1,
+          "state": "failed",
+          "cwd": "/Users/kentaylor/developer/test5",
+          "agent": "scout",
+          "createdAt": 1786034199923,
+          "updatedAt": 1786034199926,
+          "turn": 0,
+          "handle": "scout-2",
+          "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-test5--/2026-08-06T16-32-25-808Z_019fd7eb-3cd0-78f1-bc1d-ff3b30783f35/a23c404a/run-1/session.jsonl",
+          "trustedSessionRoot": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-test5--/2026-08-06T16-32-25-808Z_019fd7eb-3cd0-78f1-bc1d-ff3b30783f35/a23c404a",
+          "sessionOwnershipToken": "e54ff70c-251e-4633-a468-2fd383059743",
+          "startedAt": 1786034199925,
+          "endedAt": 1786034199925
+        },
+        "ce4d8029:0": {
+          "originalTarget": "ce4d8029:0",
+          "parentSessionId": "019fd7eb-3cd0-78f1-bc1d-ff3b30783f35",
+          "latestRunId": "ce4d8029",
+          "latestIndex": 0,
+          "state": "failed",
+          "cwd": "/Users/kentaylor/developer/test5",
+          "agent": "scout",
+          "createdAt": 1786034208161,
+          "updatedAt": 1786034263207,
+          "turn": 0,
+          "handle": "scout-A",
+          "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-test5--/2026-08-06T16-32-25-808Z_019fd7eb-3cd0-78f1-bc1d-ff3b30783f35/ce4d8029/run-0/session.jsonl",
+          "transcriptPath": "/Users/kentaylor/developer/test5/.pi-subagents/artifacts/ce4d8029_scout_0_transcript.jsonl",
+          "trustedSessionRoot": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-test5--/2026-08-06T16-32-25-808Z_019fd7eb-3cd0-78f1-bc1d-ff3b30783f35/ce4d8029",
+          "sessionOwnershipToken": "387e4081-61e5-4116-b5d3-3f8e5e3530b6",
+          "startedAt": 1786034263202,
+          "endedAt": 1786034263202
+        },
+        "ce4d8029:1": {
+          "originalTarget": "ce4d8029:1",
+          "parentSessionId": "019fd7eb-3cd0-78f1-bc1d-ff3b30783f35",
+          "latestRunId": "ce4d8029",
+          "latestIndex": 1,
+          "state": "complete",
+          "cwd": "/Users/kentaylor/developer/test5",
+          "agent": "scout",
+          "createdAt": 1786034208161,
+          "updatedAt": 1786034263212,
+          "turn": 0,
+          "handle": "scout-B",
+          "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-test5--/2026-08-06T16-32-25-808Z_019fd7eb-3cd0-78f1-bc1d-ff3b30783f35/ce4d8029/run-1/session.jsonl",
+          "transcriptPath": "/Users/kentaylor/developer/test5/.pi-subagents/artifacts/ce4d8029_scout_1_transcript.jsonl",
+          "trustedSessionRoot": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-test5--/2026-08-06T16-32-25-808Z_019fd7eb-3cd0-78f1-bc1d-ff3b30783f35/ce4d8029",
+          "sessionOwnershipToken": "e8a2a8c0-e8f0-4834-9454-5d09ac3da549",
+          "startedAt": 1786034263202,
+          "endedAt": 1786034263202
+        }
+      }
+    }
+  }
+}
