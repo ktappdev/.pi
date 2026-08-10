@@ -3,9 +3,8 @@
   "quietStartup": true,
   "hideThinkingBlock": false,
   "packages": [
-    "git:github.com/ktappdev/pi-telegram@4bb91bdcd900",
+    "git:github.com/ktappdev/pi-telegram",
     "npm:pi-web-access@0.10.7",
-    "git:github.com/ktappdev/kilo-pi-provider@42f8d3e62f7c",
     "npm:pi-context-cap",
     "npm:pi-provider-kiro@0.6.1",
     "npm:pi-windsurf",
@@ -22,18 +21,22 @@
     "git:github.com/ktappdev/pitrix",
     "npm:@narumitw/pi-chrome-devtools",
     "npm:pi-hashline-edit-pro",
-    "git:github.com/ktappdev/pi-subagent-orchestration"
+    "npm:@underactive/pi-topping-statusline",
+    "npm:awesome-pi-themes",
+    "npm:@plannotator/pi-extension",
+    "npm:@joemccann/pi-pdf"
   ],
   "defaultProvider": "windsurf",
-  "defaultModel": "glm-5-2",
-  "theme": "rose-pine",
+  "defaultModel": "glm-5-2-max",
+  "theme": "golden-dusk",
   "compaction": {
     "enabled": true,
     "reserveTokens": 4096,
     "keepRecentTokens": 8000
   },
-  "lastChangelogVersion": "0.84.0",
+  "lastChangelogVersion": "0.84.1",
   "followUpMode": "all",
   "steeringMode": "all",
-  "defaultProjectTrust": "always"
+  "defaultProjectTrust": "always",
+  "tuiMode": "fullscreen"
 }

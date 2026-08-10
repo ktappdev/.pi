@@ -1,0 +1,34 @@
+{
+	"transparent": true,
+	"separator": "powerline-thin",
+	"symbols": "nerd",
+	"borderStyle": "rounded",
+	"segments": {
+		"pi": true,
+		"model": true,
+		"provider": false,
+		"thinking": true,
+		"path": true,
+		"git": true,
+		"pr": true,
+		"tokenRateTopRight": true,
+		"sessionName": true,
+		"feeds": false,
+		"tokenRate": false,
+		"piStats": true,
+		"contextBar": true,
+		"contextStats": true,
+		"scrollHint": false,
+		"feedsBottomLeft": false,
+		"tokenRateBottomLeft": false
+	},
+	"feeds": [
+		{
+			"customType": "pi-prompt-cache/savings",
+			"field": "savedUsd",
+			"prefix": "CS",
+			"format": "currency"
+		}
+	],
+	"rainbowBorder": true
+}
