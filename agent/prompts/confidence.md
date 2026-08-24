@@ -4,13 +4,15 @@ argument-hint: "<feature or task discussed>"
 ---
 $@
 
-Based on our discussion above, answer this honestly:
+Based on our discussion above, assess this honestly:
 
-If you started implementing this right now, what's your confidence percentage that you'd deliver it cleanly — no breakage, no regressions, fully working?
+If your initial confidence is below 90%, do not implement yet. Research first: inspect relevant code and configuration, trace code paths and callers, read relevant documentation, run targeted checks, and use web research when external or current information matters. Reassess after researching and repeat while useful. Do not inflate the score; if uncertainty comes from missing requirements, ask a focused question instead of guessing.
+
+90% is the target, not a forced answer. Once research is complete — or no useful research remains — report your honest confidence.
 
 - 100% = smooth implementation, fully working, zero issues expected. You know exactly what to do and where.
 - 90-99% = minor uncertainty on small details, but overall solid.
-- 70-89% = some unknowns, a few things you'd need to verify mid-implementation.
+- 70-89% = meaningful unknowns remain; more investigation is needed before implementation.
 - 50-69% = significant gaps — you'd be guessing on key parts.
 - Below 50% = you don't have enough information to proceed safely.
 
