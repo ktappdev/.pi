@@ -19,18 +19,18 @@
   "cline_api_key": "",
   "kilo_free_only": false,
   "hidden_models": [
-    "ollama-cloud/glm-5.1",
-    "ollama-cloud/mistral-large-3:675b",
+    "ollama-cloud/deepseek-v4-pro:0813",
+    "ollama-cloud/qwen3.5:397b",
     "ollama-cloud/glm-5.2",
     "ollama-cloud/kimi-k2.6",
-    "ollama-cloud/deepseek-v4-flash:0731",
-    "ollama-cloud/deepseek-v4-pro:preview",
     "ollama-cloud/kimi-k2.7-code",
-    "ollama-cloud/deepseek-v4-pro:0813",
-    "ollama-cloud/minimax-m2.7",
+    "ollama-cloud/deepseek-v4-pro:preview",
+    "ollama-cloud/deepseek-v4-flash:0731",
+    "ollama-cloud/glm-5.1",
     "ollama-cloud/kimi-k3",
     "ollama-cloud/deepseek-v4-flash:preview",
-    "ollama-cloud/qwen3.5:397b"
+    "ollama-cloud/minimax-m2.7",
+    "ollama-cloud/mistral-large-3:675b"
   ],
   "free_only": true,
   "kilo_show_paid": false,
@@ -54,5 +54,7 @@
   "opencode_show_paid": false,
   "opencode_free_show_paid": false,
   "opencode_go_show_paid": false,
-  "qoder_show_paid": false
+  "qoder_show_paid": false,
+  "openmodel_api_key": "",
+  "openmodel_show_paid": false
 }

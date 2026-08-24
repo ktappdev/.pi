@@ -1,16 +1,14 @@
 {
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "max",
   "quietStartup": true,
   "hideThinkingBlock": false,
   "packages": [
     "git:github.com/ktappdev/pi-telegram",
     "npm:pi-web-access@0.10.7",
     "npm:pi-context-cap",
-    "npm:pi-provider-kiro@0.6.1",
     "npm:pi-windsurf",
     "git:github.com/ktappdev/pi-commandcode-provider",
     "git:github.com/ktappdev/picode",
-    "git:github.com/ktappdev/",
     "npm:pi-startup-header",
     "npm:@firstpick/pi-extension-git-footer-status",
     "npm:@juicesharp/rpiv-todo",
@@ -20,21 +18,24 @@
     "git:github.com/ktappdev/pi-chrome",
     "git:github.com/ktappdev/pitrix",
     "npm:@narumitw/pi-chrome-devtools",
-    "npm:pi-hashline-edit-pro",
     "npm:@underactive/pi-topping-statusline",
     "npm:awesome-pi-themes",
     "npm:@plannotator/pi-extension",
-    "npm:@joemccann/pi-pdf"
+    "git:github.com/DietrichGebert/ponytail",
+    "git:github.com/ktappdev/pi-caveman",
+    "npm:pi-free",
+    "npm:pi-context-condense",
+    "npm:pi-better-models"
   ],
-  "defaultProvider": "windsurf",
-  "defaultModel": "glm-5-2-max",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-luna",
   "theme": "golden-dusk",
   "compaction": {
     "enabled": true,
     "reserveTokens": 4096,
-    "keepRecentTokens": 8000
+    "keepRecentTokens": 5000
   },
-  "lastChangelogVersion": "0.84.1",
+  "lastChangelogVersion": "0.84.3",
   "followUpMode": "all",
   "steeringMode": "all",
   "defaultProjectTrust": "always",

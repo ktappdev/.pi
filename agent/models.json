@@ -1,380 +1,276 @@
 {
-  "providers": {
-    "deepseek": {
-      "baseUrl": "https://api.deepseek.com",
-      "api": "openai-completions",
-      "apiKey": "$DEEPSEEK_API_KEY",
-      "models": [
-        {
-          "id": "deepseek-v4-flash",
-          "name": "DeepSeek V4 Flash",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 1000000,
-          "maxTokens": 384000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "deepseek-v4-pro",
-          "name": "DeepSeek V4 Pro",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 1000000,
-          "maxTokens": 384000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        }
-      ]
+ "providers": {
+  "deepseek": {
+   "baseUrl": "https://api.deepseek.com",
+   "api": "openai-completions",
+   "apiKey": "$DEEPSEEK_API_KEY",
+   "models": [
+    {
+     "id": "deepseek-v4-flash",
+     "name": "DeepSeek V4 Flash",
+     "reasoning": false,
+     "input": [
+      "text"
+     ],
+     "contextWindow": 1000000,
+     "maxTokens": 384000,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
     },
-    "lugetech": {
-      "baseUrl": "http://llama.kentaylor.dev/v1",
-      "api": "openai-completions",
-      "apiKey": "$LUGETECH_API_KEY",
-      "models": [
-        {
-          "id": "gemma4-12b-qat",
-          "name": "Gemma 4 12B QAT",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 49152,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "gemma4-12b-qat-fast",
-          "name": "Gemma 4 12B QAT (Fast)",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 49152,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "gemma4-12b-uncensored",
-          "name": "Gemma 4 12B Uncensored",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 49152,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "gemma4-12b-uncensored-fast",
-          "name": "Gemma 4 12B Uncensored (Fast)",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 49152,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3.5-9b-mtp",
-          "name": "Qwen 3.5 9B MTP",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 32768,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3.5-4b",
-          "name": "Qwen 3.5 4B VLM",
-          "reasoning": false,
-          "input": [
-            "text",
-            "image"
-          ],
-          "stream": true,
-          "contextWindow": 65536,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3.5-9b",
-          "name": "Qwen 3.5 9B VLM",
-          "reasoning": false,
-          "input": [
-            "text",
-            "image"
-          ],
-          "stream": true,
-          "contextWindow": 16384,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "ministral3-8b",
-          "name": "Ministral 3 8B",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 49152,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "ministral3-8b-vlm",
-          "name": "Ministral 3 8B VLM",
-          "reasoning": false,
-          "input": [
-            "text",
-            "image"
-          ],
-          "stream": true,
-          "contextWindow": 32768,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "ornith-9b",
-          "name": "Ornith 9B",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 65536,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "ornith-35b",
-          "name": "Ornith 35B",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 65536,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "bonsai-27b",
-          "name": "Bonsai 27B",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 65536,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "qwen3.6-14b-fablevibes",
-          "name": "Qwen 3.6 14B Fablevibes",
-          "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
-          "stream": true,
-          "contextWindow": 65536,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "nanbeige-3b-heretic",
-          "name": "Nanbeige 3B Heretic",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "stream": true,
-          "contextWindow": 49152,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        }
-      ]
-    },
-    "streamlake": {
-      "baseUrl": "https://vanchin.streamlake.ai/api/gateway/coding/v1",
-      "api": "openai-completions",
-      "apiKey": "$KAT_CODER_API_KEY",
-      "authHeader": true,
-      "compat": {
-        "supportsDeveloperRole": false,
-        "supportsReasoningEffort": false
-      },
-      "models": [
-        {
-          "id": "KAT-Coder-Pro-v2.5",
-          "name": "KAT-Coder-Pro-v2.5",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 262144,
-          "maxTokens": 81920,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        }
-      ]
-    },
-    "mimo": {
-      "baseUrl": "https://token-plan-sgp.xiaomimimo.com/v1",
-      "api": "openai-completions",
-      "apiKey": "$MIMO_API_KEY",
-      "models": [
-        {
-          "id": "mimo-v2.5-pro",
-          "name": "MiMo V2.5 Pro",
-          "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
-          "contextWindow": 1000000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "mimo-v2.5",
-          "name": "MiMo V2.5",
-          "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
-          "contextWindow": 1000000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "mimo-v2-pro",
-          "name": "MiMo V2 Pro",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 1000000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "mimo-v2-omni",
-          "name": "MiMo V2 Omni",
-          "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
-          "contextWindow": 256000,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        }
-      ]
+    {
+     "id": "deepseek-v4-pro",
+     "name": "DeepSeek V4 Pro",
+     "reasoning": true,
+     "input": [
+      "text"
+     ],
+     "contextWindow": 1000000,
+     "maxTokens": 384000,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
     }
+   ]
+  },
+  "lugetech": {
+   "baseUrl": "https://eyonyl6h-8080.thundercompute.net/v1",
+   "api": "openai-completions",
+   "apiKey": "$LUGETECH_API_KEY",
+   "models": [
+    {
+     "id": "qwen3.8-27b",
+     "name": "Qwen 3.8 27B",
+     "reasoning": true,
+     "input": [
+      "text"
+     ],
+     "stream": true,
+     "contextWindow": 262144,
+     "maxTokens": 32768,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    },
+    {
+     "id": "qwen3.8-27b-uncensored-mtp",
+     "name": "Qwen 3.8 27B Uncensored MTP",
+     "reasoning": true,
+     "input": [
+      "text"
+     ],
+     "stream": true,
+     "contextWindow": 262144,
+     "maxTokens": 32768,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    },
+    {
+     "id": "ornith-35b",
+     "name": "Ornith 35B",
+     "reasoning": true,
+     "input": [
+      "text"
+     ],
+     "stream": true,
+     "contextWindow": 262144,
+     "maxTokens": 32768,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    }
+   ]
+  },
+  "streamlake": {
+   "baseUrl": "https://vanchin.streamlake.ai/api/gateway/coding/v1",
+   "api": "openai-completions",
+   "apiKey": "$KAT_CODER_API_KEY",
+   "authHeader": true,
+   "compat": {
+    "supportsDeveloperRole": false,
+    "supportsReasoningEffort": false
+   },
+   "models": [
+    {
+     "id": "KAT-Coder-Pro-v2.5",
+     "name": "KAT-Coder-Pro-v2.5",
+     "reasoning": false,
+     "input": [
+      "text"
+     ],
+     "contextWindow": 262144,
+     "maxTokens": 81920,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    }
+   ]
+  },
+  "mimo": {
+   "baseUrl": "https://token-plan-sgp.xiaomimimo.com/v1",
+   "api": "openai-completions",
+   "apiKey": "$MIMO_API_KEY",
+   "models": [
+    {
+     "id": "mimo-v2.5-pro",
+     "name": "MiMo V2.5 Pro",
+     "reasoning": true,
+     "input": [
+      "text",
+      "image"
+     ],
+     "contextWindow": 1000000,
+     "maxTokens": 32000,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    },
+    {
+     "id": "mimo-v2.5",
+     "name": "MiMo V2.5",
+     "reasoning": true,
+     "input": [
+      "text",
+      "image"
+     ],
+     "contextWindow": 1000000,
+     "maxTokens": 32000,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    },
+    {
+     "id": "mimo-v2-pro",
+     "name": "MiMo V2 Pro",
+     "reasoning": true,
+     "input": [
+      "text"
+     ],
+     "contextWindow": 1000000,
+     "maxTokens": 32000,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    },
+    {
+     "id": "mimo-v2-omni",
+     "name": "MiMo V2 Omni",
+     "reasoning": true,
+     "input": [
+      "text",
+      "image"
+     ],
+     "contextWindow": 256000,
+     "maxTokens": 32000,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    }
+   ]
+  },
+  "hetzner": {
+   "baseUrl": "https://inference.hetzner.com/api/v1",
+   "api": "openai-completions",
+   "apiKey": "$HETZNER_API_KEY",
+   "models": [
+    {
+     "id": "Kimi-K2.7-Code",
+     "name": "Kimi K2.7 Code (Hetzner)",
+     "reasoning": true,
+     "input": [
+      "text",
+      "image"
+     ],
+     "contextWindow": 262144,
+     "maxTokens": 32768,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    },
+    {
+     "id": "GLM-5.2-NVFP4",
+     "name": "GLM 5.2 NVFP4 (Hetzner)",
+     "reasoning": true,
+     "input": [
+      "text"
+     ],
+     "contextWindow": 512000,
+     "maxTokens": 32768,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    },
+    {
+     "id": "DeepSeek-V4-Flash-0731",
+     "name": "DeepSeek V4 Flash 0731 (Hetzner)",
+     "reasoning": true,
+     "input": [
+      "text"
+     ],
+     "contextWindow": 512000,
+     "maxTokens": 32768,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    },
+    {
+     "id": "Qwen/Qwen3.6-35B-A3B-FP8",
+     "name": "Qwen 3.6 35B A3B (Hetzner)",
+     "reasoning": true,
+     "input": [
+      "text",
+      "image"
+     ],
+     "contextWindow": 262144,
+     "maxTokens": 32768,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    }
+   ]
   }
+ }
 }

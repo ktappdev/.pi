@@ -1,0 +1,16 @@
+{
+  "morpheus": "deepseek/deepseek-v4-flash",
+  "tank": "deepseek/deepseek-v4-flash",
+  "trinity": "deepseek/deepseek-v4-flash",
+  "neo": "deepseek/deepseek-v4-flash",
+  "dozer": "deepseek/deepseek-v4-flash",
+  "switch": "deepseek/deepseek-v4-flash",
+  "cypher": "deepseek/deepseek-v4-flash",
+  "oracle": "deepseek/deepseek-v4-flash",
+  "link": "deepseek/deepseek-v4-flash",
+  "keymaker": "deepseek/deepseek-v4-flash",
+  "merovingian": "deepseek/deepseek-v4-flash",
+  "default": "deepseek/deepseek-v4-flash",
+  "journal": "deepseek/deepseek-v4-flash",
+  "journal-cadence": "done"
+}

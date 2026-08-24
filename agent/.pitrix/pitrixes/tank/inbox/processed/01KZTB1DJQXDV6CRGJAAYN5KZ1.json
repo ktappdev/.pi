@@ -1,0 +1,8 @@
+{
+  "id": "coordinator/01KZTB1DJQXDV6CRGJAAYN5KZ1",
+  "from": "coordinator",
+  "to": "tank",
+  "body": "Objective: Tell me who the operator is — what is their name?\n\nContext: You are tank, crew member on the Nebuchadnezzar. The operator (human user) asks: \"who am i? whats my name the operator\". Check project config files — AGENTS.md, README.md, .pitrix/ config, git config, package.json author field, or any file in the workspace that names the operator/owner.\n\nConstraints: Read-only. Quick lookup only.\n\nDeliverables: The operator's name, and where you found it.",
+  "sentAt": "2026-08-12T06:37:29.559Z",
+  "expects": true
+}

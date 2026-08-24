@@ -1,0 +1,93 @@
+{
+  "providers": {
+    "ollama-cloud": {
+      "provider": "ollama-cloud",
+      "models": {
+        "gemma4:31b": {
+          "lastProbedAt": "2026-08-24T13:39:56.503Z",
+          "status": "ok"
+        },
+        "deepseek-v4-flash": {
+          "lastProbedAt": "2026-08-17T23:37:05.730Z",
+          "status": "broken"
+        },
+        "qwen3.5:397b": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "glm-5.2": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "kimi-k2.6": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "deepseek-v4-pro": {
+          "lastProbedAt": "2026-08-17T23:37:05.730Z",
+          "status": "broken"
+        },
+        "gpt-oss:120b": {
+          "lastProbedAt": "2026-08-24T04:13:36.321Z",
+          "status": "ok"
+        },
+        "deepseek-v4-flash:0731": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "minimax-m3": {
+          "lastProbedAt": "2026-08-24T04:13:36.321Z",
+          "status": "ok"
+        },
+        "kimi-k2.7-code": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "mistral-large-3:675b": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "nemotron-3-super": {
+          "lastProbedAt": "2026-08-24T04:13:36.321Z",
+          "status": "ok"
+        },
+        "glm-5.1": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "nemotron-3-nano:30b": {
+          "lastProbedAt": "2026-08-24T04:13:36.321Z",
+          "status": "ok"
+        },
+        "kimi-k3": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "gpt-oss:20b": {
+          "lastProbedAt": "2026-08-24T04:13:36.321Z",
+          "status": "ok"
+        },
+        "minimax-m2.7": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "nemotron-3-ultra": {
+          "lastProbedAt": "2026-08-24T04:13:36.321Z",
+          "status": "ok"
+        },
+        "deepseek-v4-pro:0813": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "deepseek-v4-flash:preview": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        },
+        "deepseek-v4-pro:preview": {
+          "lastProbedAt": "2026-08-22T17:47:44.206Z",
+          "status": "broken"
+        }
+      }
+    }
+  }
+}

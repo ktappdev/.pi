@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 function textFromContent(content: unknown) {
   if (typeof content === "string") return content;
@@ -86,7 +86,13 @@ export default function (pi: ExtensionAPI) {
         return;
       }
 
-      await copyToClipboard(text);
+      try {
+        await copyToClipboard(text);
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        ctx.ui.notify(`Copy failed: ${msg}`, "error");
+        return;
+      }
       ctx.ui.notify(`Copied ${messages.length} messages to clipboard`, "info");
     },
   });

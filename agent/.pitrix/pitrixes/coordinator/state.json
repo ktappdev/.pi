@@ -1,0 +1,25 @@
+{
+  "id": "coordinator",
+  "pid": 49971,
+  "cwd": "/Users/kentaylor/.pi/agent",
+  "parent": null,
+  "role": "coordinator",
+  "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-.pi-agent--/2026-08-12T06-36-58-709Z_019ff4b0-3dd5-7a6f-a4fb-b0126f852a64.jsonl",
+  "state": "done",
+  "status": "stopped",
+  "holdReason": null,
+  "obligations": [],
+  "owed": [],
+  "barriers": [],
+  "startedAt": "2026-08-12T06:37:00.549Z",
+  "lastSeen": "2026-08-12T06:40:19.286Z",
+  "updatedAt": "2026-08-12T06:40:19.286Z",
+  "capabilities": [
+    "urgency",
+    "barriers",
+    "deliverAfter",
+    "expiresAt",
+    "journal",
+    "canary"
+  ]
+}

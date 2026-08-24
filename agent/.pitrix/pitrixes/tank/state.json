@@ -1,0 +1,25 @@
+{
+  "id": "tank",
+  "pid": 52816,
+  "cwd": "/Users/kentaylor/.pi/agent",
+  "parent": "coordinator",
+  "role": "tank",
+  "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-.pi-agent--/2026-08-12T06-37-24-143Z_019ff4b0-a12f-7e1b-8484-1991c53c56f0.jsonl",
+  "state": "done",
+  "status": "stopped",
+  "holdReason": null,
+  "obligations": [],
+  "owed": [],
+  "barriers": [],
+  "startedAt": "2026-08-12T06:37:25.907Z",
+  "lastSeen": "2026-08-12T06:40:20.915Z",
+  "updatedAt": "2026-08-12T06:40:20.915Z",
+  "capabilities": [
+    "urgency",
+    "barriers",
+    "deliverAfter",
+    "expiresAt",
+    "journal",
+    "canary"
+  ]
+}
