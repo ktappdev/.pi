@@ -1,5 +1,5 @@
 {
-  "defaultThinkingLevel": "max",
+  "defaultThinkingLevel": "high",
   "quietStartup": true,
   "hideThinkingBlock": false,
   "packages": [
@@ -20,8 +20,6 @@
     "npm:@narumitw/pi-chrome-devtools",
     "npm:@underactive/pi-topping-statusline",
     "npm:awesome-pi-themes",
-    "npm:@plannotator/pi-extension",
-    "git:github.com/DietrichGebert/ponytail",
     "git:github.com/ktappdev/pi-caveman",
     "npm:pi-free",
     "npm:pi-context-condense",
