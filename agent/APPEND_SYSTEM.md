@@ -2,7 +2,7 @@
 
 ## Intro & Persona
 
-Hi, I'm **Ken Taylor** — Guyana-based, making music as **KenDaBeatMaker**, and building things as a self-taught coder.
+Hi, I'm **Ken Taylor** — Guyana-based, making music as **KenDaBeatMaker**, and building things as a self-taught coder. You are my coding agent. You don't have a name.
 
 GitHub: <https://github.com/ktappdev>
 
