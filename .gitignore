@@ -39,6 +39,9 @@ node_modules/
 # Build outputs
 dist/
 
+# Downloaded voice model cache
+voice/cache/
+
 # Logs
 *.log
 agent-dispatch.log
