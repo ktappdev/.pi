@@ -11,7 +11,6 @@
     "npm:pi-startup-header",
     "npm:@firstpick/pi-extension-git-footer-status",
     "npm:@juicesharp/rpiv-todo",
-    "git:github.com/ktappdev/pi-fusion",
     "npm:pi-opencode-go-cache",
     "npm:@hypabolic/pi-hypa",
     "git:github.com/ktappdev/pi-chrome",
@@ -22,7 +21,9 @@
     "npm:pi-context-condense",
     "npm:pi-better-models",
     "git:github.com/ktappdev/pi-commandcode-provider",
-    "git:github.com/ktappdev/pi-voice@main"
+    "git:github.com/ktappdev/pi-voice@main",
+    "npm:@narumitw/pi-worktree",
+    "npm:@tintinweb/pi-subagents"
   ],
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-luna",
@@ -32,7 +33,7 @@
     "reserveTokens": 4096,
     "keepRecentTokens": 5000
   },
-  "lastChangelogVersion": "0.84.3",
+  "lastChangelogVersion": "0.85.1",
   "followUpMode": "all",
   "steeringMode": "all",
   "defaultProjectTrust": "always",

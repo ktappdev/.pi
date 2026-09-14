@@ -40,17 +40,16 @@
    ]
   },
   "lugetech": {
-   "baseUrl": "https://llama.kentaylor.dev/v1",
+   "baseUrl": "https://eyonyl6h-8080.thundercompute.net/v1",
    "api": "openai-completions",
    "apiKey": "$LUGETECH_API_KEY",
    "models": [
     {
-     "id": "ornith-1.5-9b",
-     "name": "Ornith 1.5 9B",
+     "id": "qwen3.8-27b",
+     "name": "Qwen 3.8 27B",
      "reasoning": true,
      "input": [
-      "text",
-      "image"
+      "text"
      ],
      "stream": true,
      "contextWindow": 262144,
@@ -63,30 +62,11 @@
      }
     },
     {
-     "id": "ornith-1.5-9b-fast",
-     "name": "Ornith 1.5 9B Fast",
-     "reasoning": false,
-     "input": [
-      "text",
-      "image"
-     ],
-     "stream": true,
-     "contextWindow": 262144,
-     "maxTokens": 32768,
-     "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-     }
-    },
-    {
-     "id": "ornith-1.5-9b-obl",
-     "name": "Ornith 1.5 9B OBL",
+     "id": "qwen3.8-27b-uncensored-mtp",
+     "name": "Qwen 3.8 27B Uncensored MTP",
      "reasoning": true,
      "input": [
-      "text",
-      "image"
+      "text"
      ],
      "stream": true,
      "contextWindow": 262144,
@@ -103,115 +83,10 @@
      "name": "Ornith 35B",
      "reasoning": true,
      "input": [
-      "text",
-      "image"
+      "text"
      ],
      "stream": true,
      "contextWindow": 262144,
-     "maxTokens": 32768,
-     "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-     }
-    },
-    {
-     "id": "ternary-bonsai-27b",
-     "name": "Ternary Bonsai 27B",
-     "reasoning": true,
-     "input": [
-      "text",
-      "image"
-     ],
-     "stream": true,
-     "contextWindow": 65536,
-     "maxTokens": 32768,
-     "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-     }
-    },
-    {
-     "id": "qwen3.6-14b-fablevibes",
-     "name": "Qwen 3.6 14B FableVibes",
-     "reasoning": true,
-     "input": [
-      "text",
-      "image"
-     ],
-     "stream": true,
-     "contextWindow": 65536,
-     "maxTokens": 32768,
-     "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-     }
-    },
-    {
-     "id": "qwen3.6-niwaki-19b",
-     "name": "Qwen 3.6 Niwaki 19B",
-     "reasoning": false,
-     "input": [
-      "text"
-     ],
-     "stream": true,
-     "contextWindow": 65536,
-     "maxTokens": 32768,
-     "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-     }
-    },
-    {
-     "id": "qwen3.6-14b-vibeforged",
-     "name": "Qwen 3.6 14B VibeForged",
-     "reasoning": true,
-     "input": [
-      "text"
-     ],
-     "stream": true,
-     "contextWindow": 65536,
-     "maxTokens": 32768,
-     "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-     }
-    },
-    {
-     "id": "lily-cyber-7b",
-     "name": "Lily Cyber 7B",
-     "reasoning": false,
-     "input": [
-      "text"
-     ],
-     "stream": true,
-     "contextWindow": 65536,
-     "maxTokens": 32768,
-     "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-     }
-    },
-    {
-     "id": "lily-cyber-7b-q8",
-     "name": "Lily Cyber 7B Q8",
-     "reasoning": false,
-     "input": [
-      "text"
-     ],
-     "stream": true,
-     "contextWindow": 65536,
      "maxTokens": 32768,
      "cost": {
       "input": 0,
