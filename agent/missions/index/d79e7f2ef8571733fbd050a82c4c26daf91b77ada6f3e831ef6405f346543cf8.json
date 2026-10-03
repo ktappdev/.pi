@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "missionId": "51c03e2a-2769-449c-afd1-b22dfc8099db",
+  "projectRoot": "/Users/kentaylor/developer/picode",
+  "recordPath": "/Users/kentaylor/.pi/agent/missions/projects/5fd494af7dde7a1ed836746b1f986d91f9de520db6ddb9386a286b243c2d1f97/51c03e2a-2769-449c-afd1-b22dfc8099db.json",
+  "title": "[prompt redacted]",
+  "status": "completed",
+  "updatedAt": "2026-09-27T20:31:16.907Z",
+  "lastRunId": "e7a3b507-a60d-40f2-925e-f79c41024f1a"
+}

@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "id": "51c03e2a-2769-449c-afd1-b22dfc8099db",
+  "title": "[prompt redacted]",
+  "objective": "[prompt redacted]",
+  "status": "completed",
+  "createdAt": "2026-09-27T20:27:02.651Z",
+  "updatedAt": "2026-09-27T20:31:16.907Z",
+  "runs": [
+    {
+      "runId": "e7a3b507-a60d-40f2-925e-f79c41024f1a",
+      "mode": "workflow",
+      "asyncDir": "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/e7a3b507-a60d-40f2-925e-f79c41024f1a",
+      "status": "complete",
+      "startedAt": "2026-09-27T20:27:02.656Z",
+      "completedAt": "2026-09-27T20:31:16.907Z"
+    }
+  ],
+  "workflowChildren": [
+    {
+      "workflowRunId": "e7a3b507-a60d-40f2-925e-f79c41024f1a",
+      "key": "protocol",
+      "status": "completed",
+      "startedAt": "2026-09-27T20:27:02.682Z",
+      "updatedAt": "2026-09-27T20:31:16.888Z",
+      "artifactPaths": [
+        "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/93637617-20a6-4480-81f1-54847eaa8875",
+        "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/subagent-artifacts/outputs/e7a3b507-a60d-40f2-925e-f79c41024f1a/research/tuios-protocol.md",
+        "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/2026-09-27T18-09-17-333Z_01a0e40e-9a14-7437-865d-9a443e7887e4/8a9a7001-819c-4f26-ac4d-a7589e1507f9/run-0/session.jsonl"
+      ],
+      "runId": "93637617-20a6-4480-81f1-54847eaa8875",
+      "agent": "scout",
+      "label": "Map TUIOS protocol",
+      "completedAt": "2026-09-27T20:31:16.888Z",
+      "sessionPath": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/2026-09-27T18-09-17-333Z_01a0e40e-9a14-7437-865d-9a443e7887e4/8a9a7001-819c-4f26-ac4d-a7589e1507f9/run-0/session.jsonl",
+      "heartbeat": {
+        "updatedAt": "2026-09-27T20:31:16.888Z",
+        "status": "completed"
+      }
+    },
+    {
+      "workflowRunId": "e7a3b507-a60d-40f2-925e-f79c41024f1a",
+      "key": "integration",
+      "status": "completed",
+      "startedAt": "2026-09-27T20:27:02.722Z",
+      "updatedAt": "2026-09-27T20:28:17.547Z",
+      "artifactPaths": [
+        "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/af2d8ca9-9020-4614-b0fe-e0e53462167c",
+        "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/subagent-artifacts/outputs/e7a3b507-a60d-40f2-925e-f79c41024f1a/research/picode-integration.md",
+        "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/2026-09-27T18-09-17-333Z_01a0e40e-9a14-7437-865d-9a443e7887e4/a155101c-4318-4928-aaa0-bcde9891d911/run-0/session.jsonl"
+      ],
+      "runId": "af2d8ca9-9020-4614-b0fe-e0e53462167c",
+      "agent": "scout",
+      "label": "Map Picode integration",
+      "completedAt": "2026-09-27T20:28:17.547Z",
+      "sessionPath": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/2026-09-27T18-09-17-333Z_01a0e40e-9a14-7437-865d-9a443e7887e4/a155101c-4318-4928-aaa0-bcde9891d911/run-0/session.jsonl",
+      "heartbeat": {
+        "updatedAt": "2026-09-27T20:28:17.547Z",
+        "status": "completed"
+      }
+    }
+  ],
+  "decisions": [],
+  "artifacts": [
+    {
+      "kind": "status",
+      "path": "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/e7a3b507-a60d-40f2-925e-f79c41024f1a/status.json"
+    },
+    {
+      "kind": "other",
+      "path": "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/e7a3b507-a60d-40f2-925e-f79c41024f1a/events.jsonl",
+      "description": "Lifecycle events"
+    },
+    {
+      "kind": "output",
+      "path": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/subagent-artifacts/93637617-20a6-4480-81f1-54847eaa8875_scout_output.md"
+    },
+    {
+      "kind": "output",
+      "path": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/subagent-artifacts/af2d8ca9-9020-4614-b0fe-e0e53462167c_scout_output.md"
+    }
+  ],
+  "receipts": [],
+  "cwd": "/Users/kentaylor/developer/picode",
+  "ownerSessionId": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/2026-09-27T18-09-17-333Z_01a0e40e-9a14-7437-865d-9a443e7887e4.jsonl",
+  "summary": "Workflow completed with 2 child run(s). Return: [\n  {\n    \"output\": \"# TUIOS JSON verb protocol — implemented wire contract (evidence map)\\n\\nScope: source in `/tmp/pi-github-repos/Gaurav-Gosain/tuios@main` (Go daemon) plus authoritative docs. All verbs are **line-delimited JSON over the daemon unix socket**, one request line → one response line. Envelope, verb registry and handlers are the source of truth; `docs/protocol.md` agrees with them.\\n\\n## 0. Transport, envelope, identity\\n\\n- Framing / envelope: `docs/protocol.md:14-64`; Go types `internal/session/verb_protocol.go:126-166`.\\n  - Request: `{\\\"id\\\"?, \\\"verb\\\", \\\"params\\\"?}` — `id` opaque (number|string|absent), echoed verbatim (`verb_protocol.go:127-131`).\\n  - Success: `{\\\"id\\\"?, \\\"result\\\": {\\\"type\\\": <discriminator>, ...}}`; Error: `{\\\"id\\\"?, \\\"error\\\":{\\\"code\\\",\\\"message\\\",\\\"hint\\\"?}}` (`verb_protocol.go:152-166`).\\n  - First byte classifies JSON vs binary gob (`verb_protocol.go:13-20`). One request in flight per connection; open more connections for concurrency.\\n- Sta Trace: 4 event(s)."
+}

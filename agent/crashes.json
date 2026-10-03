@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-09-24T19:17:26.833Z",
+    "version": "0.87.1",
+    "kind": "uncaught_exception",
+    "message": "terminated",
+    "stack": "TypeError: terminated\n    at Fetch.onAborted (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OJP47DM6.js:129:67659)\n    at Fetch.emit (node:events:514:20)\n    at Fetch.terminate (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OJP47DM6.js:129:44376)\n    at Object.onResponseError (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OJP47DM6.js:129:71666)\n    at Request.onResponseError (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OJP47DM6.js:2:60562)\n    at Object.errorRequest (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OJP47DM6.js:2:44297)\n    at TLSSocket.onHttpSocketClose (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OJP47DM6.js:13:20516)\n    at TLSSocket.emit (node:events:526:24)\n    at node:net:362:12\n    at TCP.done (node:internal/tls/wrap:769:7)",
+    "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-lugetech-hackathon-solution--/2026-09-24T19-14-41-348Z_01a0d4d7-6643-774c-9790-3323b5915942.jsonl",
+    "cwd": "/Users/kentaylor/developer/lugetech-hackathon-solution",
+    "notified": true
+  }
+]

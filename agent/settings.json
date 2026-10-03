@@ -21,21 +21,81 @@
     "npm:pi-context-condense",
     "npm:pi-better-models",
     "git:github.com/ktappdev/pi-commandcode-provider",
-    "git:github.com/ktappdev/pi-voice@main",
+    "git:github.com/ktappdev/pi-voice",
     "npm:@narumitw/pi-worktree",
-    "npm:@tintinweb/pi-subagents"
+    "npm:pi-subagents",
+    "npm:pi-cache-optimizer",
+    "git:github.com/ktappdev/pi-auto-router"
   ],
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-luna",
-  "theme": "golden-dusk",
+  "theme": "rose-pine",
   "compaction": {
     "enabled": true,
     "reserveTokens": 4096,
     "keepRecentTokens": 5000
   },
-  "lastChangelogVersion": "0.85.1",
+  "lastChangelogVersion": "0.87.1",
   "followUpMode": "all",
   "steeringMode": "all",
   "defaultProjectTrust": "always",
-  "tuiMode": "fullscreen"
+  "tuiMode": "fullscreen",
+  "subagents": {
+    "agentOverrides": {
+      "scout": {
+        "model": "commandcode/deepseek/deepseek-v4.1-flash"
+      },
+      "worker": {
+        "model": "commandcode/deepseek/deepseek-v4.1-flash"
+      },
+      "reviewer": {
+        "model": "commandcode/deepseek/deepseek-v4.1-flash"
+      },
+      "researcher": {
+        "model": "commandcode/deepseek/deepseek-v4.1-flash"
+      },
+      "delegate": {
+        "model": "commandcode/deepseek/deepseek-v4.1-flash"
+      },
+      "oracle": {
+        "model": "commandcode/deepseek/deepseek-v4.1-flash"
+      },
+      "claude-code": {
+        "disabled": true
+      },
+      "claude-code-writer": {
+        "disabled": true
+      },
+      "codex-exec": {
+        "disabled": true
+      },
+      "codex-exec-writer": {
+        "disabled": true
+      },
+      "cursor-agent": {
+        "disabled": true
+      },
+      "cursor-agent-writer": {
+        "disabled": true
+      }
+    }
+  },
+  "cacheWarming": "off",
+  "showCacheMissNotices": true,
+  "modelThinkingLevels": {
+    "openai-codex/gpt-5.6-luna": "max"
+  },
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "enabledModels": [
+    "openai-codex/gpt-6-luna",
+    "openai-codex/gpt-6-sol",
+    "commandcode/gpt-6-luna",
+    "commandcode/z-ai/glm-5.3-flash",
+    "commandcode/deepseek/deepseek-v4.1-flash",
+    "commandcode/meta/muse-spark-1.3-contributor",
+    "commandcode/poolside/laguna-s-2.1-free",
+    "commandcode/stepfun/Step-5-Preview"
+  ]
 }

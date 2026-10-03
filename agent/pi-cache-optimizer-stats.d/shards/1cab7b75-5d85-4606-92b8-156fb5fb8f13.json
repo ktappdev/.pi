@@ -1,0 +1,36 @@
+{
+  "version": 7,
+  "kind": "pi-cache-optimizer-shard",
+  "instanceId": "1cab7b75-5d85-4606-92b8-156fb5fb8f13",
+  "sessionHash": "1a5be437cfe8ff9a",
+  "process": {
+    "pid": 6800,
+    "ppid": 94933,
+    "instanceStartedAt": 1790621085603
+  },
+  "lifecycle": {
+    "state": "closed",
+    "createdAt": 1790786322994,
+    "updatedAt": 1790800127195,
+    "closedAt": 1790800127195
+  },
+  "day": "2026-09-30",
+  "globalEpoch": "1790157161495-5e7e1cdb-c55f-42bc-9ac6-6c1c3e16f70c",
+  "models": {
+    "openai-codex/gpt-6-luna": {
+      "modelEpoch": "initial:model:openai-codex/gpt-6-luna",
+      "provider": "openai-codex",
+      "modelId": "gpt-6-luna",
+      "modelName": "GPT-6 Luna",
+      "api": "openai-codex-responses",
+      "stats": {
+        "day": "2026-09-30",
+        "totalRequests": 0,
+        "hitRequests": 0,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "totalInputTokens": 0
+      }
+    }
+  }
+}

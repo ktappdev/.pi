@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "8acd40d0-8f57-46c9-80af-3632f926bb2a",
+  "title": "[prompt redacted]",
+  "objective": "[prompt redacted]",
+  "status": "completed",
+  "createdAt": "2026-09-27T20:32:21.059Z",
+  "updatedAt": "2026-09-27T20:47:25.910Z",
+  "runs": [
+    {
+      "runId": "e2ee8e2c-d55f-418b-9a86-9d7b4f8bad81",
+      "mode": "single",
+      "asyncDir": "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/e2ee8e2c-d55f-418b-9a86-9d7b4f8bad81",
+      "status": "complete",
+      "startedAt": "2026-09-27T20:32:21.073Z",
+      "completedAt": "2026-09-27T20:47:25.909Z",
+      "usage": {
+        "tokens": 205438
+      }
+    }
+  ],
+  "workflowChildren": [],
+  "decisions": [],
+  "artifacts": [
+    {
+      "kind": "status",
+      "path": "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/e2ee8e2c-d55f-418b-9a86-9d7b4f8bad81/status.json"
+    },
+    {
+      "kind": "other",
+      "path": "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/e2ee8e2c-d55f-418b-9a86-9d7b4f8bad81/events.jsonl",
+      "description": "Lifecycle events"
+    },
+    {
+      "kind": "output",
+      "path": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/subagent-artifacts/e2ee8e2c-d55f-418b-9a86-9d7b4f8bad81_worker_output.md"
+    }
+  ],
+  "receipts": [],
+  "cwd": "/Users/kentaylor/developer/picode",
+  "ownerSessionId": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-picode--/2026-09-27T18-09-17-333Z_01a0e40e-9a14-7437-865d-9a443e7887e4.jsonl",
+  "summary": "worker:\n# TUIOS model-facing pane tools — implementation notes\n\n## Scope delivered\n\nOne new writer file, plus one new focused test file:\n\n- `src/tools/tuios-tools.ts` (new) — `registerTuiosTools(pi, store, runtime, hooks?)`\n- `test/tuios-tools.test.ts` (new) — 32 deterministic tests against a scripted runtime\n\nNo existing file, runtime module, lifecycle, index, plan or doc was edited by me.\n(`src/lifecycle.ts` shows as modified in the working tree and `src/tools/tuios-revive.ts` /\n`src/tools/tuios-run.ts` are present as untracked — those are the parent/sibling writers, not me.)\n\n## Registered tools\n\nSame names, parameters and core result fields as the Herdr tools in\n`spawn.ts`, `panes.ts`, `pane-read.ts`, `cleanup-panes.ts`, `tab-create.ts`, `tab-close.ts`:\n\n| Tool | Herdr concern it replaces | TUIOS surface |\n| --- | --- | --- |\n| `spawn_worker` | split + rename + run + wait | `new-window` with argv `command`, then `wait-for agent-state` |\n| `picode_panes` | snapshot survey | `refresh()` → panes grouped by workspace |\n| `picode_pane_read` | `pane read` | `capture-pane` |\n| `cleanup_panes` | `pane close` (targeted/bulk/dry-run/force) | `close-window` via `runtime.close` |\n| `picode_tab_create` | `tab create` | claim workspace + `new-window` root + `set-workspace-name` |\n| `picode_tab_close` | `tab close` | close allowed windows + `set-workspace-name \"\"` |\n\n## Tool behaviour, exactly\n\n### spawn_worker (coordinator-only)\n\n1. Role validated with the same rule as `spawn.ts` (`^[a-zA-Z0-9-]+$`, ≤32 chars) **before** any runtime call.\n2. `runtime.refresh()`; target tab = `params.tab` or `runtime.tabId`.\n3. Target tab resolved through `runtime.assertWritableTab(...)` — exact tab ID, must be inside this\n   session (`tabNumber`), must exist (`tab`), must not be a user-owned (\"don't close\") workspace.\n4. Reuse (default `reuse !== false`): only an **idle/done** window whose label role matches, in the\n   **same workspace**, never `runtime.ownPane`. No cross-workspace reuse.\n5. "
+}

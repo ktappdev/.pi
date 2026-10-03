@@ -2,6 +2,14 @@
   "version": 1,
   "models": [
     {
+      "id": "claude-sonnet-5-5",
+      "name": "Claude Sonnet 5.5 (CC)",
+      "api": "anthropic-messages",
+      "reasoning": false,
+      "contextWindow": 1000000,
+      "maxTokens": 65536
+    },
+    {
       "id": "claude-sonnet-5",
       "name": "Claude Sonnet 5 (CC)",
       "api": "anthropic-messages",
@@ -28,6 +36,14 @@
     {
       "id": "claude-fable-5",
       "name": "Claude Fable 5 (CC)",
+      "api": "anthropic-messages",
+      "reasoning": true,
+      "contextWindow": 1000000,
+      "maxTokens": 65536
+    },
+    {
+      "id": "claude-opus-5-5",
+      "name": "Claude Opus 5.5 (CC)",
       "api": "anthropic-messages",
       "reasoning": true,
       "contextWindow": 1000000,
@@ -63,6 +79,38 @@
       "api": "anthropic-messages",
       "reasoning": false,
       "contextWindow": 200000,
+      "maxTokens": 65536
+    },
+    {
+      "id": "gpt-6-astra",
+      "name": "GPT-6 Astra (CC)",
+      "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 1050000,
+      "maxTokens": 65536
+    },
+    {
+      "id": "gpt-6.1-sol",
+      "name": "GPT-6.1 Sol (CC)",
+      "api": "openai-completions",
+      "reasoning": false,
+      "contextWindow": 1050000,
+      "maxTokens": 65536
+    },
+    {
+      "id": "gpt-6-sol",
+      "name": "GPT-6 Sol (CC)",
+      "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 1050000,
+      "maxTokens": 65536
+    },
+    {
+      "id": "gpt-6-luna",
+      "name": "GPT-6 Luna (CC)",
+      "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 1050000,
       "maxTokens": 65536
     },
     {
@@ -157,6 +205,14 @@
       "id": "deepseek/deepseek-v4.1-flash",
       "name": "DeepSeek V4.1 Flash (CC)",
       "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 1000000,
+      "maxTokens": 65536
+    },
+    {
+      "id": "deepseek/deepseek-v4.1-flash-fast",
+      "name": "DeepSeek V4.1 Flash Fast (CC)",
+      "api": "openai-completions",
       "reasoning": false,
       "contextWindow": 1000000,
       "maxTokens": 65536
@@ -207,6 +263,14 @@
       "api": "openai-completions",
       "reasoning": true,
       "contextWindow": 1048576,
+      "maxTokens": 131072
+    },
+    {
+      "id": "z-ai/glm-5.3-flashx",
+      "name": "GLM-5.3 FlashX (CC)",
+      "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 1000000,
       "maxTokens": 131072
     },
     {
@@ -274,6 +338,30 @@
       "maxTokens": 65536
     },
     {
+      "id": "xiaomi/mimo-v2.6-pro",
+      "name": "MiMo V2.6 Pro (CC)",
+      "api": "openai-completions",
+      "reasoning": false,
+      "contextWindow": 1048576,
+      "maxTokens": 65536
+    },
+    {
+      "id": "xiaomi/mimo-v2.6-pro-ultraspeed",
+      "name": "MiMo V2.6 Pro UltraSpeed (CC)",
+      "api": "openai-completions",
+      "reasoning": false,
+      "contextWindow": 1048576,
+      "maxTokens": 65536
+    },
+    {
+      "id": "xiaomi/mimo-v2.6-flash",
+      "name": "MiMo V2.6 Flash (CC)",
+      "api": "openai-completions",
+      "reasoning": false,
+      "contextWindow": 1048576,
+      "maxTokens": 65536
+    },
+    {
       "id": "xiaomi/mimo-v2.5-pro",
       "name": "MiMo V2.5 Pro (CC)",
       "api": "openai-completions",
@@ -288,6 +376,14 @@
       "reasoning": false,
       "contextWindow": 1000000,
       "maxTokens": 65536
+    },
+    {
+      "id": "Qwen/Qwen3.8-Omni-Flash",
+      "name": "Qwen 3.8 Omni Flash (CC)",
+      "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 1000000,
+      "maxTokens": 131072
     },
     {
       "id": "Qwen/Qwen3.8-Max-0902",
@@ -362,11 +458,19 @@
       "maxTokens": 65536
     },
     {
-      "id": "meituan/LongCat-2.0:free",
+      "id": "meituan/LongCat-2.0",
       "name": "LongCat 2.0 (CC)",
       "api": "openai-completions",
       "reasoning": true,
       "contextWindow": 1048576,
+      "maxTokens": 65536
+    },
+    {
+      "id": "stepfun/Step-5-Preview",
+      "name": "Step 5 Preview (CC)",
+      "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 1000000,
       "maxTokens": 65536
     },
     {
@@ -382,7 +486,7 @@
       "name": "Step 3.5 Flash (CC)",
       "api": "openai-completions",
       "reasoning": true,
-      "contextWindow": 1000000,
+      "contextWindow": 262144,
       "maxTokens": 65536
     },
     {
@@ -482,6 +586,14 @@
       "maxTokens": 65536
     },
     {
+      "id": "stealth/space-bunny-alpha",
+      "name": "Space Bunny Alpha (CC)",
+      "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 1000000,
+      "maxTokens": 524288
+    },
+    {
       "id": "poolside/laguna-s-2.1-free",
       "name": "Laguna S 2.1 (CC)",
       "api": "openai-completions",
@@ -492,6 +604,14 @@
     {
       "id": "inclusionai/ling-3.0-flash-sante:free",
       "name": "Ling 3.0 Flash Sante (CC)",
+      "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 262144,
+      "maxTokens": 32768
+    },
+    {
+      "id": "inclusionai/ling-3.1-flash:free",
+      "name": "Ling 3.1 Flash (CC)",
       "api": "openai-completions",
       "reasoning": false,
       "contextWindow": 262144,
@@ -548,6 +668,14 @@
     {
       "id": "xai/grok-4.6",
       "name": "Grok 4.6 (CC)",
+      "api": "openai-completions",
+      "reasoning": true,
+      "contextWindow": 500000,
+      "maxTokens": 65536
+    },
+    {
+      "id": "xai/grok-4.7",
+      "name": "Grok 4.7 (CC)",
       "api": "openai-completions",
       "reasoning": true,
       "contextWindow": 500000,

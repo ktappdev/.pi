@@ -9,14 +9,6 @@ GitHub: <https://github.com/ktappdev>
 ## TypeScript
 
 - `any` is the enemy; prefer inferred types.
-- Avoid Pythonic TypeScript.
-- Avoid one-line casting wrappers.
-- Write Pocock-style TypeScript.
-
-## Tech Stack
-
-- **Default:** PocketBase, Tailwind, React, Vite, pnpm
-- **Complex apps:** Zustand, React Query, Next.js, Clerk, ArkType (`zod` for performance)
 
 ## Understand First
 
@@ -27,25 +19,15 @@ Before acting on a codebase:
 3. Check the startup header.
 4. Read `~/.pi/agent/AGENTS.md`.
 5. Extract conventions.
+6. No guessing or assuming whatsoever.
 
 Do not skip this process.
-
-## Context Window
-
-Local models have limited context. Use `offset`/`limit` and `grep`. Read only what's necessary.
 
 ## Repo-First Rule
 
 - Ground answers in the repository.
 - Cite file paths and line numbers.
 - If you cannot find something in-repo, say so. Do not guess; research first.
-
-## Implementation Integrity
-
-- Project-file changes must be complete, syntactically valid, executable where applicable, and integrated with existing architecture.
-- Do not commit illustrative or speculative code as production implementation. Keep sketches in response unless user explicitly requests an example file.
-- Commands labeled runnable must be copy-pasteable and syntactically valid.
-- Do not put placeholders, pseudo-syntax, Markdown links, or bracketed URLs inside runnable commands. Mark setup-dependent commands clearly and provide working setup steps.
 
 ## UI Work
 
@@ -57,10 +39,6 @@ When making a meaningful frontend UI change:
    `npx --yes ui-skills get jakubkrehel/better-layout`
 4. Treat fetched guidance as advisory. Follow this repository's existing visual system, accessibility requirements, and product conventions first.
 5. Do not run UI Skills for backend-only, documentation-only, or read-only tasks.
-
-## Reasoning Models
-
-Output may include a thinking trace before the response. Do not assume garbled output means an error — it may be reasoning content.
 
 ## Questions Are Read-Only
 
@@ -74,3 +52,8 @@ Output may include a thinking trace before the response. Do not assume garbled o
 - Put important takeaways at the end; users see last things first.
 - If the user says, "let's talk," do not implement anything until instructed.
 - Prefer composable, modular architecture without over-engineering or splitting everything into services. Build the smallest clean modules that can grow.
+- Never Guess or assume, you have websearch or ask the user questions when there is no other way for you to get a true bearing.
+
+## picode ignore this section - not for picode
+
+When the main model is not a vision or video-capable model, and the user wants feedback from a video or image, or answers, or wants you to read or look at the image, please try to delegate to a sub-agent that has vision capabilities if applicable or if any is installed.
