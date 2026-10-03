@@ -10,10 +10,10 @@
   },
   "lifecycle": {
     "state": "active",
-    "createdAt": 1790937508555,
-    "updatedAt": 1790937885927
+    "createdAt": 1791034315441,
+    "updatedAt": 1791034315447
   },
-  "day": "2026-10-02",
+  "day": "2026-10-03",
   "globalEpoch": "1790157161495-5e7e1cdb-c55f-42bc-9ac6-6c1c3e16f70c",
   "models": {
     "openai-codex/gpt-6-luna": {
@@ -23,12 +23,12 @@
       "modelName": "GPT-6 Luna",
       "api": "openai-codex-responses",
       "stats": {
-        "day": "2026-10-02",
-        "totalRequests": 9,
-        "hitRequests": 8,
-        "cachedInputTokens": 68608,
+        "day": "2026-10-03",
+        "totalRequests": 0,
+        "hitRequests": 0,
+        "cachedInputTokens": 0,
         "cacheWriteInputTokens": 0,
-        "totalInputTokens": 84233
+        "totalInputTokens": 0
       }
     }
   }

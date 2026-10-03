@@ -1,19 +1,20 @@
 {
   "version": 7,
   "kind": "pi-cache-optimizer-shard",
-  "instanceId": "79c152b8-db36-4d27-a121-f6e5dddc557e",
-  "sessionHash": "c5d787d4d2d6c9ae",
+  "instanceId": "70c80169-51b4-4c70-a10d-0f2491b6458c",
+  "sessionHash": "0127a3767f0b3c4a",
   "process": {
-    "pid": 30068,
-    "ppid": 29772,
-    "instanceStartedAt": 1790795688442
+    "pid": 95960,
+    "ppid": 95958,
+    "instanceStartedAt": 1791034412621
   },
   "lifecycle": {
-    "state": "active",
-    "createdAt": 1790795688442,
-    "updatedAt": 1790796008487
+    "state": "closed",
+    "createdAt": 1791034412621,
+    "updatedAt": 1791034443876,
+    "closedAt": 1791034443876
   },
-  "day": "2026-09-30",
+  "day": "2026-10-03",
   "globalEpoch": "1790157161495-5e7e1cdb-c55f-42bc-9ac6-6c1c3e16f70c",
   "models": {
     "commandcode/xiaomi/mimo-v2.6-flash": {
@@ -23,12 +24,12 @@
       "modelName": "MiMo V2.6 Flash (CC)",
       "api": "openai-completions",
       "stats": {
-        "day": "2026-09-30",
-        "totalRequests": 6,
-        "hitRequests": 5,
-        "cachedInputTokens": 88768,
+        "day": "2026-10-03",
+        "totalRequests": 2,
+        "hitRequests": 2,
+        "cachedInputTokens": 2432,
         "cacheWriteInputTokens": 0,
-        "totalInputTokens": 108931
+        "totalInputTokens": 3597
       }
     }
   }

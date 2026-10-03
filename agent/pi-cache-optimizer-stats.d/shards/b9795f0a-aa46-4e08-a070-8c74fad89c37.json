@@ -1,0 +1,36 @@
+{
+  "version": 7,
+  "kind": "pi-cache-optimizer-shard",
+  "instanceId": "b9795f0a-aa46-4e08-a070-8c74fad89c37",
+  "sessionHash": "9706f19b593b36cc",
+  "process": {
+    "pid": 94835,
+    "ppid": 93960,
+    "instanceStartedAt": 1791034376488
+  },
+  "lifecycle": {
+    "state": "closed",
+    "createdAt": 1791034376488,
+    "updatedAt": 1791034396443,
+    "closedAt": 1791034396443
+  },
+  "day": "2026-10-03",
+  "globalEpoch": "1790157161495-5e7e1cdb-c55f-42bc-9ac6-6c1c3e16f70c",
+  "models": {
+    "commandcode/xiaomi/mimo-v2.6-flash": {
+      "modelEpoch": "initial:model:commandcode/xiaomi/mimo-v2.6-flash",
+      "provider": "commandcode",
+      "modelId": "xiaomi/mimo-v2.6-flash",
+      "modelName": "MiMo V2.6 Flash (CC)",
+      "api": "openai-completions",
+      "stats": {
+        "day": "2026-10-03",
+        "totalRequests": 1,
+        "hitRequests": 0,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "totalInputTokens": 1272
+      }
+    }
+  }
+}
