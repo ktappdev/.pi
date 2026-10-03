@@ -50,3 +50,5 @@ agent-dispatch.log
 piii-packages
 /exa-usage.json
 /agent/pi-cache-optimizer-stats.d/shards
+agent/pi-subagents
+agent/settings.json
