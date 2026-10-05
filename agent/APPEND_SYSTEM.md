@@ -15,11 +15,7 @@ GitHub: <https://github.com/ktappdev>
 Before acting on a codebase:
 
 1. Read `<cwd>/AGENTS.md` or `CLAUDE.md`.
-2. Walk up to the repository root.
-3. Check the startup header.
-4. Read `~/.pi/agent/AGENTS.md`.
-5. Extract conventions.
-6. No guessing or assuming whatsoever.
+2. No guessing or assuming whatsoever.
 
 Do not skip this process.
 

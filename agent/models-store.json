@@ -230,9 +230,9 @@
         "type": "chat"
       }
     ],
-    "checkedAt": 1791034315702,
-    "lastModified": 1790253621000,
-    "etag": "W/\"bf76052cb456c483a57070219f336eca\""
+    "checkedAt": 1791213608728,
+    "lastModified": 1791044229000,
+    "etag": "W/\"ea6e92e674d62bcba690c44927ad3acb\""
   },
   "openrouter": {
     "models": [
@@ -437,9 +437,9 @@
           "image"
         ],
         "cost": {
-          "input": 0.0243,
-          "output": 0.6,
-          "cacheRead": 0.0243,
+          "input": 0.003,
+          "output": 2.4,
+          "cacheRead": 0.003,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -482,9 +482,9 @@
           "text"
         ],
         "cost": {
-          "input": 0.1853,
-          "output": 3.5,
-          "cacheRead": 0.1853,
+          "input": 0.1901,
+          "output": 4.2,
+          "cacheRead": 0.19,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -517,9 +517,9 @@
           "text"
         ],
         "cost": {
-          "input": 0.0108,
+          "input": 0.0152,
           "output": 1.28,
-          "cacheRead": 0.0108,
+          "cacheRead": 0.0152,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -646,9 +646,9 @@
           "image"
         ],
         "cost": {
-          "input": 0.676,
-          "output": 10,
-          "cacheRead": 0.676,
+          "input": 0.66,
+          "output": 13,
+          "cacheRead": 0.45,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -968,13 +968,13 @@
           "image"
         ],
         "cost": {
-          "input": 0.02,
-          "output": 0.3,
-          "cacheRead": 0.01,
+          "input": 0.0352,
+          "output": 0.5,
+          "cacheRead": 0.0232,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 943718,
+        "maxTokens": 131072,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -1013,13 +1013,13 @@
           "text"
         ],
         "cost": {
-          "input": 0.06,
-          "output": 2.694,
-          "cacheRead": 0.176,
+          "input": 0.03,
+          "output": 12,
+          "cacheRead": 0.03,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 943718,
+        "maxTokens": 131072,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -2561,6 +2561,32 @@
       },
       {
         "type": "chat",
+        "id": "apodex/apodex-1.1-mini:free",
+        "name": "Apodex: Apodex 1.1 Mini (free)",
+        "api": "openai-completions",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "provider": "openrouter",
+        "reasoning": true,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 262144,
+        "maxTokens": 235929,
+        "compat": {
+          "supportsDeveloperRole": false,
+          "thinkingFormat": "openrouter",
+          "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true
+        }
+      },
+      {
+        "type": "chat",
         "id": "arcee-ai/trinity-large-thinking",
         "name": "Arcee AI: Trinity Large Thinking",
         "api": "openai-completions",
@@ -3032,8 +3058,8 @@
           "cacheRead": 0.11,
           "cacheWrite": 0
         },
-        "contextWindow": 163840,
-        "maxTokens": 147456,
+        "contextWindow": 128000,
+        "maxTokens": 115200,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -3137,13 +3163,13 @@
           "text"
         ],
         "cost": {
-          "input": 0.3,
+          "input": 0.27,
           "output": 1,
-          "cacheRead": 0.135,
+          "cacheRead": 0,
           "cacheWrite": 0
         },
-        "contextWindow": 131072,
-        "maxTokens": 65536,
+        "contextWindow": 163840,
+        "maxTokens": 147456,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -3224,13 +3250,13 @@
           "text"
         ],
         "cost": {
-          "input": 0.04186,
-          "output": 0.08372,
-          "cacheRead": 0.008372,
+          "input": 0.03,
+          "output": 1.28,
+          "cacheRead": 0.03,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 131072,
+        "maxTokens": 943718,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -3260,9 +3286,9 @@
           "text"
         ],
         "cost": {
-          "input": 0.0108,
+          "input": 0.0152,
           "output": 1.28,
-          "cacheRead": 0.0108,
+          "cacheRead": 0.0152,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -3379,13 +3405,13 @@
           "text"
         ],
         "cost": {
-          "input": 0.66,
-          "output": 1.98,
-          "cacheRead": 0.022,
+          "input": 0.4,
+          "output": 5,
+          "cacheRead": 0.36,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 393216,
+        "maxTokens": 943718,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -3416,9 +3442,9 @@
           "image"
         ],
         "cost": {
-          "input": 0.03,
-          "output": 0.5,
-          "cacheRead": 0.01,
+          "input": 0.3,
+          "output": 1.2,
+          "cacheRead": 0.006,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -5072,13 +5098,13 @@
           "text"
         ],
         "cost": {
-          "input": 0.06,
-          "output": 0.18,
-          "cacheRead": 0.012,
+          "input": 0.042,
+          "output": 0.1232,
+          "cacheRead": 0.0084,
           "cacheWrite": 0
         },
         "contextWindow": 262144,
-        "maxTokens": 235929,
+        "maxTokens": 32768,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -5147,6 +5173,32 @@
               "jpegQuality": 80
             }
           }
+        }
+      },
+      {
+        "type": "chat",
+        "id": "inclusionai/ling-3.1-flash",
+        "name": "inclusionAI: Ling 3.1 Flash",
+        "api": "openai-completions",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "provider": "openrouter",
+        "reasoning": true,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 262144,
+        "maxTokens": 32768,
+        "compat": {
+          "supportsDeveloperRole": false,
+          "thinkingFormat": "openrouter",
+          "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true
         }
       },
       {
@@ -6793,9 +6845,9 @@
           "image"
         ],
         "cost": {
-          "input": 0.43415,
-          "output": 1.828,
-          "cacheRead": 0.07312,
+          "input": 0.95,
+          "output": 4,
+          "cacheRead": 0.16,
           "cacheWrite": 0
         },
         "contextWindow": 262144,
@@ -6880,9 +6932,9 @@
           "image"
         ],
         "cost": {
-          "input": 0.676,
-          "output": 10,
-          "cacheRead": 0.676,
+          "input": 0.67,
+          "output": 14,
+          "cacheRead": 0.22,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -7150,13 +7202,13 @@
           "text"
         ],
         "cost": {
-          "input": 0.6,
-          "output": 2.4,
-          "cacheRead": 0.12,
+          "input": 0.5,
+          "output": 2.2,
+          "cacheRead": 0.1,
           "cacheWrite": 0
         },
-        "contextWindow": 202800,
-        "maxTokens": 182520,
+        "contextWindow": 262144,
+        "maxTokens": 16384,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -7211,13 +7263,13 @@
           "text"
         ],
         "cost": {
-          "input": 0.0595,
-          "output": 0.17,
-          "cacheRead": 0.02975,
+          "input": 0.06,
+          "output": 0.16,
+          "cacheRead": 0.03,
           "cacheWrite": 0
         },
         "contextWindow": 262144,
-        "maxTokens": 131072,
+        "maxTokens": 32768,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -9639,10 +9691,10 @@
           "image"
         ],
         "cost": {
-          "input": 4,
-          "output": 20,
-          "cacheRead": 0.4,
-          "cacheWrite": 5
+          "input": 2,
+          "output": 10,
+          "cacheRead": 0.2,
+          "cacheWrite": 2.5
         },
         "contextWindow": 1050000,
         "maxTokens": 128000,
@@ -12067,8 +12119,8 @@
           "cacheRead": 0,
           "cacheWrite": 0
         },
-        "contextWindow": 262144,
-        "maxTokens": 235929,
+        "contextWindow": 131072,
+        "maxTokens": 32768,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -12431,13 +12483,13 @@
           "image"
         ],
         "cost": {
-          "input": 0.1625,
-          "output": 1.3,
-          "cacheRead": 0,
+          "input": 0.15,
+          "output": 1,
+          "cacheRead": 0.05,
           "cacheWrite": 0
         },
         "contextWindow": 262144,
-        "maxTokens": 65536,
+        "maxTokens": 235929,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -12654,12 +12706,12 @@
         ],
         "cost": {
           "input": 0.32,
-          "output": 3.2,
-          "cacheRead": 0,
+          "output": 3.25,
+          "cacheRead": 0.03,
           "cacheWrite": 0
         },
         "contextWindow": 262144,
-        "maxTokens": 81920,
+        "maxTokens": 262140,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -12971,10 +13023,10 @@
           "image"
         ],
         "cost": {
-          "input": 0.42,
-          "output": 3,
+          "input": 0.425,
+          "output": 2.55,
           "cacheRead": 0.085,
-          "cacheWrite": 0
+          "cacheWrite": 0.53125
         },
         "contextWindow": 1000000,
         "maxTokens": 131072,
@@ -13728,13 +13780,13 @@
           "image"
         ],
         "cost": {
-          "input": 1,
+          "input": 0.95,
           "output": 4.05,
-          "cacheRead": 0.17,
+          "cacheRead": 0.16,
           "cacheWrite": 0
         },
         "contextWindow": 524288,
-        "maxTokens": 471859,
+        "maxTokens": 262144,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -13946,6 +13998,43 @@
           "cacheWrite": 0
         },
         "contextWindow": 262144,
+        "maxTokens": 131072,
+        "compat": {
+          "supportsDeveloperRole": false,
+          "thinkingFormat": "openrouter",
+          "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "chat",
+        "id": "unbiased/pareto-26.10-preview",
+        "name": "Pareto 26.10 Preview",
+        "api": "openai-completions",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "provider": "openrouter",
+        "reasoning": false,
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0.8,
+          "output": 3.2,
+          "cacheRead": 0.03,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1048576,
         "maxTokens": 131072,
         "compat": {
           "supportsDeveloperRole": false,
@@ -14818,9 +14907,9 @@
           "text"
         ],
         "cost": {
-          "input": 0.9646,
-          "output": 3.0316,
-          "cacheRead": 0.17914,
+          "input": 1.4,
+          "output": 4.4,
+          "cacheRead": 0.26,
           "cacheWrite": 0
         },
         "contextWindow": 202752,
@@ -14853,13 +14942,13 @@
           "text"
         ],
         "cost": {
-          "input": 1.4,
-          "output": 4.4,
-          "cacheRead": 0.26,
+          "input": 0.0224,
+          "output": 16,
+          "cacheRead": 0.0224,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 943718,
+        "maxTokens": 131072,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -14888,9 +14977,9 @@
           "text"
         ],
         "cost": {
-          "input": 0.2219,
-          "output": 3.39,
-          "cacheRead": 0.1775,
+          "input": 0.05,
+          "output": 7,
+          "cacheRead": 0.045,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -15146,11 +15235,2066 @@
             }
           }
         }
+      },
+      {
+        "type": "image",
+        "id": "black-forest-labs/flux-3-image",
+        "name": "Black Forest Labs: FLUX.3 Image",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "black-forest-labs/flux.2-flex",
+        "name": "Black Forest Labs: FLUX.2 Flex",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "black-forest-labs/flux.2-klein-4b",
+        "name": "Black Forest Labs: FLUX.2 Klein 4B",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "black-forest-labs/flux.2-max",
+        "name": "Black Forest Labs: FLUX.2 Max",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "black-forest-labs/flux.2-pro",
+        "name": "Black Forest Labs: FLUX.2 Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "bytedance-seed/seedream-4.5",
+        "name": "ByteDance Seed: Seedream 4.5",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "bytedance-seed/seedream-5-0-flash",
+        "name": "ByteDance Seed: Seedream 5.0 Flash",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "bytedance-seed/seedream-5-0-lite",
+        "name": "ByteDance Seed: Seedream 5.0 Lite",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "bytedance-seed/seedream-5-0-pro",
+        "name": "ByteDance Seed: Seedream 5.0 Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "google/gemini-2.5-flash-image",
+        "name": "Google: Nano Banana (Gemini 2.5 Flash Image)",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image",
+          "text"
+        ],
+        "cost": {
+          "input": 0.3,
+          "output": 2.5,
+          "cacheRead": 0.03,
+          "cacheWrite": 0.083333
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "google/gemini-3-pro-image",
+        "name": "Google: Nano Banana Pro (Gemini 3 Pro Image)",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image",
+          "text"
+        ],
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cacheRead": 0.2,
+          "cacheWrite": 0.375
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "google/gemini-3-pro-image-preview",
+        "name": "Google: Nano Banana Pro (Gemini 3 Pro Image Preview)",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image",
+          "text"
+        ],
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cacheRead": 0.2,
+          "cacheWrite": 0.375
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "google/gemini-3.1-flash-image",
+        "name": "Google: Nano Banana 2 (Gemini 3.1 Flash Image)",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image",
+          "text"
+        ],
+        "cost": {
+          "input": 0.5,
+          "output": 3,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "google/gemini-3.1-flash-image-preview",
+        "name": "Google: Nano Banana 2 (Gemini 3.1 Flash Image Preview)",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image",
+          "text"
+        ],
+        "cost": {
+          "input": 0.5,
+          "output": 3,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "google/gemini-3.1-flash-lite-image",
+        "name": "Google: Nano Banana 2 Lite (Gemini 3.1 Flash Lite Image)",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image",
+          "text"
+        ],
+        "cost": {
+          "input": 0.25,
+          "output": 1.5,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "inclusionai/ming-image-0.1-design",
+        "name": "inclusionAI: Ming Image 0.1 Design",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        }
+      },
+      {
+        "type": "image",
+        "id": "inclusionai/ming-image-0.1-design-layer",
+        "name": "inclusionAI: Ming Image 0.1 Design Layer",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "krea/krea-2-large",
+        "name": "Krea: Krea 2 Large",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "krea/krea-2-medium",
+        "name": "Krea: Krea 2 Medium",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "krea/krea-2-medium-turbo",
+        "name": "Krea: Krea 2 Medium Turbo",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "meta/muse-image",
+        "name": "Meta: Muse Image",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "microsoft/mai-image-2.5",
+        "name": "Microsoft AI: MAI-Image-2.5",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 5,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "microsoft/mai-image-2.5-pro",
+        "name": "Microsoft AI: MAI-Image-2.5 Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 5,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "microsoft/mai-image-2.6",
+        "name": "Microsoft AI: MAI-Image-2.6",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 5,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "microsoft/mai-image-2.6-flash",
+        "name": "Microsoft AI: MAI-Image-2.6 Flash",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 1.75,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openai/gpt-5-image",
+        "name": "OpenAI: GPT-5 Image",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image",
+          "text"
+        ],
+        "cost": {
+          "input": 10,
+          "output": 10,
+          "cacheRead": 1.25,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openai/gpt-5-image-mini",
+        "name": "OpenAI: GPT-5 Image Mini",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image",
+          "text"
+        ],
+        "cost": {
+          "input": 2.5,
+          "output": 2,
+          "cacheRead": 0.25,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openai/gpt-5.4-image-2",
+        "name": "OpenAI: GPT-5.4 Image 2",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "image",
+          "text"
+        ],
+        "output": [
+          "image",
+          "text"
+        ],
+        "cost": {
+          "input": 8,
+          "output": 15,
+          "cacheRead": 2,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openai/gpt-image-1",
+        "name": "OpenAI: GPT Image 1",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 10,
+          "output": 10,
+          "cacheRead": 1.25,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openai/gpt-image-1-mini",
+        "name": "OpenAI: GPT Image 1 Mini",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 2.5,
+          "output": 2.5,
+          "cacheRead": 0.25,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openai/gpt-image-2",
+        "name": "OpenAI: GPT Image 2",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 8,
+          "output": 8,
+          "cacheRead": 2,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openai/gpt-image-2.5-flare",
+        "name": "OpenAI: GPT Image 2.5 Flare",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 8,
+          "output": 8,
+          "cacheRead": 2,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openai/gpt-image-2.5-sunburst",
+        "name": "OpenAI: GPT Image 2.5 Sunburst",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 8,
+          "output": 8,
+          "cacheRead": 2,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openrouter/auto",
+        "name": "Auto Router",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": -1000000,
+          "output": -1000000,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "openrouter/auto-beta",
+        "name": "Auto Router (Beta)",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": -1000000,
+          "output": -1000000,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "qwen/qwen-image-3",
+        "name": "Qwen: Qwen Image 3",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "qwen/qwen-image-3-pro",
+        "name": "Qwen: Qwen Image 3 Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v3",
+        "name": "Recraft: Recraft V3",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4",
+        "name": "Recraft: Recraft V4",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4-pro",
+        "name": "Recraft: Recraft V4 Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4-pro-vector",
+        "name": "Recraft: Recraft V4 Pro Vector",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4-styles",
+        "name": "Recraft: Recraft V4 Styles",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4-styles-pro",
+        "name": "Recraft: Recraft V4 Styles Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4-styles-pro-vector",
+        "name": "Recraft: Recraft V4 Styles Pro Vector",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4-styles-vector",
+        "name": "Recraft: Recraft V4 Styles Vector",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4-vector",
+        "name": "Recraft: Recraft V4 Vector",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4.1",
+        "name": "Recraft: Recraft V4.1",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4.1-flash",
+        "name": "Recraft: Recraft V4.1 Flash",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4.1-pro",
+        "name": "Recraft: Recraft V4.1 Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4.1-pro-vector",
+        "name": "Recraft: Recraft V4.1 Pro Vector",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4.1-utility",
+        "name": "Recraft: Recraft V4.1 Utility",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4.1-utility-pro",
+        "name": "Recraft: Recraft V4.1 Utility Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "recraft/recraft-v4.1-vector",
+        "name": "Recraft: Recraft V4.1 Vector",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "sourceful/riverflow-v2-fast",
+        "name": "Sourceful: Riverflow V2 Fast",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "sourceful/riverflow-v2-pro",
+        "name": "Sourceful: Riverflow V2 Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "sourceful/riverflow-v2.5-fast",
+        "name": "Sourceful: Riverflow V2.5 Fast",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "sourceful/riverflow-v2.5-pro",
+        "name": "Sourceful: Riverflow V2.5 Pro",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "x-ai/grok-imagine-image-2.0",
+        "name": "xAI: Grok Imagine Image 2.0",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "id": "x-ai/grok-imagine-image-quality",
+        "name": "SpaceXAI: Grok Imagine Image Quality",
+        "api": "openrouter-images",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        }
+      },
+      {
+        "type": "classifier",
+        "id": "~typesafe/jev-latest",
+        "name": "TypeSafe: Jev Latest",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.042,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 32000
+      },
+      {
+        "type": "classifier",
+        "id": "cloudflare/clef",
+        "name": "Cloudflare: Clef",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0.24,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 65536
+      },
+      {
+        "type": "classifier",
+        "id": "cloudflare/clef-flash",
+        "name": "Cloudflare: Clef Flash",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0.09,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 65536
+      },
+      {
+        "type": "classifier",
+        "id": "inception/mercury-decide:free",
+        "name": "Inception: Mercury Decide (free)",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 32768
+      },
+      {
+        "type": "classifier",
+        "id": "jaredpalmer/kev-4b",
+        "name": "Jared Palmer: Kev 4B",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.042,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 8192
+      },
+      {
+        "type": "classifier",
+        "id": "liquid/d1",
+        "name": "LiquidAI: D1",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.04,
+          "output": 0,
+          "cacheRead": 0.04,
+          "cacheWrite": 0
+        },
+        "contextWindow": 65536
+      },
+      {
+        "type": "classifier",
+        "id": "perplexity/pplx-decider-v1-27b",
+        "name": "Perplexity: Decider V1 27B",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0.04,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 262144
+      },
+      {
+        "type": "classifier",
+        "id": "respan/span-01",
+        "name": "Respan: Span-01",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.02,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 4096
+      },
+      {
+        "type": "classifier",
+        "id": "respan/span-01-lite",
+        "name": "Respan: Span-01 Lite",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 4096
+      },
+      {
+        "type": "classifier",
+        "id": "respan/span-01-lite:free",
+        "name": "Respan: Span-01 Lite (free)",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 4096
+      },
+      {
+        "type": "classifier",
+        "id": "togethercomputer/tev1-4b-experimental",
+        "name": "Together: Tev1 4B Experimental",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.042,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 32768
+      },
+      {
+        "type": "classifier",
+        "id": "typesafe/jev-1.13",
+        "name": "TypeSafe: Jev 1.13",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.042,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 32000
+      },
+      {
+        "type": "classifier",
+        "id": "upstage/solar-decide",
+        "name": "Upstage: Solar Decide",
+        "api": "typesafe-system-one",
+        "provider": "openrouter",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.05,
+          "output": 0,
+          "cacheRead": 0.05,
+          "cacheWrite": 0
+        },
+        "contextWindow": 524288
       }
     ],
-    "checkedAt": 1791034315718,
-    "lastModified": 1790859114000,
-    "etag": "W/\"67d609087f55e2037f22e3ba9a24fe2d\""
+    "checkedAt": 1791213608614,
+    "lastModified": 1791204351000,
+    "etag": "W/\"afc22463cf97d5d2c38a8182f91c078f\""
   },
   "opencode": {
     "models": [
@@ -15842,6 +17986,52 @@
         },
         "contextWindow": 1000000,
         "maxTokens": 384000,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
+        "inputLimits": {
+          "images": {
+            "resize": {
+              "maxWidth": 2000,
+              "maxHeight": 2000,
+              "maxBytes": 4718592,
+              "jpegQuality": 80
+            }
+          }
+        },
+        "type": "chat"
+      },
+      {
+        "id": "fledge-alpha-free",
+        "name": "Fledge Alpha Free",
+        "api": "openai-completions",
+        "provider": "opencode",
+        "baseUrl": "https://opencode.ai/zen/v1",
+        "reasoning": true,
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "compat": {
+          "supportsStore": false,
+          "supportsDeveloperRole": false,
+          "supportsStrictMode": true,
+          "maxTokensField": "max_tokens"
+        },
+        "contextWindow": 1048576,
+        "maxTokens": 131072,
         "thinkingLevelMap": {
           "off": null,
           "minimal": null,
@@ -17705,6 +19895,32 @@
         "type": "chat"
       },
       {
+        "id": "ling-3.1-flash-free",
+        "name": "Ling 3.1 Flash Free",
+        "api": "openai-completions",
+        "provider": "opencode",
+        "baseUrl": "https://opencode.ai/zen/v1",
+        "reasoning": true,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "compat": {
+          "supportsStore": false,
+          "supportsDeveloperRole": false,
+          "supportsStrictMode": true,
+          "maxTokensField": "max_tokens"
+        },
+        "contextWindow": 262144,
+        "maxTokens": 32768,
+        "type": "chat"
+      },
+      {
         "id": "longcat-2.5-preview-free",
         "name": "LongCat 2.5 Preview Free",
         "api": "openai-completions",
@@ -18227,11 +20443,47 @@
           }
         },
         "type": "chat"
+      },
+      {
+        "type": "classifier",
+        "id": "jev-1.13",
+        "name": "Jev 1.13",
+        "api": "typesafe-system-one",
+        "provider": "opencode",
+        "baseUrl": "https://opencode.ai/zen/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.042,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 32000
+      },
+      {
+        "type": "classifier",
+        "id": "jev-1.13-free",
+        "name": "Jev 1.13 Free",
+        "api": "typesafe-system-one",
+        "provider": "opencode",
+        "baseUrl": "https://opencode.ai/zen/v1",
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 32000
       }
     ],
-    "checkedAt": 1791034315700,
-    "lastModified": 1790772159000,
-    "etag": "W/\"03bfebfb831e13c390ba3039e7d09224\""
+    "checkedAt": 1791213608764,
+    "lastModified": 1791044260000,
+    "etag": "W/\"061872e6bcb908ae5769a9f4b3359973\""
   },
   "deepseek": {
     "models": [
@@ -18318,9 +20570,9 @@
         "type": "chat"
       }
     ],
-    "checkedAt": 1791034315717,
-    "lastModified": 1790253610000,
-    "etag": "W/\"bff63d130895f0d43f35dff747454ff4\""
+    "checkedAt": 1791213608350,
+    "lastModified": 1791044216000,
+    "etag": "W/\"833a51b4211b57d882564ca5f56383e8\""
   },
   "opencode-go": {
     "models": [
@@ -19281,9 +21533,9 @@
       {
         "id": "qwen3.7-plus",
         "name": "Qwen3.7 Plus",
-        "api": "openai-completions",
+        "api": "anthropic-messages",
         "provider": "opencode-go",
-        "baseUrl": "https://opencode.ai/zen/go/v1",
+        "baseUrl": "https://opencode.ai/zen/go",
         "reasoning": true,
         "input": [
           "text",
@@ -19294,12 +21546,6 @@
           "output": 1.6,
           "cacheRead": 0.04,
           "cacheWrite": 0.5
-        },
-        "compat": {
-          "supportsStore": false,
-          "supportsDeveloperRole": false,
-          "supportsStrictMode": true,
-          "maxTokensField": "max_tokens"
         },
         "contextWindow": 1000000,
         "maxTokens": 65536,
@@ -19352,9 +21598,9 @@
       {
         "id": "qwen3.8-max",
         "name": "Qwen3.8 Max",
-        "api": "openai-completions",
+        "api": "anthropic-messages",
         "provider": "opencode-go",
-        "baseUrl": "https://opencode.ai/zen/go/v1",
+        "baseUrl": "https://opencode.ai/zen/go",
         "reasoning": true,
         "input": [
           "text",
@@ -19366,23 +21612,8 @@
           "cacheRead": 0.25,
           "cacheWrite": 2.5
         },
-        "compat": {
-          "supportsStore": false,
-          "supportsDeveloperRole": false,
-          "supportsStrictMode": true,
-          "maxTokensField": "max_tokens"
-        },
         "contextWindow": 1000000,
         "maxTokens": 131072,
-        "thinkingLevelMap": {
-          "off": null,
-          "minimal": null,
-          "low": "low",
-          "medium": "medium",
-          "high": null,
-          "xhigh": "xhigh",
-          "max": null
-        },
         "inputLimits": {
           "images": {
             "resize": {
@@ -19442,9 +21673,9 @@
         "type": "chat"
       }
     ],
-    "checkedAt": 1791034315703,
-    "lastModified": 1790621329000,
-    "etag": "W/\"ae71beff0034395511c0b166de1372bc\""
+    "checkedAt": 1791213608346,
+    "lastModified": 1791196517000,
+    "etag": "W/\"9f02d487f471cffdb9d03b11b1152925\""
   },
   "google": {
     "models": [
@@ -20315,9 +22546,9 @@
         "type": "chat"
       }
     ],
-    "checkedAt": 1791034315683,
-    "lastModified": 1790253617000,
-    "etag": "W/\"7479536815e7f52fb17815e7f6031a76\""
+    "checkedAt": 1791213608640,
+    "lastModified": 1791044224000,
+    "etag": "W/\"1cb2f49be25b1ba3b871e356aa249893\""
   },
   "openai-codex": {
     "models": [
@@ -20771,9 +23002,9 @@
         "type": "chat"
       }
     ],
-    "checkedAt": 1791034315950,
-    "lastModified": 1790772157000,
-    "etag": "W/\"76289bce63662cea459c0ed5b4fdd328\""
+    "checkedAt": 1791213608530,
+    "lastModified": 1791044257000,
+    "etag": "W/\"8003e3819641342fe5725e65d6bea0fb\""
   },
   "minimax": {
     "models": [
@@ -20849,9 +23080,9 @@
         "type": "chat"
       }
     ],
-    "checkedAt": 1791034315703,
-    "lastModified": 1790253631000,
-    "etag": "W/\"4e2d71f310d31d47d4ce8276b8425735\""
+    "checkedAt": 1791213608348,
+    "lastModified": 1791044239000,
+    "etag": "W/\"230a34262f4a60545c12179fec78c18e\""
   },
   "nvidia": {
     "models": [

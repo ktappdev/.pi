@@ -9,9 +9,10 @@
     "instanceStartedAt": 1790937508555
   },
   "lifecycle": {
-    "state": "active",
+    "state": "closed",
     "createdAt": 1791034315441,
-    "updatedAt": 1791034315447
+    "updatedAt": 1791050158891,
+    "closedAt": 1791050158891
   },
   "day": "2026-10-03",
   "globalEpoch": "1790157161495-5e7e1cdb-c55f-42bc-9ac6-6c1c3e16f70c",
