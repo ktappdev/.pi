@@ -74,6 +74,14 @@
       "maxTokens": 65536
     },
     {
+      "id": "claude-haiku-5-5",
+      "name": "Claude Haiku 5.5 (CC)",
+      "api": "anthropic-messages",
+      "reasoning": false,
+      "contextWindow": 1000000,
+      "maxTokens": 65536
+    },
+    {
       "id": "claude-haiku-4-5-20251001",
       "name": "Claude Haiku 4.5 (CC)",
       "api": "anthropic-messages",
@@ -506,6 +514,14 @@
       "maxTokens": 65536
     },
     {
+      "id": "google/gemini-4-argon",
+      "name": "Gemini 4 Argon (CC)",
+      "api": "openai-completions",
+      "reasoning": false,
+      "contextWindow": 1000000,
+      "maxTokens": 65536
+    },
+    {
       "id": "google/gemini-3.8-flash",
       "name": "Gemini 3.8 Flash (CC)",
       "api": "openai-completions",
@@ -586,12 +602,12 @@
       "maxTokens": 65536
     },
     {
-      "id": "stealth/space-bunny-alpha",
-      "name": "Space Bunny Alpha (CC)",
+      "id": "stealth/glyph-cluster:free",
+      "name": "Glyph Cluster (CC)",
       "api": "openai-completions",
-      "reasoning": true,
-      "contextWindow": 1000000,
-      "maxTokens": 524288
+      "reasoning": false,
+      "contextWindow": 256000,
+      "maxTokens": 65536
     },
     {
       "id": "poolside/laguna-s-2.1-free",
@@ -658,6 +674,14 @@
       "maxTokens": 65536
     },
     {
+      "id": "meta/muse-wonder-1.0",
+      "name": "Muse Wonder (CC)",
+      "api": "openai-completions",
+      "reasoning": false,
+      "contextWindow": 1048576,
+      "maxTokens": 65536
+    },
+    {
       "id": "xai/grok-4.5",
       "name": "Grok 4.5 (CC)",
       "api": "openai-completions",
@@ -679,6 +703,14 @@
       "api": "openai-completions",
       "reasoning": true,
       "contextWindow": 500000,
+      "maxTokens": 65536
+    },
+    {
+      "id": "mistral/mistral-large-4",
+      "name": "Mistral Large 4 (CC)",
+      "api": "openai-completions",
+      "reasoning": false,
+      "contextWindow": 524288,
       "maxTokens": 65536
     }
   ]

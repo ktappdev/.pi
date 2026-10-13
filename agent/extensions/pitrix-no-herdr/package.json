@@ -1,0 +1,24 @@
+{
+  "name": "pitrix-no-herdr",
+  "version": "0.0.0",
+  "description": "Herdr-less variant of pitrix — multi-agent coordination over the file mailbox, workers spawned as detached pi processes (no multiplexer). For local testing.",
+  "license": "MIT",
+  "type": "module",
+  "pi": {
+    "extensions": ["./src/index.ts"],
+    "themes": ["./themes"]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "typebox": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@types/node": "*",
+    "typescript": "*",
+    "typebox": "*"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

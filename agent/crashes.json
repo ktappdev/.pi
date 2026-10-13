@@ -8,5 +8,35 @@
     "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-lugetech-hackathon-solution--/2026-09-24T19-14-41-348Z_01a0d4d7-6643-774c-9790-3323b5915942.jsonl",
     "cwd": "/Users/kentaylor/developer/lugetech-hackathon-solution",
     "notified": true
+  },
+  {
+    "timestamp": "2026-10-11T16:34:31.351Z",
+    "version": "1.1.0",
+    "kind": "uncaught_exception",
+    "message": "terminated",
+    "stack": "TypeError: terminated\n    at Fetch.onAborted (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:129:67392)\n    at Fetch.emit (node:events:514:20)\n    at Fetch.terminate (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:129:44136)\n    at Object.onResponseError (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:129:71394)\n    at Request.onResponseError (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:2:54290)\n    at Object.errorRequest (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:2:38041)\n    at TLSSocket.onHttpSocketClose (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:13:20487)\n    at TLSSocket.emit (node:events:526:24)\n    at node:net:362:12\n    at TCP.done (node:internal/tls/wrap:779:7)",
+    "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-pitrix-servprogy--/2026-10-11T15-28-16-924Z_01a12b94-3a18-7567-bf26-05c228d62e18.jsonl",
+    "cwd": "/Users/kentaylor/pitrix/servprogy",
+    "notified": true
+  },
+  {
+    "timestamp": "2026-10-12T21:00:50.759Z",
+    "version": "1.1.0",
+    "kind": "uncaught_exception",
+    "message": "terminated",
+    "stack": "TypeError: terminated\n    at Fetch.onAborted (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:129:67392)\n    at Fetch.emit (node:events:514:20)\n    at Fetch.terminate (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:129:44136)\n    at Object.onResponseError (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:129:71394)\n    at Request.onResponseError (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:2:54290)\n    at Object.errorRequest (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:2:38041)\n    at TLSSocket.onHttpSocketClose (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:13:20487)\n    at TLSSocket.emit (node:events:526:24)\n    at node:net:362:12\n    at TCP.done (node:internal/tls/wrap:779:7)",
+    "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-security-audit-suite--/2026-10-12T19-26-28-300Z_01a13194-a7b8-76a5-b4ee-34cbd895999c.jsonl",
+    "cwd": "/Users/kentaylor/developer/security-audit-suite",
+    "notified": true
+  },
+  {
+    "timestamp": "2026-10-12T22:54:11.554Z",
+    "version": "1.1.0",
+    "kind": "uncaught_exception",
+    "message": "This extension ctx is stale after session replacement or reload. Do not use a captured pi or command ctx after ctx.newSession(), ctx.fork(), ctx.switchSession(), or ctx.reload(). For newSession, fork, and switchSession, move post-replacement work into withSession and use the ctx passed to withSession. For reload, do not use the old ctx after await ctx.reload().",
+    "stack": "Error: This extension ctx is stale after session replacement or reload. Do not use a captured pi or command ctx after ctx.newSession(), ctx.fork(), ctx.switchSession(), or ctx.reload(). For newSession, fork, and switchSession, move post-replacement work into withSession and use the ctx passed to withSession. For reload, do not use the old ctx after await ctx.reload().\n    at ExtensionRunner.assertActive (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:523:13443)\n    at Object.isIdle (file:///opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/dist/bundle/chunks/chunk-OIM2DMFI.js:523:16663)\n    at inject (/Users/kentaylor/.pi/agent/git/github.com/ktappdev/picode/src/inbox.ts:193:26)\n    at Timeout._onTimeout (/Users/kentaylor/.pi/agent/git/github.com/ktappdev/picode/src/inbox.ts:164:7)\n    at listOnTimeout (node:internal/timers:685:17)\n    at process.processTimers (node:internal/timers:618:7)",
+    "sessionFile": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-security-audit-suite--/2026-10-12T22-52-40-272Z_01a13251-6fd0-72bc-aa37-6683c894e84c.jsonl",
+    "cwd": "/Users/kentaylor/developer/security-audit-suite",
+    "notified": true
   }
 ]

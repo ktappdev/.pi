@@ -14,7 +14,7 @@ GitHub: <https://github.com/ktappdev>
 
 Before acting on a codebase:
 
-1. Read `<cwd>/AGENTS.md` or `CLAUDE.md`.
+1. Read `<cwd>/AGENTS.md` or `CLAUDE.md` unless you have this info in your context already.
 2. No guessing or assuming whatsoever.
 
 Do not skip this process.
@@ -49,7 +49,22 @@ When making a meaningful frontend UI change:
 - If the user says, "let's talk," do not implement anything until instructed.
 - Prefer composable, modular architecture without over-engineering or splitting everything into services. Build the smallest clean modules that can grow.
 - Never Guess or assume, you have websearch or ask the user questions when there is no other way for you to get a true bearing.
+- When using the browser to test or browser tools please use headless when possible.
+- pi's codemode is amazing, use it.
+
+## Important new culture
+
+- No new tests, don't write new tests unless absolutely necessary.
+- Feel free to use existing tests if any exist but don't write new tests unless you see it absolutely necessary.
+- You can lean more to writing tests if you need to rewrite or maybe breeak up a large file to smaller modules and you want to add tests to confirm a certain thing still works, but these tests are necessary.
 
 ## picode ignore this section - not for picode
 
 When the main model is not a vision or video-capable model, and the user wants feedback from a video or image, or answers, or wants you to read or look at the image, please try to delegate to a sub-agent that has vision capabilities if applicable or if any is installed.
+
+## Finding code with ctxt
+
+Use `ctxt search-hints "keywords or concept" --json` to find relevant files
+when you are unsure where code lives. Start with the strongest relevant results and inspect those files before broadening the search.
+Use rg for exact text, known symbols, and checking file contents. Use fd or rg --files when you already know the filename or path pattern.
+Treat search hints as candidates, not proof. If the first search is unhelpful, try one more specific query, then use normal search tools. Keep searches scoped and output focused.

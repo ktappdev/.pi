@@ -1,0 +1,58 @@
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { Type } from "typebox";
+import type { PitrixStore } from "../core/types";
+import { resumeThread, suspendThread } from "../core/pitrix-ops";
+import type { Inbox } from "../inbox";
+
+/** Self-control: pausing (On Hold) and resuming. Client-local (Layer 2) —
+ *  not protocol surface (§14/A.5). Scheduled wakes are ordinary sends with
+ *  deliverAfterSeconds (§12.2), not a control tool. */
+export function registerControlTools(pi: ExtensionAPI, store: PitrixStore, inbox: Inbox) {
+  pi.registerTool({
+    name: "pnh_suspend",
+    label: "Pitrix Suspend",
+    description:
+      "Mark this pitrix On Hold. Cooperative — does not stop the process, just records suspended state for a human/harness to act on. Inbox messages queue until resume.",
+    promptSnippet: "Mark this pitrix On Hold (cooperative; inbox queues until resume).",
+    parameters: Type.Object({
+      reason: Type.Optional(Type.String()),
+    }),
+    async execute(_id, params, _signal, _onUpdate, ctx) {
+      await suspendThread(store, params.reason ?? null, ctx);
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: `Pitrix suspended (On Hold)${params.reason ? `: ${params.reason}` : ""}. Inbox messages queue until resume.`,
+          },
+        ],
+        details: { ok: true, reason: params.reason ?? null },
+      };
+    },
+  });
+
+  pi.registerTool({
+    name: "pnh_resume",
+    label: "Pitrix Resume",
+    description: "Resume this pitrix from On Hold back to Open.",
+    promptSnippet: "Resume this pitrix from On Hold back to Open.",
+    parameters: Type.Object({}),
+    async execute(_id, _params, _signal, _onUpdate, ctx) {
+      if (!(await resumeThread(store, () => inbox.drainInbox(ctx), ctx))) {
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: `Not on hold (state is ${store.state}) — nothing to resume.`,
+            },
+          ],
+          details: { ok: false },
+        };
+      }
+      return {
+        content: [{ type: "text" as const, text: "Pitrix resumed (Open). Queued inbox drained." }],
+        details: { ok: true },
+      };
+    },
+  });
+}

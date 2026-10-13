@@ -1,0 +1,185 @@
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { Type } from "typebox";
+import type { PitrixStore } from "../core/types";
+import { barrierLines, formatThreadLine, obligationLines, owedLines } from "../core/format";
+import { splitJournalEntries, compactEntry } from "../journal";
+import { err } from "./shared";
+
+/** Read-only tools: this pitrix's status, the workspace roster, journals. */
+export function registerIntrospectionTools(pi: ExtensionAPI, store: PitrixStore) {
+  pi.registerTool({
+    name: "pnh_status",
+    label: "Pitrix Status",
+    description:
+      "Read this pitrix's own state and journal. Use this to understand what you were doing before a compaction, and to recover the envelope ids you owe replies to.",
+    promptSnippet:
+      "Read this pitrix's own state, journal, and owed-reply ids (recover context after compaction).",
+    parameters: Type.Object({
+      tail: Type.Optional(
+        Type.Number({
+          description:
+            "Only return the last N journal entries. Default: 15. Set 0 for full journal.",
+        }),
+      ),
+      lookbackMinutes: Type.Optional(
+        Type.Number({
+          description:
+            "Only return entries timestamped within the last N minutes. Combine with tail to cap both age and count.",
+        }),
+      ),
+      compact: Type.Optional(
+        Type.Boolean({
+          description:
+            "Compact each journal entry to a one-line summary (default true). Set false to see full multi-line entries.",
+        }),
+      ),
+    }),
+    async execute(_id, params) {
+      let journal =
+        (await store.readJournal(store.pitrixId)) ?? "(no journal yet — this is the first turn)";
+      const compact = params.compact !== false;
+      // Apply filters if specified, or default tail=15 to cap context
+      const tail = params.tail !== undefined ? params.tail : 15;
+      if ((tail > 0 || params.lookbackMinutes) && journal) {
+        let entries = splitJournalEntries(journal);
+        if (params.lookbackMinutes) {
+          const cutoff = Date.now() - params.lookbackMinutes * 60_000;
+          entries = entries.filter(e => {
+            const m = /^<!--\s*(.+?)\s*-->/.exec(e);
+            if (!m) return true; // no timestamp — keep rather than silently drop
+            const ts = new Date(m[1].replace(" ", "T") + ":00Z").getTime();
+            return !Number.isFinite(ts) || ts >= cutoff;
+          });
+        }
+        if (tail > 0) entries = entries.slice(-tail);
+        journal = compact
+          ? entries.map(compactEntry).join("\n") || "(no entries in range)"
+          : entries.join("\n") || "(no entries in range)";
+      } else if (compact && journal) {
+        // tail=0 + compact → still compact the full journal
+        const entries = splitJournalEntries(journal);
+        journal = entries.map(compactEntry).join("\n") || "(no entries)";
+      }
+      // Build status header — only include sections that have content, so
+      // an idle pitrix doesn't get six "none" lines of noise.
+      const sections: string[] = [
+        `Id: ${store.pitrixId}`,
+        `Role: ${store.role ?? "-"}`,
+        `State: ${store.state}${store.holdReason ? ` (${store.holdReason})` : ""}`,
+        `Status: ${store.status}`,
+      ];
+      if (store.barriers.length) sections.push(`Barriers:${barrierLines(store.barriers)}`);
+      if (store.obligations.length)
+        sections.push(`Obligations:${obligationLines(store.obligations)}`);
+      if (store.owed.length) sections.push(`Owed replies:${owedLines(store.owed)}`);
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: `${sections.join("\n")}\n\n${journal}`,
+          },
+        ],
+        details: {
+          id: store.pitrixId,
+          role: store.role,
+          state: store.state,
+          status: store.status,
+          holdReason: store.holdReason,
+          obligations: store.obligations,
+          owed: store.owed,
+          barriers: store.barriers,
+        },
+      };
+    },
+  });
+
+  pi.registerTool({
+    name: "pnh_list",
+    label: "Pitrix List",
+    description:
+      "List all known threads sharing this workspace and their last known state. Use this to find a valid `to` id before calling pnh_send.",
+    promptSnippet:
+      "List all pnh-threads in the workspace and their last known state (find a valid `to` id before pnh_send).",
+    parameters: Type.Object({}),
+    async execute() {
+      const threads = await store.listPcodes();
+      const lines = threads.map(formatThreadLine);
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: lines.length ? lines.join("\n") : "(no other threads found)",
+          },
+        ],
+        details: { threads },
+      };
+    },
+  });
+
+  pi.registerTool({
+    name: "pnh_journal",
+    label: "Pitrix Journal",
+    description:
+      "Read another pitrix's journal (or your own) without messaging it — the self-written status trail visible via pnh_status, but for anyone. Use to check what a teammate has been doing before deciding whether to interrupt them.",
+    promptSnippet:
+      "Read any pitrix's journal without messaging it (check a teammate's progress before interrupting).",
+    parameters: Type.Object({
+      id: Type.String({
+        description: "Pitrix id to read (see pnh_list). Use your own id for your own journal.",
+      }),
+      tail: Type.Optional(
+        Type.Number({
+          description:
+            "Only return the last N journal entries (each entry is one turn/session). Default: 15. Set 0 for full journal.",
+        }),
+      ),
+      lookbackMinutes: Type.Optional(
+        Type.Number({
+          description:
+            "Only return entries timestamped within the last N minutes. Combine with tail to cap both age and count.",
+        }),
+      ),
+      compact: Type.Optional(
+        Type.Boolean({
+          description:
+            "Compact each entry to a one-line summary (default true). Set false to see full multi-line entries.",
+        }),
+      ),
+    }),
+    async execute(_id, params) {
+      if (!store.adapter.readJournal) {
+        return err("This storage backend has no journal channel (optional extension, §5).");
+      }
+      if (!(await store.threadExists(params.id))) {
+        return err(`No pitrix "${params.id}" found. Call pnh_list to see known ids.`);
+      }
+      let journal = (await store.readJournal(params.id)) ?? "(no journal entries yet)";
+      const compact = params.compact !== false;
+      // Apply filters if specified, or default tail=15 to cap context
+      const tail = params.tail !== undefined ? params.tail : 15;
+      if ((tail > 0 || params.lookbackMinutes) && journal) {
+        let entries = splitJournalEntries(journal);
+        if (params.lookbackMinutes) {
+          const cutoff = Date.now() - params.lookbackMinutes * 60_000;
+          entries = entries.filter(e => {
+            const m = /^<!--\s*(.+?)\s*-->/.exec(e);
+            if (!m) return true; // no timestamp — keep rather than silently drop
+            const ts = new Date(m[1].replace(" ", "T") + ":00Z").getTime();
+            return !Number.isFinite(ts) || ts >= cutoff;
+          });
+        }
+        if (tail > 0) entries = entries.slice(-tail);
+        journal = compact
+          ? entries.map(compactEntry).join("\n") || "(no entries in range)"
+          : entries.join("\n") || "(no entries in range)";
+      } else if (compact && journal) {
+        const entries = splitJournalEntries(journal);
+        journal = entries.map(compactEntry).join("\n") || "(no entries)";
+      }
+      return {
+        content: [{ type: "text" as const, text: `Journal for ${params.id}:\n\n${journal}` }],
+        details: { ok: true, id: params.id, journal },
+      };
+    },
+  });
+}
