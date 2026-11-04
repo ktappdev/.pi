@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "485540fc-988c-45b4-a22d-d4e995934cef",
+  "title": "[prompt redacted]",
+  "objective": "[prompt redacted]",
+  "status": "completed",
+  "createdAt": "2026-10-15T22:54:22.486Z",
+  "updatedAt": "2026-10-15T22:55:49.539Z",
+  "runs": [
+    {
+      "runId": "0553f027-cbcb-4ef6-abee-0c3aaa36f223",
+      "mode": "single",
+      "asyncDir": "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/0553f027-cbcb-4ef6-abee-0c3aaa36f223",
+      "status": "complete",
+      "startedAt": "2026-10-15T22:54:22.506Z",
+      "completedAt": "2026-10-15T22:55:49.538Z",
+      "usage": {
+        "tokens": 64372
+      }
+    }
+  ],
+  "workflowChildren": [],
+  "decisions": [],
+  "artifacts": [
+    {
+      "kind": "status",
+      "path": "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/0553f027-cbcb-4ef6-abee-0c3aaa36f223/status.json"
+    },
+    {
+      "kind": "other",
+      "path": "/var/folders/3j/6ws_m0051bl8dj7qx00jp_xr0000gn/T/pi-subagents-uid-501/async-subagent-runs/0553f027-cbcb-4ef6-abee-0c3aaa36f223/events.jsonl",
+      "description": "Lifecycle events"
+    },
+    {
+      "kind": "output",
+      "path": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-CJIA - Scheduler--/subagent-artifacts/0553f027-cbcb-4ef6-abee-0c3aaa36f223_scout_output.md"
+    }
+  ],
+  "receipts": [],
+  "cwd": "/Users/kentaylor/developer/CJIA - Scheduler",
+  "ownerSessionId": "/Users/kentaylor/.pi/agent/sessions/--Users-kentaylor-developer-CJIA - Scheduler--/2026-10-15T22-52-07-080Z_01a141c4-0227-7693-a1e7-5264432a1c7e.jsonl",
+  "summary": "scout:\n# CJIA Scheduler — Codebase Map (read-only reconnaissance)\n\nScope: current checkout `/Users/kentaylor/developer/CJIA - Scheduler`. No project files modified. AGENTS.md read. `.env.local` not read.\n\n## 1. Stack & entry points\n\n- **Stack** (`package.json` 1-40): Vite 8 + React 19 + TypeScript 6, `react-router-dom` 7, `@supabase/supabase-js` 2, `@tanstack/react-query` 5, `date-fns` 4, `zod` 4, Tailwind 4, `lucide-react`. Test: `vitest run`; lint: `oxlint`; build: `tsc -b && vite build`.\n- **Boot**: `index.html` → `src/main.tsx` (11-14) renders `<App/>` in StrictMode.\n- **Router**: `src/App.tsx` 100-152. Routes: `/` → `PublicSchedulePage`; `/admin` → lazy `AdminWorkspacePage`; `/admin/manual` → lazy `OperationsManualPage`; `*` → redirect `/`.\n- **Auth/session**: `src/App.tsx` 26-72. `supabase.auth.getSession()` + `onAuthStateChange`; `readCurrentSchedulerRole()` resolves role. If `supabase` is null (env unconfigured) it falls back to demo data: `createDemoWorkspace(2).schedules` and a `localDemoSignedIn` flag toggled by `AuthDialog.onSignedIn`.\n- **Public data poll**: `src/App.tsx` 74-98 polls `readPublicSchedule(from,to)` every 60s for today+tomorrow (`currentGuyanaDate`/`addServiceDays`).\n- **Supabase client**: `src/lib/supabase.ts` returns `null` unless both `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` are set. Project ref hard-coded `bmlmdbkmosbmxgzshtnz` (line 13).\n\n## 2. Feature boundaries & UI composition\n\n- `src/app/AppShell.tsx` — shared shell for public/admin modes. Defines `AdminSection` and `AccountRole` (`owner | scheduler | records_manager | viewer | null`) at lines 11-12. Admin nav items lines 30-76; role label logic lines 135-152; sidebar renders nav + \"Public window: today + tomorrow\" (lines ~300-330).\n- `src/pages/`:\n  - `PublicSchedulePage.tsx` (71 lines) — DateRail (max 2 dates, `publicOnly`) + `ScheduleBoard`; redacted public data only.\n  - `AdminWorkspacePage.tsx` (1002 lines) — the orchestration hub. Composes `ScheduleBoard`, `Wo"
+}

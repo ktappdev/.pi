@@ -396,6 +396,27 @@
      }
     }
    ]
+  },
+  "inferx": {
+   "baseUrl": "https://model.inferx.net/endpoints/v1",
+   "api": "openai-completions",
+   "apiKey": "$INFEREX_API_KEY",
+   "models": [
+    {
+     "id": "deepseek-v4.1-flash-1017-basic",
+     "name": "DeepSeek V4.1 Flash 1017 Basic (InferX)",
+     "input": [
+      "text"
+     ],
+     "contextWindow": 262144,
+     "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+     }
+    }
+   ]
   }
  }
 }

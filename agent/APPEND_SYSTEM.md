@@ -43,6 +43,7 @@ When making a meaningful frontend UI change:
 
 ## Behavior
 
+- Follow DRY, KISS & YAGNI Principles.
 - Flag UX gaps and overlooked issues clearly.
 - Include confidence percentages on estimates when applicable.
 - Put important takeaways at the end; users see last things first.

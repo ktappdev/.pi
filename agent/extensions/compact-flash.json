@@ -1,0 +1,5 @@
+{
+  "provider": "commandcode",
+  "model": "deepseek/deepseek-v4.1-flash-fast",
+  "maxTokens": 4096
+}
